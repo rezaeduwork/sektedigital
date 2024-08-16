@@ -21,6 +21,11 @@ class User extends Authenticatable {
         'email',
         'phone',
         'password',
+        'role',
+        'photo',
+        'gender',
+        'birthdate',
+        'address'
     ];
 
     /**
@@ -42,4 +47,8 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function store() {
+      return $this->hasOne('App\Models\Store');
+    }
 }

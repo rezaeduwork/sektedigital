@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Mirrored from freshcart-tailwind.codescandy.com/index-5.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 04 Aug 2024 12:44:15 GMT -->
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8" />
@@ -23,9 +21,10 @@
   <link rel="stylesheet" href="{{ url('/') }}/assets/css/theme.min.css" />
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @livewireStyles
 </head>
 
-<body>
+<body class="bg-gray-50">
   <livewire:components.navbar>
 
   <!-- Modal -->
@@ -449,209 +448,6 @@
   <!-- footer -->
   <footer class="bg-gray-200 py-8">
     <div class="container max-w-[968px] mx-auto">
-      <div class="flex flex-wrap md:gap-4 lg:gap-0 py-4 mb-6">
-        <div class="w-full md:w-full lg:w-1/3 flex flex-col gap-4 mb-6">
-          <h6>Categories</h6>
-          <div class="flex flex-wrap">
-            <div class="w-1/2">
-              <!-- list -->
-              <ul class="flex flex-col gap-2">
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Vegetables & Fruits</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Breakfast & instant food</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Bakery & Biscuits</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Atta, rice & dal</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Sauces & spreads</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Organic & gourmet</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Baby care</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Cleaning essentials</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Personal care</a>
-                </li>
-              </ul>
-            </div>
-            <div class="w-1/2">
-              <!-- list -->
-              <ul class="flex flex-col gap-2">
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Dairy, bread & eggs</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Cold drinks & juices</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Tea, coffee & drinks</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Masala, oil & more</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Chicken, meat & fish</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Paan corner</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Pharma & wellness</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Home & office</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Pet care</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="w-full md:w-full lg:w-2/3">
-          <div class="flex flex-wrap">
-            <div class="w-1/2 sm:w-1/2 md:w-1/4 flex flex-col gap-4 mb-6">
-              <h6>Get to know us</h6>
-              <!-- list -->
-              <ul class="flex flex-col gap-2">
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Company</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">About</a>
-                </li>
-                <li><a href="#!" class="inline-block">Blog</a></li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Help Center</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Our Value</a>
-                </li>
-              </ul>
-            </div>
-            <div class="w-1/2 sm:w-1/2 md:w-1/4 flex flex-col gap-4 mb-6">
-              <h6>For Consumers</h6>
-              <ul class="flex flex-col gap-2">
-                <!-- list -->
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Payments</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Shipping</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Product Returns</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">FAQ</a>
-                </li>
-                <li>
-                  <a href="shop-checkout.html" class="inline-block">Shop Checkout</a>
-                </li>
-              </ul>
-            </div>
-            <div class="w-1/2 sm:w-1/2 md:w-1/4 flex flex-col gap-4">
-              <h6>Become a Shopper</h6>
-              <ul class="flex flex-col gap-2">
-                <!-- list -->
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Shopper Opportunities</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Become a Shopper</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Earnings</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Ideas & Guides</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">New Retailers</a>
-                </li>
-              </ul>
-            </div>
-            <div class="w-1/2 sm:w-1/2 md:w-1/4 flex flex-col gap-4">
-              <h6>Freshcart programs</h6>
-              <ul class="flex flex-col gap-2">
-                <!-- list -->
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Freshcart programs</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Gift Cards</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Promos & Coupons</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Freshcart Ads</a>
-                </li>
-                <li>
-                  <a href="#!" class="inline-block hover:text-primary">Careers</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="border-t py-4 border-gray-300">
-        <div class="gap-y-4 flex flex-wrap items-center justify-center lg:justify-start">
-          <div class="lg:w-2/5 lg:text-left text-center">
-            <div class="flex md:flex-row flex-col gap-3 md:gap-6 items-center">
-              <div class="text-gray-900">Payment Partners</div>
-              <ul class="flex items-center flex-row gap-4">
-                <li>
-                  <a href="#!"><img src="{{ url('/') }}/assets/images/payment/amazonpay.svg"
-                      alt="amazon pay" /></a>
-                </li>
-                <li>
-                  <a href="#!"><img src="{{ url('/') }}/assets/images/payment/american-express.svg"
-                      alt="american express" /></a>
-                </li>
-                <li>
-                  <a href="#!"><img src="{{ url('/') }}/assets/images/payment/mastercard.svg"
-                      alt="mastercard" /></a>
-                </li>
-                <li>
-                  <a href="#!"><img src="{{ url('/') }}/assets/images/payment/paypal.svg"
-                      alt="paypal" /></a>
-                </li>
-                <li>
-                  <a href="#!"><img src="{{ url('/') }}/assets/images/payment/visa.svg"
-                      alt="visa" /></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="lg:w-3/5 flex justify-end">
-            <div class="flex flex-col md:flex-row items-center gap-3 md:gap-6">
-              <div class="text-gray-900">Get deliveries with FreshCart</div>
-              <ul class="flex flex-row gap-2">
-                <li>
-                  <a href="#!"><img src="{{ url('/') }}/assets/images/appbutton/appstore-btn.svg"
-                      alt="" style="width: 140px" /></a>
-                </li>
-                <li>
-                  <a href="#!"><img src="{{ url('/') }}/assets/images/appbutton/googleplay-btn.svg"
-                      alt="" style="width: 140px" /></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="border-t py-4 border-gray-300">
         <div class="flex flex-col md:flex-row items-center gap-3">
           <div class="md:w-1/2">
@@ -719,9 +515,11 @@
     </div>
   </footer>
 
+  <livewire:components.chat-widget>
+
   <!-- Javascript-->
   <!-- Libs JS -->
-  <script src="{{ url('/') }}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script data-navigate-once src="{{ url('/') }}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ url('/') }}/assets/libs/simplebar/dist/simplebar.min.js"></script>
 
   <!-- Theme JS -->
@@ -737,6 +535,19 @@
   <script src="{{ url('/') }}/assets/js/vendors/zoom.js"></script>
 
   <script src="{{ url('/') }}/assets/js/vendors/countdown.js"></script>
+
+  @livewireScripts
+
+  @if (session()->has('unauthenticate'))
+  <script>
+    document.addEventListener('livewire:initialized', () => {
+      const modal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#userModal'));
+      if (modal) {
+        modal.show()
+      }
+    })
+  </script>
+  @endif
 </body>
 
 </html>

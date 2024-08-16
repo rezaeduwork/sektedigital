@@ -18,20 +18,32 @@
         <div class="mb-3">
           <label for="fullName" class="mb-2 block text-gray-800">Nama Lengkap</label>
           <input type="text"
+            wire:model="name"
             class="form-control border border-gray-300 text-gray-900 rounded-lg !ring-none !outline-none focus:border-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
             id="fullName" required />
+          @error('name')
+          <small class="text-primary">{{$message}}</small>
+          @enderror
         </div>
         <div class="mb-3">
           <label for="email" class="mb-2 block text-gray-800">Alamat Email</label>
           <input type="email"
-            class="form-control border border-gray-300 text-gray-900 rounded-lg !ring-none !outline-none focus:border-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
-            id="email" autocomplete="email" required />
+          wire:model="email"
+          class="form-control border border-gray-300 text-gray-900 rounded-lg !ring-none !outline-none focus:border-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+          id="email" autocomplete="email" required />
+          @error('email')
+          <small class="text-primary">{{$message}}</small>
+          @enderror
         </div>
         <div class="mb-5">
           <label for="password" class="mb-2 block text-gray-800">Password</label>
           <input type="password"
-            class="form-control border border-gray-300 text-gray-900 rounded-lg !ring-none !outline-none focus:border-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
-            id="password" required />
+          wire:model="password"
+          class="form-control border border-gray-300 text-gray-900 rounded-lg !ring-none !outline-none focus:border-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+          id="password" required />
+          @error('password')
+          <small class="text-primary">{{$message}}</small>
+          @enderror
           {{-- <span class="block mt-1 text-sm text-gray-500">
             By Signup, you agree to our
             <a href="#!" class="text-primary">Terms of Service</a>
@@ -40,9 +52,11 @@
           </span> --}}
         </div>
 
-        <button type="submit"
+        <button type="button"
+          wire:click="register"
           class="btn w-full inline-flex items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-red-300 justify-center">
-          Sign Up
+          <span wire:loading.remove wire:key="register" wire:target="register">Daftar</span>
+          <span wire:loading wire:key="register" wire:target="register">@include('components.spinner')</span>
         </button>
       </form>
     </div>

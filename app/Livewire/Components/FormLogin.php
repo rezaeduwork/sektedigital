@@ -7,10 +7,10 @@ use Livewire\Attributes\Validate;
 
 class FormLogin extends Component
 {
-  #[Validate('required|email')]
+  #[Validate('required|email', onUpdate: false)]
   public $email;
 
-  #[Validate('required|min:8')]
+  #[Validate('required|min:8', onUpdate: false)]
   public $password;
   public function login() {
     $this->validate();
