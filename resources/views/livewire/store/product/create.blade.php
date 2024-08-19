@@ -147,6 +147,17 @@
       @enderror
     </div>
     <div class="mb-5">
+      <label for="highlight" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Highlight</label>
+      <input type="text" id="highlight" wire:model.live.debounce.250ms="highlight"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+        placeholder="" required />
+      <small class="block">*Beri highlight singkat tentang produk kamu</small>
+      <small class="block">*Max 100 kata</small>
+      @error('highlight')
+        <small class="!text-primary block">{{ $message }}</small>
+      @enderror
+    </div>
+    <div class="mb-5">
       <label for="description"
         class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Deskripsi</label>
       <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"

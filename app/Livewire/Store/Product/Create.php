@@ -13,6 +13,8 @@ class Create extends Component
   public $category_id;
   #[Validate('required|string|max:199', onUpdate: false)]
   public $title;
+  #[Validate('required|string|max:100', onUpdate: false)]
+  public $highlight;
   #[Validate('required|image|max:1024', onUpdate: false)]
   public $main_photo;
   #[Validate(['additional_photo.*' => 'nullable|image|max:1024'], onUpdate: false)]

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
       'name' => 'admin',
       'email' => 'admin@gmail.com',
       'role' => 'admin',
+      'phone' => '000000000000',
       'password' => \Hash::make('12345678')
     ]);
     $user->store()->create([

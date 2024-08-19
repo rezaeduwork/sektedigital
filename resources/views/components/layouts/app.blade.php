@@ -516,7 +516,6 @@
   </footer>
 
   <livewire:components.chat-widget>
-
   <!-- Javascript-->
   <!-- Libs JS -->
   <script data-navigate-once src="{{ url('/') }}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

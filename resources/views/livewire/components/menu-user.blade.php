@@ -1,7 +1,7 @@
 <div class="space-y-4 p-4" wire:ignore>
   <div class="flex items-center gap-3">
     <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-lg border-2 border-slate-600">
-      <img class="w-full object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?crop=top&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=100&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2Mjk2MTgwNw&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=100" alt="Profile" />
+      <img class="w-full object-cover" src="{{profile(auth()->user())}}" alt="Profile" />
     </div>
     <div>
       <div class="flex gap-1 text-sm font-semibold">

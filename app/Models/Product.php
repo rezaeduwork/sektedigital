@@ -10,6 +10,7 @@ class Product extends Model
   use HasFactory;
   protected $fillable = [
     'title',
+    'highlight',
     'description',
     'price',
     'store_id',
@@ -26,6 +27,9 @@ class Product extends Model
   }
   public function images() {
     return $this->hasMany('App\Models\ProductImage', 'product_id');
+  }
+  public function mainImage() {
+    return $this->images()->whereType('main')->first();
   }
   public function logs() {
     return $this->hasMany('App\Models\ProductLog', 'product_id');

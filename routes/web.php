@@ -21,6 +21,8 @@ Route::get('/shop/{path}', \App\Livewire\Shop::class);
 
 Route::middleware('user.auth')->group(function() {
   Route::get('/profile', \App\Livewire\Profile::class);
+  Route::get('/cart', \App\Livewire\Cart::class);
+  Route::get('/checkout', \App\Livewire\Checkout::class);
 
   Route::middleware('user.hasstore')->prefix('store')->group(function() {
     Route::get('/', \App\Livewire\Store\Dashboard::class);

@@ -14,6 +14,8 @@ class Edit extends Component
   public $category_id;
   #[Validate('required|string|max:199', onUpdate: false)]
   public $title;
+  #[Validate('required|string|max:100', onUpdate: false)]
+  public $highlight;
   #[Validate('nullable|image|max:1024', onUpdate: false)]
   public $main_photo;
   #[Validate(['additional_photo.*' => 'nullable|image|max:1024'], onUpdate: false)]
@@ -30,6 +32,7 @@ class Edit extends Component
     $slug = \Str::slug($this->title, '-').'-'.auth()->id().uniqid();
     $this->product->update([
       'title' => $this->title,
+      'highlight' => $this->highlight,
       'description' => $this->description,
       'price' => $this->price,
       'slug' => $slug,
@@ -72,6 +75,7 @@ class Edit extends Component
     $this->product = \App\Models\Product::whereSlug($slug)->firstOrFail();
     $this->category_id = $this->product->category_product_id;
     $this->title = $this->product->title;
+    $this->highlight = $this->product->highlight;
     $this->description = $this->product->description;
     $this->price = $this->product->price;
     $this->stock = $this->product->stock;

@@ -3,16 +3,16 @@
   $list = [
     [
       'image' => url('storage/gift-voucher.png'),
-      'name' => 'Top Up',
+      'name' => 'Top Up Instan',
       'url' => url('topup')
     ],
     [
       'image' => url('storage/payment-method.png'),
-      'name' => 'Tagihan',
+      'name' => 'Tagihan Instan',
       'url' => url('tagihan')
     ],
     [
-      'image' => url('storage/demand.png'),
+      'image' => url('storage/rekber.png'),
       'name' => 'Rekber',
       'url' => url('rekber')
     ]
@@ -27,7 +27,7 @@
         <div class="card-body text-center py-4">
           <div class="flex justify-center">
             <!-- img -->
-            <img src="{{$row['image']}}" alt="Grocery Ecommerce Template" class="mb-3">
+            <img src="{{$row['image']}}" alt="{{$row['name']}} Image" class="mb-3">
           </div>
           <!-- text -->
           <div class="truncate">{{$row['name']}}</div>

@@ -8,7 +8,8 @@ export default {
     theme: {
       extend: {
         colors: {
-          primary: "#ff2a2a"
+          primary: "#ff2a2a",
+          link: "#0000EE"
         },
         keyframes: {
           chatenter: {

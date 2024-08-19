@@ -15,5 +15,6 @@
 }"
 >
   @include('components.toast-success')
+  @include('components.toast-warning')
   @include('components.toast-error')
 </div>

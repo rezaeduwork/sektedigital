@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('status')->default('inactive')->comment('active | inactive');
             $table->string('title');
             $table->string('slug');
+            $table->string('highlight')->nullable();
             $table->longText('description');
             $table->bigInteger('price');
             $table->bigInteger('stock')->default(0);
