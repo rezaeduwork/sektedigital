@@ -19,7 +19,7 @@
         Dagangan</label>
 
       <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom"
-        class="flex items-center justify-between bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+        class="flex items-center justify-between bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
         type="button">
         <div>
           {{ $category_id ? \App\Models\CategoryProduct::find($category_id)->name ?? 'Kategori tidak ada' : '-- Pilih Kategori --' }}
@@ -141,7 +141,7 @@
     <div class="mb-5">
       <label for="title" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Judul</label>
       <input type="text" id="title" wire:model.live.debounce.250ms="title"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
         placeholder="" required />
       <small class="block">*Beri judul yang sesuai dengan produk kamu.</small>
       @error('title')
@@ -151,7 +151,7 @@
     <div class="mb-5">
       <label for="highlight" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Highlight</label>
       <input type="text" id="highlight" wire:model.live.debounce.250ms="highlight"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
         placeholder="" required />
       <small class="block">*Beri highlight singkat tentang produk kamu</small>
       <small class="block">*Max 100 kata</small>
@@ -167,7 +167,7 @@
         Jelaskan produk kamu sedetail mungkin agar mudah dimengerti.
       </div>
       <textarea id="description" wire:model.live.debounce.250ms="description" rows="5"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
         placeholder=""></textarea>
       @error('description')
         <small class="!text-primary block">{{ $message }}</small>
@@ -177,7 +177,7 @@
       <label for="price"
         class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Harga</label>
       <input id="price" wire:model.live.debounce.250ms="price" min="0" max="1000000000"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
         placeholder="">
       <small class="block">*Maks harga Rp. 1,000,000,000</small>
       @error('price')
@@ -188,7 +188,7 @@
       <label for="stock"
         class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Stok</label>
       <input id="stock" wire:model.live.debounce.250ms="stock" min="0" max="1000000000"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
         placeholder="">
       <small class="block">*Maks stock Rp. 1,000,000,000</small>
       @error('stock')
@@ -196,7 +196,7 @@
       @enderror
     </div>
     <button type="button" wire:click="update"
-      class="w-full md:w-auto text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-red-300 font-semibold rounded-lg px-5 py-2.5 me-2 mb-2">
+      class="w-full md:w-auto text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-violet-300 font-semibold rounded-lg px-5 py-2.5 me-2 mb-2">
       <span wire:key="update" wire:target="update" wire:loading.remove>Simpan</span>
       <span wire:key="update" wire:target="update" wire:loading>@include('components.spinner')</span>
     </button>

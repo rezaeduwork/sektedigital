@@ -41,12 +41,12 @@
     <div class="p-0 grid grid-cols-3 gap-2 mb-5">
       <div class="">
         <input type="text" id="name" wire:model.live.debounce.250ms="name"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
           placeholder="Cari Nama Produk" />
       </div>
       <div class=" relative">
         <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom"
-          class="flex items-center justify-between bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5"
+          class="flex items-center justify-between bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
           type="button">
           <div>
             {{ $category_id ? \App\Models\CategoryProduct::find($category_id)->name ?? 'Kategori tidak ada' : 'Cari Kategori' }}
@@ -88,7 +88,7 @@
       </div>
       <div class="">
         <select
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5">
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5">
           <option value="">Urutkan</option>
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -193,7 +193,7 @@
                         </svg>
                         <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to delete this product?</h3>
                         <button type="button"
-                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                        class="text-white bg-violet-600 hover:bg-violet-800 focus:ring-4 focus:outline-none focus:ring-violet-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                           Ya, Hapus
                         </button>
                         <button data-modal-hide="modal-delete-{{$row->id}}" type="button"

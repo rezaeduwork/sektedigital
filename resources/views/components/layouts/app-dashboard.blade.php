@@ -11,13 +11,13 @@
   <link rel="shortcut icon" type="image/x-icon" href="{{ url('/') }}/logo.png" />
 
   <!-- Libs CSS -->
-  <link href="{{url('/asset-dashboard')}}/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link href="{{url('/asset-dashboard')}}/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
-  <link href="{{url('/asset-dashboard')}}/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+  <link href="{{ url('/asset-dashboard') }}/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="{{ url('/asset-dashboard') }}/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet">
+  <link href="{{ url('/asset-dashboard') }}/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
 
 
   <!-- Theme CSS -->
-  <link rel="stylesheet" href="{{url('/asset-dashboard')}}/css/theme.min.css?t={{time()}}">
+  <link rel="stylesheet" href="{{ url('/asset-dashboard') }}/css/theme.min.css?t={{ time() }}">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   @livewireStyles
 </head>
@@ -40,14 +40,15 @@
             </a>
             <form role="search">
               <label for="search" class="form-label visually-hidden">Search</label>
-              <input class="form-control border rounded-md" type="search" placeholder="Pencarian" aria-label="Search" id="search" />
+              <input class="form-control border rounded-md" type="search" placeholder="Pencarian" aria-label="Search"
+                id="search" />
             </form>
           </div>
           <div>
             <ul class="list-unstyled d-flex align-items-center mb-0 ms-5 ms-lg-0 space-x-3">
               <li class="dropdown ms-4">
-                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100" href="{{url('/')}}" target="_blank"
-                  role="button" aria-expanded="false">
+                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100"
+                  href="{{ url('/') }}" target="_blank" role="button" aria-expanded="false">
                   <i class="bi bi-globe fs-5"></i>
                 </a>
               </li>
@@ -86,7 +87,7 @@
                       <li class="list-group-item px-5 py-4 list-group-item-action active">
                         <a href="#!" class="text-muted">
                           <div class="d-flex">
-                            <img src="{{url('/asset-dashboard')}}/images/avatar/avatar-1.jpg" alt=""
+                            <img src="{{ url('/asset-dashboard') }}/images/avatar/avatar-1.jpg" alt=""
                               class="avatar avatar-md rounded-circle" />
                             <div class="ms-4">
                               <p class="mb-1">
@@ -109,7 +110,7 @@
                       <li class="list-group-item px-5 py-4 list-group-item-action">
                         <a href="#!" class="text-muted">
                           <div class="d-flex">
-                            <img src="{{profile(auth()->user())}}" alt=""
+                            <img src="{{ profile(auth()->user()) }}" alt=""
                               class="avatar avatar-md rounded-circle" />
                             <div class="ms-4">
                               <p class="mb-1">
@@ -132,7 +133,7 @@
                       <li class="list-group-item px-5 py-4 list-group-item-action">
                         <a href="#!" class="text-muted">
                           <div class="d-flex">
-                            <img src="{{url('/asset-dashboard')}}/images/avatar/avatar-2.jpg" alt=""
+                            <img src="{{ url('/asset-dashboard') }}/images/avatar/avatar-2.jpg" alt=""
                               class="avatar avatar-md rounded-circle" />
                             <div class="ms-4">
                               <p class="mb-1">
@@ -160,16 +161,16 @@
                 </div>
               </li>
               <li class="dropdown ms-4">
-                <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="flex items-center space-x-3">
-                  <img src="{{profile(auth()->user())}}" alt=""
-                    class="avatar avatar-md rounded-circle" />
-                  <h5 class="">{{auth()->user()->name}}</h5>
+                <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                  class="flex items-center space-x-3">
+                  <img src="{{ profile(auth()->user()) }}" alt="" class="avatar avatar-md rounded-circle" />
+                  <h5 class="">{{ auth()->user()->name }}</h5>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end p-0">
                   <div class="lh-1 px-5 py-4 border-bottom">
-                    <h5 class="mb-1 h6">{{auth()->user()->name}}</h5>
-                    <small>{{auth()->user()->email}}</small>
+                    <h5 class="mb-1 h6">{{ auth()->user()->name }}</h5>
+                    <small>{{ auth()->user()->email }}</small>
                   </div>
 
                   <ul class="list-unstyled px-2 py-3">
@@ -202,8 +203,8 @@
       <nav class="navbar-vertical-nav d-none d-xl-block">
         <div class="navbar-vertical">
           <div class="px-4 py-5">
-            <a href="{{url('store')}}" wire:navigate class="navbar-brand">
-              <img src="{{url('/logo.png')}}" alt="" />
+            <a href="{{ url('store') }}" wire:navigate class="navbar-brand">
+              <img src="{{ url('/logo.png') }}" alt="" />
             </a>
           </div>
           <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
@@ -216,8 +217,8 @@
         id="offcanvasExample">
         <div class="navbar-vertical">
           <div class="px-6 py-5 d-flex justify-content-between align-items-center space-x-5">
-            <a href="{{url('store')}}" wire:navigate class="navbar-brand rounded-full">
-              <img src="{{url('/logo.png')}}" alt="" />
+            <a href="{{ url('store') }}" wire:navigate class="navbar-brand rounded-full">
+              <img src="{{ url('/logo.png') }}" alt="" />
             </a>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
@@ -229,7 +230,7 @@
 
       <!-- main wrapper -->
       <main class="main-content-wrapper">
-        {{$slot}}
+        {{ $slot }}
       </main>
     </div>
   </div>
@@ -238,14 +239,14 @@
 
 
   <!-- Libs JS -->
-  <script data-navigate-once src="{{url('/asset-dashboard')}}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script data-navigate-once src="{{url('/asset-dashboard')}}/libs/simplebar/dist/simplebar.min.js"></script>
+  <script data-navigate-once src="{{ url('/asset-dashboard') }}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script data-navigate-once src="{{ url('/asset-dashboard') }}/libs/simplebar/dist/simplebar.min.js"></script>
 
   <!-- Theme JS -->
-  <script data-navigate-once src="{{url('/asset-dashboard')}}/js/theme.min.js"></script>
+  <script data-navigate-once src="{{ url('/asset-dashboard') }}/js/theme.min.js"></script>
 
-  <script data-navigate-once src="{{url('/asset-dashboard')}}/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script data-navigate-once src="{{url('/asset-dashboard')}}/js/vendors/chart.js"></script>
+  <script data-navigate-once src="{{ url('/asset-dashboard') }}/libs/apexcharts/dist/apexcharts.min.js"></script>
+  <script data-navigate-once src="{{ url('/asset-dashboard') }}/js/vendors/chart.js"></script>
   @livewireScripts
 </body>
 

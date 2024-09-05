@@ -25,7 +25,8 @@ class Checkout extends Component
         'amount' => totalTransaction(),
         'customer_name' => auth()->user()->name,
         'customer_email' => auth()->user()->email,
-        'customer_phone' => auth()->user()->phone
+        'customer_phone' => auth()->user()->phone,
+        'user_id' => auth()->id()
       ]);
       $carts = auth()->user()->carts()->whereIn('id', session('selectedCarts'))->get();
       foreach ($carts as $row) {
@@ -33,7 +34,7 @@ class Checkout extends Component
           'product_id' => $row->product_id,
           'price' => $row->product->price,
           'quantity' => $row->quantity,
-          'subtotal' => $row->subtotal,
+          'subtotal' => $row->product->price * $row->quantity,
           'note' => $row->note
         ]);
       }
@@ -44,15 +45,16 @@ class Checkout extends Component
       \DB::commit();
       session()->forget('selectedCarts');
       $this->dispatch('alert-success', message: 'Transaksi berhasil dibuat.');
-      $this->redirect('tx/', navigate: true);
+      $this->redirect('user/transaction', navigate: true);
     } catch (\Throwable $th) {
-      $this->dispatch('alert-error', message: 'Transaksi gagal.');
-      $this->redirect('cart', navigate: true);
       \DB::rollBack();
+      $this->dispatch('alert-error', message: 'Transaksi gagal.');
+      dd($th);
     }
   }
   public function render()
   {
-    return view('livewire.checkout');
+    $availableCarts = \App\Models\Cart::whereIn('id', session('selectedCarts'))->get();
+    return view('livewire.checkout', compact('availableCarts'));
   }
 }

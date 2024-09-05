@@ -22,11 +22,35 @@ class DatabaseSeeder extends Seeder
     ]);
     $user->store()->create([
       'name' => 'Dummy Store',
-      'photo' => 'dummy.png',
+      'photo' => 'store.png',
       'status' => 'verified'
     ]);
     \App\Models\CategoryProduct::query()->delete();
     foreach ([
+      [
+        'icon' => 'verified-account.png',
+        'name' => 'Akun'
+      ],
+      [
+        'icon' => 'business.png',
+        'name' => 'Bisnis'
+      ],
+      [
+        'icon' => 'collection.png',
+        'name' => 'Koleksi'
+      ],
+      [
+        'icon' => 'marketing.png',
+        'name' => 'Marketing'
+      ],
+      [
+        'icon' => 'social-media.png',
+        'name' => 'Sosial Media'
+      ],
+      [
+        'icon' => 'vector.png',
+        'name' => 'Design Grafis'
+      ],
       [
         'icon' => 'gift-voucher.png',
         'name' => 'Top Up'
@@ -40,12 +64,20 @@ class DatabaseSeeder extends Seeder
         'name' => 'E-Book',
       ],
       [
+        'icon' => 'software.png',
+        'name' => 'Tools & Software',
+      ],
+      [
         'icon' => 'app-development.png',
-        'name' => 'Software',
+        'name' => 'Software Development',
       ],
       [
         'icon' => 'audio.png',
         'name' => 'Audio',
+      ],
+      [
+        'icon' => 'video-marketing.png',
+        'name' => 'Video'
       ],
       [
         'icon' => 'other.png',

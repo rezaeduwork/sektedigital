@@ -24,7 +24,7 @@
   @livewireStyles
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-100">
   <livewire:components.navbar>
 
   <!-- Modal -->
@@ -275,7 +275,7 @@
                       <span class="text-gray-900 font-semibold">$18</span>
                       <span class="line-through text-gray-500">$24</span>
 
-                      <span><small class="text-red-600">26% Off</small></span>
+                      <span><small class="text-violet-600">26% Off</small></span>
                     </div>
                   </div>
                   <!-- hr -->
@@ -318,7 +318,7 @@
                         <!-- button -->
                         <!-- btn -->
                         <button type="button"
-                          class="btn bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-red-300 justify-center">
+                          class="btn bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300 justify-center">
                           <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-plus mr-2"
                             width="12" height="12" viewBox="0 0 24 24" stroke-width="3"
                             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -446,30 +446,18 @@
 
   <!-- Footer -->
   <!-- footer -->
-  <footer class="bg-gray-200 py-8">
+  {{-- <footer class="bg-gray-200 py-8">
     <div class="container max-w-[968px] mx-auto">
-      <div class="border-t py-4 border-gray-300">
-        <div class="flex flex-col md:flex-row items-center gap-3">
-          <div class="md:w-1/2">
-            <span class="text-sm text-gray-500">
-              ©
-              <span id="copyright">
-                <script>
-                  document
-                    .getElementById("copyright")
-                    .appendChild(
-                      document.createTextNode(new Date().getFullYear())
-                    );
-                </script>
-              </span>
-              FreshCart TailwindCSS eCommerce HTML Template. Powered by
-              <a href="../codescandy.com/index.html" target="_blank" class="text-primary">Codescandy</a>
-              .
+      <div class="">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+          <div class="md:w-full">
+            <span class="text-gray-500 text-lg">
+              <span class="font-bold text-primary">{{config('app.name')}}</span> menyediakan kebutuhan digital anda.
             </span>
           </div>
-          <div class="md:w-1/2 flex md:justify-end items-center">
-            <div class="flex flex-row gap-5 items-center">
-              <div class="text-gray-500">Follow us on</div>
+          <div class="flex md:justify-end items-center shrink-0">
+            <div class="flex flex-row gap-2 items-center">
+              <div class="text-gray-500">Ikuti</div>
               <ul class="flex items-center justify-end text-sm gap-1">
                 <li>
                   <a href="#!"
@@ -513,7 +501,7 @@
         </div>
       </div>
     </div>
-  </footer>
+  </footer> --}}
 
   <livewire:components.chat-widget>
   <!-- Javascript-->

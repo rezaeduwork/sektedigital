@@ -41,14 +41,14 @@
           wire:loading.remove
           wire:target="login"
           wire:key="login"
-          class="btn w-full inline-flex items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-red-300 justify-center">
+          class="btn w-full inline-flex items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300 justify-center">
           Masuk
         </button>
         <button type="button"
           wire:loading.class="!inline-flex"
           wire:target="login"
           wire:key="login"
-          class="btn w-full hidden items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-red-300 justify-center">
+          class="btn w-full hidden items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300 justify-center">
           @include('components.spinner')
         </button>
       </form>

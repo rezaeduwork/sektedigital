@@ -24,6 +24,15 @@ Route::middleware('user.auth')->group(function() {
   Route::get('/cart', \App\Livewire\Cart::class);
   Route::get('/checkout', \App\Livewire\Checkout::class);
 
+  Route::prefix('user')->group(function() {
+    Route::get('/profile', \App\Livewire\User\Profile::class);
+    Route::get('/store', \App\Livewire\Components\AccountStore::class);
+    Route::get('/wallet', \App\Livewire\User\Wallet::class);
+    Route::prefix('transaction')->group(function() {
+      Route::get('/', \App\Livewire\User\Transaction::class);
+    });
+  });
+
   Route::middleware('user.hasstore')->prefix('store')->group(function() {
     Route::get('/', \App\Livewire\Store\Dashboard::class);
     Route::get('/profile', \App\Livewire\Store\Profile::class);
@@ -38,6 +47,12 @@ Route::middleware('user.auth')->group(function() {
       Route::get('history', \App\Livewire\Store\Transaction\History::class);
     });
   });
+});
+
+Route::middleware('user.admin')->prefix('admin')->group(function() {
+  Route::get('/', \App\Livewire\Admin\Dashboard::class);
+  Route::get('/account/{id}', \App\Livewire\Admin\AccountDetail::class);
+  Route::get('/account', \App\Livewire\Admin\Account::class);
 });
 
 Route::get('/{slug}', \App\Livewire\ProductDetail::class);

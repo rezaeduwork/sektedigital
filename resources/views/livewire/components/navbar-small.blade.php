@@ -29,7 +29,7 @@
                 <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
               </svg>
               <span
-                class="absolute -top-3 inline-block p-[5px] h-5 w-5 left-3 text-sm align-baseline leading-none bg-red-600 text-white font-semibold rounded-full">1</span>
+                class="absolute -top-3 inline-block p-[5px] h-5 w-5 left-3 text-sm align-baseline leading-none bg-violet-600 text-white font-semibold rounded-full">1</span>
             </div>
             <p class="mb-0 hidden xl:block small">Notification</p>
           </div>

@@ -8,7 +8,7 @@ export default {
     theme: {
       extend: {
         colors: {
-          primary: "#ff2a2a",
+          primary: "#2e1065",
           link: "#0000EE"
         },
         keyframes: {

@@ -34,7 +34,7 @@
         class="
         @if ($product->stock > 1) bg-green-100 text-green-800
         @else
-        bg-red-100 text-primary @endif
+        bg-violet-100 text-primary @endif
         text-xs font-medium px-2.5 py-0.5 rounded flex items-center justify-center">
         @if ($product->stock == 1)
           <img src="{{ url('assets/images/fire.png') }}" alt="" srcset="" class="size-3 mr-1" />

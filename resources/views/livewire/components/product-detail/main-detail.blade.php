@@ -163,7 +163,7 @@
                   <div class="text-md">
                     <span class="text-gray-900 font-semibold">Rp. {{number_format($product->price)}}</span>
                     {{-- <span class="line-through text-gray-500">$35</span> --}}
-                    {{-- <span><small class="text-red-600">26% Off</small></span> --}}
+                    {{-- <span><small class="text-violet-600">26% Off</small></span> --}}
                   </div>
                 </div>
               </div>

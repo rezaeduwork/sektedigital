@@ -30,7 +30,7 @@ function productActivity($activity, $by) {
 }
 function transactionActivity($tx,$by,$activity,$description) {
   $tx->logs()->create([
-    'type' => $activity,
+    'activity' => $activity,
     'description' => $description,
     'by' => $by
   ]);
@@ -49,4 +49,27 @@ function totalTransaction($availableCarts = null) {
     return $carry + ($item->product->price * $item->quantity);
   }, 0);
   return $subTotal;
+}
+
+function queryListUserTransaction($tab = 'Semua') {
+  $list = auth()->user()->transactions();
+  if ($tab == 'Belum Bayar') {
+    $list->whereIn('status', ['unprocessed']);
+  } else if ($tab == 'Menunggu Konfirmasi') {
+    $list->whereIn('status', ['confirmed']);
+  }else if ($tab == 'Proses') {
+    $list->whereIn('status', ['accepted']);
+  } else if ($tab == 'Selesai') {
+    $list->whereIn('status', ['finished']);
+  } else if ($tab == 'Dibatalkan') {
+    $list->whereIn('status', ['rejected','cancelled']);
+  }
+  return $list;
+}
+
+function userActivity($activity, $description = null) {
+  auth()->user()->activities()->create([
+    'activity' => $activity,
+    'description' => $description
+  ]);
 }

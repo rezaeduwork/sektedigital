@@ -41,7 +41,7 @@
       </svg>
       <span>Favorit</span>
     </a>
-    <a href="{{url('profile')}}" wire:navigate class="flex items-center gap-3 rounded-md py-2 px-3 border shadow">
+    <a href="{{url('user/profile')}}" wire:navigate class="flex items-center gap-3 rounded-md py-2 px-3 border shadow">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
       </svg>
@@ -62,12 +62,12 @@
   </div>
   {{-- <a
   href="admin"
-  class="flex justify-center gap-3 ring-2 ring-gray-200 rounded-md py-2 px-3 font-semibold focus:ring-2 focus:ring-red-400 w-full">
+  class="flex justify-center gap-3 ring-2 ring-gray-200 rounded-md py-2 px-3 font-semibold focus:ring-2 focus:ring-violet-400 w-full">
     <div>
       <span class="inline-block">Dashboard</span>
     </div>
   </a> --}}
-  <button type="button" wire:click="logout" class="flex justify-center gap-3 rounded-md bg-primary py-2 px-3 font-semibold hover:bg-red-500 focus:ring-2 focus:ring-red-400 text-white w-full">
+  <button type="button" wire:click="logout" class="flex justify-center gap-3 rounded-md bg-primary py-2 px-3 font-semibold hover:bg-violet-500 focus:ring-2 focus:ring-violet-400 text-white w-full">
     <div wire:loading.remove>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6 inline-block">
         <path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 006 5.25v13.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5V15a.75.75 0 011.5 0v3.75a3 3 0 01-3 3h-6a3 3 0 01-3-3V5.25a3 3 0 013-3h6a3 3 0 013 3V9A.75.75 0 0115 9V5.25a1.5 1.5 0 00-1.5-1.5h-6zm10.72 4.72a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H9a.75.75 0 010-1.5h10.94l-1.72-1.72a.75.75 0 010-1.06z" clip-rule="evenodd"></path>

@@ -52,9 +52,9 @@
         <div class="lg:w-2/3 w-full">
           <div class="flex flex-col gap-5">
             <!-- alert -->
-            {{-- <div class="bg-red-500 bg-opacity-25 text-red-900 rounded-lg py-3 px-4" role="alert">
+            {{-- <div class="bg-violet-500 bg-opacity-25 text-violet-900 rounded-lg py-3 px-4" role="alert">
               You’ve got FREE delivery. Start
-              <a href="#!" class="text-red-950">checkout now!</a>
+              <a href="#!" class="text-violet-950">checkout now!</a>
             </div> --}}
             @if ($availableCarts->count() > 0)
             <div class="flex justify-between items-center w-full">
@@ -155,7 +155,7 @@
                   <button
                     class="btn text-center w-full !rounded-t-none flex justify-center
                     @if(sizeof($selected) > 0)
-                    bg-primary text-white border-primary hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-red-300
+                    bg-primary text-white border-primary hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300
                     @else
                     bg-gray-200 text-gray-600 cursor-default
                     @endif

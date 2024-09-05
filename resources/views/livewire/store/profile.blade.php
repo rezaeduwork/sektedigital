@@ -42,19 +42,19 @@
     </div>
     <div class="mb-5">
       <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Nama Kios</label>
-      <input type="text" id="name" wire:model.live.debounce.250ms="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5" placeholder="" required />
+      <input type="text" id="name" wire:model.live.debounce.250ms="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5" placeholder="" required />
       @error('name')
       <small class="!text-primary">{{$message}}</small>
       @enderror
     </div>
     <div class="mb-2">
       <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Deskripsi</label>
-      <textarea id="description" wire:model.live.debounce.250ms="description" rows="5" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-300 focus:border-red-300 block w-full p-2.5" placeholder="" required></textarea>
+      <textarea id="description" wire:model.live.debounce.250ms="description" rows="5" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5" placeholder="" required></textarea>
       @error('description')
       <small class="!text-primary">{{$message}}</small>
       @enderror
     </div>
-    <button type="button" wire:click="update" class="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-red-300 font-semibold rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+    <button type="button" wire:click="update" class="text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-violet-300 font-semibold rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
       Simpan
     </button>
   </div>

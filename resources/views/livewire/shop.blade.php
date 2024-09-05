@@ -45,7 +45,7 @@
               <div class="text-center relative flex justify-center">
                 <div class="absolute top-0 left-0">
                   <span
-                    class="inline-block p-1 text-center font-semibold text-sm align-baseline leading-none rounded bg-red-600 text-white">Sale</span>
+                    class="inline-block p-1 text-center font-semibold text-sm align-baseline leading-none rounded bg-violet-600 text-white">Sale</span>
                 </div>
                 <a href="#!"><img src="assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template"
                     class="w-full h-auto"></a>

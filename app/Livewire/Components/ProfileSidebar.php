@@ -19,9 +19,6 @@ class ProfileSidebar extends Component
     $user->save();
     $this->dispatch('alert-success', message: 'Foto berhasil disimpan!');
   }
-  public function mount($page) {
-    $this->page = $page;
-  }
   public function render()
   {
     return view('livewire.components.profile-sidebar');
