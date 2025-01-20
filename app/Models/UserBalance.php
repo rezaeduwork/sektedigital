@@ -9,6 +9,13 @@ class UserBalance extends Model
 {
   use HasFactory;
   protected $fillable = [
-    'uid','type','amount','description','status','token','name'
+    'uid',
+    'type',
+    'amount',
+    'description',
+    'status',
+    'token',
+    'name',
+    'user_id'
   ];
 }

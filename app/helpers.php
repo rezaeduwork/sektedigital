@@ -1,18 +1,21 @@
 <?php
 
-function profile($user) {
+function profile($user)
+{
   if (!$user->photo) {
     return url('assets/images/avatar.jpg');
   }
-  return url('storage/'.$user->photo);
+  return url('storage/' . $user->photo);
 }
-function storeProfile($store) {
+function storeProfile($store)
+{
   if (!$store->photo) {
     return url('assets/images/avatar.jpg');
   }
-  return url('storage/'.$store->photo);
+  return url('storage/' . $store->photo);
 }
-function productActivity($activity, $by) {
+function productActivity($activity, $by)
+{
   if ($activity == 'view') {
     $todayView = \App\Models\ProductLog::whereActivity($activity)->whereBy($by)->whereDate('created_at', \Carbon\Carbon::now())->first();
     if (!$todayView) {
@@ -28,20 +31,26 @@ function productActivity($activity, $by) {
     ]);
   }
 }
-function transactionActivity($tx,$by,$activity,$description) {
+function transactionActivity($tx, $by, $activity, $description, $type = null, $target = null)
+{
   $tx->logs()->create([
     'activity' => $activity,
     'description' => $description,
-    'by' => $by
+    'by' => $by,
+    'target' => $target,
+    'type' => ($type == null ? 'user' : $type)
   ]);
 }
-function productImage($image) {
-  return url('storage/'.$image->name);
+function productImage($image)
+{
+  return url('storage/' . $image->name);
 }
-function categoryImage($category) {
-  return url('storage/'.$category->icon);
+function categoryImage($category)
+{
+  return url('storage/' . $category->icon);
 }
-function totalTransaction($availableCarts = null) {
+function totalTransaction($availableCarts = null)
+{
   if (!$availableCarts) {
     $availableCarts = auth()->user()->carts()->whereIn('id', session('selectedCarts'))->get();
   }
@@ -51,25 +60,23 @@ function totalTransaction($availableCarts = null) {
   return $subTotal;
 }
 
-function queryListUserTransaction($tab = 'Semua') {
+function queryListUserTransaction($tab = null)
+{
   $list = auth()->user()->transactions();
-  if ($tab == 'Belum Bayar') {
-    $list->whereIn('status', ['unprocessed']);
-  } else if ($tab == 'Menunggu Konfirmasi') {
-    $list->whereIn('status', ['confirmed']);
-  }else if ($tab == 'Proses') {
-    $list->whereIn('status', ['accepted']);
-  } else if ($tab == 'Selesai') {
-    $list->whereIn('status', ['finished']);
-  } else if ($tab == 'Dibatalkan') {
-    $list->whereIn('status', ['rejected','cancelled']);
+  if ($tab) {
+    $list->whereHas('details', function ($query) use ($tab) {
+      $query->whereIn('status', [$tab]);
+    });
   }
   return $list;
 }
 
-function userActivity($activity, $description = null) {
+function userActivity($activity, $description = null)
+{
   auth()->user()->activities()->create([
     'activity' => $activity,
     'description' => $description
   ]);
 }
+
+function updateUserBalance($user) {}

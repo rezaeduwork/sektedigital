@@ -11,26 +11,30 @@ class ProductItem extends Component
   public $product;
   public $cart;
   public $note;
-  public function select($cartId) {
+  public function select($cartId)
+  {
     $this->dispatch('cart-select', cartId: $cartId)->to(\App\Livewire\Cart::class);
   }
-  public function updatingNote($value) {
+  public function updatingNote($value)
+  {
     if (strlen($this->note) > 100) {
       $this->dispatch('alert-error', message: "Note maksimal 100 huruf!");
       throw new Exception;
     }
   }
-  public function updatedNote($value) {
+  public function updatedNote($value)
+  {
     $this->cart->note = $value;
     $this->cart->save();
     $this->dispatch('alert-success', message: 'Note ditambah.');
   }
-  public function changeQuantity($cartId,$type) {
+  public function changeQuantity($cartId, $type)
+  {
     if ($type == 'plus') {
-      $this->dispatch('change-quantity', cartId: $cartId, quantity: $this->cart->quantity+1);
+      $this->dispatch('change-quantity', cartId: $cartId, quantity: $this->cart->quantity + 1);
       return true;
-    } elseif($type == 'minus') {
-      $this->dispatch('change-quantity', cartId: $cartId, quantity: $this->cart->quantity-1);
+    } elseif ($type == 'minus') {
+      $this->dispatch('change-quantity', cartId: $cartId, quantity: $this->cart->quantity - 1);
       return true;
     }
     if ((int)$type > 0) {
@@ -39,7 +43,8 @@ class ProductItem extends Component
     }
     $this->dispatch('alert-error', message: 'Jumlah minimal 1');
   }
-  public function mount($cart, $product, $isSelected) {
+  public function mount($cart, $product, $isSelected)
+  {
     $this->cart = $cart;
     $this->product = $product;
     $this->isSelected = $isSelected;

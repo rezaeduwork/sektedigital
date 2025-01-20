@@ -1,6 +1,6 @@
 <div>
   <div class="">
-    <div class="flex flex-wrap mt-4 mb-6">
+    <div class="flex flex-wrap mt-6 mb-6">
       <div class="w-full">
         <!-- breadcrumb -->
         <nav aria-label="breadcrumb">
@@ -28,16 +28,16 @@
                 </svg>
               </a>
             </li>
-            <li class="inline-block text-gray-500 active" aria-current="page">{{$product->name}}</li>
+            <li class="inline-block text-gray-500 active" aria-current="page">{{$product->title}}</li>
           </ol>
         </nav>
       </div>
     </div>
   </div>
-  <section class="mb-6 bg-white p-4 shadow-lg">
+  <section class="mb-6 p-0">
     <div class="">
-      <div class="flex flex-wrap">
-        <div class="lg:w-1/2">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="">
           <!-- img slide -->
           @php
           $mainImage = $product->images()->whereType('main')->first();
@@ -106,7 +106,7 @@
             </a>
           </div>
         </div>
-        <div class="lg:w-1/2 pr-4 pl-4">
+        <div class="rounded-lg">
           <div class="lg:pl-10 mt-6 md:mt-0">
             <div class="flex flex-col gap-4">
               <div class="flex flex-col">

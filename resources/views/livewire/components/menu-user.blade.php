@@ -19,15 +19,15 @@
   <div class="mb-4">
     <div class="font-semibold mb-4">Riwayat Transaksi</div>
     <div class="grid grid-cols-3 gap-2">
-      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer">
+      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer" @click="Livewire.navigate('{{url('user/transaction')}}?tab={{'confirmed'}}')">
         <img src="{{url('assets/images/time-is-money.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
         <div class="text-xs text-center">Menunggu Pembayaran</div>
       </div>
-      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer">
+      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer" @click="Livewire.navigate('{{url('user/transaction')}}?tab={{'processed'}}')">
         <img src="{{url('assets/images/payment-services.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
         <div class="text-xs text-center">Sedang di Proses</div>
       </div>
-      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer">
+      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer" @click="Livewire.navigate('{{url('user/transaction')}}?tab={{'finished'}}')">
         <img src="{{url('assets/images/completed-task.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
         <div class="text-xs text-center">Transaksi Berhasil</div>
       </div>

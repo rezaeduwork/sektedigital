@@ -25,13 +25,15 @@ class Create extends Component
   public $price;
   #[Validate('required|numeric|max:1000000000', onUpdate: false)]
   public $stock;
-  public function store() {
+  public function store()
+  {
     $this->validate();
     $category = \App\Models\CategoryProduct::find($this->category_id);
-    $slug = \Str::slug($this->title, '-').'-'.auth()->id().uniqid();
+    $slug = \Str::slug($this->title, '-') . '-' . auth()->id() . uniqid();
     $product = \App\Models\Product::create([
       'title' => $this->title,
       'description' => $this->description,
+      'highlight' => $this->highlight,
       'price' => $this->price,
       'slug' => $slug,
       'stock' => $this->stock,
@@ -40,14 +42,14 @@ class Create extends Component
     ]);
     $path = $this->main_photo->store(path: 'public');
     $product->images()->create([
-      'name' => str_replace('public/','',$path),
+      'name' => str_replace('public/', '', $path),
       'type' => 'main'
     ]);
     if (sizeof($this->additional_photo) > 0) {
       foreach ($this->additional_photo as $row) {
         $path = $row->store(path: 'public');
         $product->images()->create([
-          'name' => str_replace('public/','',$path),
+          'name' => str_replace('public/', '', $path),
           'type' => 'additional'
         ]);
       }

@@ -17,27 +17,35 @@ class Product extends Model
     'category_product_id',
     'slug',
     'stock',
+    // active | inactive
     'status'
   ];
-  public function category() {
+  public function category()
+  {
     return $this->belongsTo('App\Models\CategoryProduct', 'category_product_id');
   }
-  public function store() {
+  public function store()
+  {
     return $this->belongsTo('App\Models\Store', 'store_id');
   }
-  public function images() {
+  public function images()
+  {
     return $this->hasMany('App\Models\ProductImage', 'product_id');
   }
-  public function mainImage() {
+  public function mainImage()
+  {
     return $this->images()->whereType('main')->first();
   }
-  public function logs() {
+  public function logs()
+  {
     return $this->hasMany('App\Models\ProductLog', 'product_id');
   }
-  public function views() {
+  public function views()
+  {
     return $this->logs()->where('activity', 'view')->count();
   }
-  public function scopeAvailable($query) {
+  public function scopeAvailable($query)
+  {
     return $query->whereStatus('active')->where('stock', '>', 0);
   }
 }

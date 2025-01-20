@@ -6,13 +6,15 @@ use Livewire\Component;
 
 class Checkout extends Component
 {
-  public function boot() {
+  public function boot()
+  {
     if (!session()->has('selectedCarts')) {
       $this->redirect('cart', navigate: true);
       return false;
     }
   }
-  public function pay() {
+  public function pay()
+  {
     if (!session()->has('selectedCarts')) {
       $this->redirect('cart', navigate: true);
       return false;
@@ -35,13 +37,27 @@ class Checkout extends Component
           'price' => $row->product->price,
           'quantity' => $row->quantity,
           'subtotal' => $row->product->price * $row->quantity,
-          'note' => $row->note
+          'note' => $row->note,
+          'status' => $tx->status,
+          'store_id' => $row->product->store_id
         ]);
       }
-      transactionActivity($tx,auth()->id(),'unprocessed',(auth()->user()->name.' created transaction'));
+      $tx->save();
+      transactionActivity($tx, auth()->id(), 'unprocessed', (auth()->user()->name . ' created transaction'));
+
+      // CONFIRM BY SYSTEM
+      transactionActivity($tx, auth()->id(), 'confirmed', ('confirmed by system'));
       $tx->status = 'confirmed';
       $tx->save();
-      transactionActivity($tx,auth()->id(),'confirmed',('confirmed by system'));
+      $tx->details()->update([
+        'status' => $tx->status
+      ]);
+      foreach ($tx->details as $row) {
+        transactionActivity($tx, auth()->id(), 'confirmed', ('confirmed by system'), 'detail', $row->id);
+      }
+      // END CONFIRM BY SYSTEM
+
+      auth()->user()->carts()->whereIn('id', session('selectedCarts'))->delete();
       \DB::commit();
       session()->forget('selectedCarts');
       $this->dispatch('alert-success', message: 'Transaksi berhasil dibuat.');
@@ -49,7 +65,6 @@ class Checkout extends Component
     } catch (\Throwable $th) {
       \DB::rollBack();
       $this->dispatch('alert-error', message: 'Transaksi gagal.');
-      dd($th);
     }
   }
   public function render()

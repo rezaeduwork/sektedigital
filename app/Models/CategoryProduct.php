@@ -9,6 +9,12 @@ class CategoryProduct extends Model
 {
   use HasFactory;
   protected $fillable = [
-    'name','description','icon'
+    'name',
+    'description',
+    'icon'
   ];
+  public function products()
+  {
+    return $this->hasMany('App\Models\Product', 'category_product_id');
+  }
 }

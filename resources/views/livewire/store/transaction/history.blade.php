@@ -1,10 +1,11 @@
 <div>
   @php
   $tabs = [
-    'Perlu Proses',
-    'Menunggu Konfirmasi',
-    'Pesanan Selesai',
-    'Semua Pesanan',
+    ['Perlu Proses','confirmed'],
+    ['Di Proses','processed'],
+    ['Menunggu Konfirmasi User','store_finished'],
+    ['Pesanan Selesai','finished'],
+    ['Semua Pesanan', null],
   ];
   @endphp
   <section class="container p-0">
@@ -19,29 +20,32 @@
         </span>
       </button>
     </h1>
-    <div class="table-responsive-xl rounded border bg-white">
+    <div class="table-responsive-xl rounded border bg-white mb-4">
       <div
         class="font-300 text-center text-black border-b border-gray-200 text-lg">
         <ul class="block md:flex px-2">
           @foreach ($tabs as $tab)
-          <li class="me-2 shrink-0">
-            <a href="#"
-              @click="$wire.set('page', '{{$tab}}')"
-              class="
-              inline-block p-4
-              @if($page == $tab)
-              text-primary border-primary border-b-4
-              @else
-              hover:text-primary
-              @endif
-              rounded-t-lg
-              "
-              aria-current="page">{{$tab}}</a>
-          </li>
+            <li class="me-2 shrink-0">
+              @php
+              $totalTx = \App\Models\Transaction::query()->storeTransactionQuery($tab[1])->count();
+              @endphp
+              <a href="#"
+                @click="$wire.set('page', '{{$tab[0]}}')"
+                class="
+                inline-block p-4
+                @if($page == $tab[0])
+                text-primary border-primary border-b-4
+                @else
+                hover:text-primary
+                @endif
+                rounded-t-lg
+                "
+                aria-current="page">{{$tab[0]}} ({{$totalTx}})</a>
+            </li>
           @endforeach
         </ul>
       </div>
-      <div class="p-4 grid grid-cols-12">
+      <div class="p-4 grid grid-cols-12 border-b">
         <div class="col-span-6">
           <input type="text"
           id="name"
@@ -50,16 +54,16 @@
           placeholder="Cari No. Pesanan / Nama Produk" />
         </div>
       </div>
+
+      @foreach ($tabs as $tab)
+        @if ($page == $tab[0])
+        <livewire:components.store.transaction.history-table :key="'tab-'.$tab[1]" :status="$tab[1]">
+        @endif
+      @endforeach
+
+      {{-- <livewire:components.store.transaction.history-table :status="null"> --}}
+
     </div>
-    @if ($page == 'Perlu Proses')
-    <div class="p-6">Perlu Proses</div>
-    @elseif ($page == 'Menunggu Konfirmasi')
-    <div class="p-6">Menunggu Konfirmasi</div>
-    @elseif ($page == 'Pesanan Selesai')
-    <div class="p-6">Pesanan Selesai</div>
-    @elseif ($page == 'Semua Pesanan')
-    <div class="p-6">Semua Pesanan</div>
-    @endif
   </section>
 
 </div>

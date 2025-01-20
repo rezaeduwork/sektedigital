@@ -8,22 +8,45 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
   use HasFactory;
-  // comment('unprocessed | confirmed | accepted | processed | finished | rejected | cancelled | inspection')
   protected $fillable = [
+    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection')
     'status',
     'amount',
     'customer_name',
     'customer_email',
     'customer_phone',
-    'user_id'
+    'user_id',
   ];
+  public function user()
+  {
+    return $this->belongsTo('App\Models\User', 'user_id');
+  }
+  public function buyer()
+  {
+    return $this->hasMany('App\Models\User', 'user_id');
+  }
   public function details()
+  {
+    return $this->hasMany('App\Models\TransactionDetail', 'transaction_id');
+  }
+  public function storeDetails()
+  {
+    return $this->hasMany('App\Models\TransactionDetail', 'transaction_id')->whereStore_id(auth()->user()->store->id ?? null);
+  }
+  public function stores()
   {
     return $this->hasMany('App\Models\TransactionDetail', 'transaction_id');
   }
   public function logs()
   {
     return $this->hasMany('App\Models\TransactionLog', 'transaction_id');
+  }
+
+  public function scopeStoreTransactionQuery($query, $status)
+  {
+    return $query->whereHas('details', function ($query) use ($status) {
+      $query->whereStore_id(auth()->user()->store->id)->whereStatus($status);
+    });
   }
   public function getStatusColor()
   {

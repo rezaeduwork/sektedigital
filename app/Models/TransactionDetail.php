@@ -14,9 +14,17 @@ class TransactionDetail extends Model
     'price',
     'quantity',
     'subtotal',
-    'note'
+    'note',
+    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection')
+    'status',
+    'store_id'
   ];
-  public function product() {
+  public function product()
+  {
     return $this->belongsTo('App\Models\Product', 'product_id');
+  }
+  public function transaction()
+  {
+    return $this->belongsTo('App\Models\Transaction', 'transaction_id');
   }
 }

@@ -9,6 +9,11 @@ class TransactionLog extends Model
 {
   use HasFactory;
   protected $fillable = [
-    'activity','description','by'
+    'activity',
+    'description',
+    'by',
+    'target',
+    // comment('user | store | detail')
+    'type'
   ];
 }

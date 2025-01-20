@@ -1,11 +1,29 @@
-<div class="">
+<div class="relative" id="shop-container" x-data="{
+  stickyTab: false,
+  checkSticky() {
+    if(window.pageYOffset > (document.querySelector('header').offsetHeight + $refs.tab.offsetHeight)) {
+      this.stickyTab = true
+      $refs.tab.style.position = 'fixed';
+      $refs.tab.style.zIndex = 10;
+      $refs.tab.style.width = document.getElementById('shop-container').offsetWidth+'px';
+      $refs.tab.style.top = (document.querySelector('header').offsetHeight)+'px';
+      document.querySelector('header').classList.remove('shadow');
+    } else {
+      this.stickyTab = false
+      $refs.tab.style.position = 'unset';
+      document.querySelector('header').classList.add('shadow');
+      $refs.tab.style.zIndex = 'unset';
+    }
+  }
+}">
   @if ($category)
   <div class="flex items-center justify-center mb-4 space-x-4">
     <img src="{{url('storage/'.$category->icon)}}" alt="" srcset="" class="size-24" />
     <div class="text-[56px] font-bold">{{$category->name}}</div>
   </div>
   @endif
-  <div class="border-gray-200 dark:border-gray-700 w-full text-center flex items-center justify-center w-full">
+  <div class="border-gray-200 dark:border-gray-700 w-full text-center flex items-center justify-center sticky bg-white"
+    x-ref="tab" @scroll.window="checkSticky()">
     <ul class="grid grid-cols-2 w-full lg:w-auto lg:flex lg:flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
       <li class="me-2">
         <a href="{{url('shop')}}" class="inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg group" wire:navigate>

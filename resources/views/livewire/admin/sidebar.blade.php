@@ -13,7 +13,7 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
           <a href="{{url('admin')}}" class="nav-link" wire:navigate>
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <i class="nav-icon far fa-circle  "></i>
             <p>
               Dashboard
             </p>
@@ -24,6 +24,14 @@
             <i class="nav-icon far fa-circle  "></i>
             <p>
               Account
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{url('logout')}}" class="nav-link">
+            <i class="nav-icon far fa-circle  "></i>
+            <p>
+              Logout
             </p>
           </a>
         </li>

@@ -23,6 +23,8 @@
 </head>
 
 <body class="bg-gray-50">
+  @include('components.toast-container')
+
   <!-- main -->
   <div>
     <!-- navbar -->
@@ -248,6 +250,7 @@
   <script data-navigate-once src="{{ url('/asset-dashboard') }}/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script data-navigate-once src="{{ url('/asset-dashboard') }}/js/vendors/chart.js"></script>
   @livewireScripts
+
 </body>
 
 

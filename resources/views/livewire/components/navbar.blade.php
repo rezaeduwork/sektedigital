@@ -1,4 +1,4 @@
-<header class="shadow w-full fixed top-0 left-0 z-10 bg-white">
+<header class="shadow w-full fixed top-0 left-0 z-20 bg-white">
   <div class="bg-primary text-white">
     <!-- navbar -->
     <div class="container max-w-[968px] mx-auto">
@@ -44,7 +44,7 @@
   <div class="container hidden lg:block max-w-[968px] mx-auto">
     <div class="flex flex-wrap md:flex-nowrap w-full items-center justify-between py-3 gap-4">
       <div class="flex items-center justify-center md:justify-start shrink-0 space-x-4">
-        <a href="{{ url('/') }}" wire:navigate>
+        <a href="{{ url('/') }}">
           <img src="{{ url('logo.png') }}" alt="" srcset="" class="w-[200px] h-auto" />
         </a>
         <div class="dropdown hidden lg:block">
@@ -55,8 +55,8 @@
           <div class="dropdown-menu md:w-[400px]">
             <ul class="max-h-[300px] overflow-y-auto gap-4 grid grid-cols-12">
               @foreach (\App\Models\CategoryProduct::all() as $row)
-              <li class="col-span-6">
-                <a href="javascript:void(0)" class="dropdown-item mb-1 py-1 flex justify-between">
+              <li class="col-span-6" @click="Livewire.navigate('{{url('shop/'.$row->id)}}')">
+                <a href="#" class="dropdown-item mb-1 py-1 flex justify-between">
                   <div class="flex items-center">
                     <img src="{{url('storage/'.$row->icon)}}" alt="{{$row->name}}" class="size-6">
                     <span class="ms-3">{{$row->name}}</span>

@@ -6,12 +6,13 @@
     <div>
       @php
       $tabs = [
-        'Semua',
-        'Belum Bayar',
-        'Menunggu Konfirmasi',
-        'Proses',
-        'Selesai',
-        'Dibatalkan',
+        ['Semua',null],
+        ['Belum Bayar','unprocessed'],
+        ['Menunggu Konfirmasi','confirmed'],
+        ['Proses','processed'],
+        ['Menunggu Diselesaikan','store_finished'],
+        ['Selesai','finished'],
+        ['Dibatalkan','cancelled'],
       ];
       @endphp
       <div class="mb-4">
@@ -22,10 +23,10 @@
               @foreach ($tabs as $tab)
               <li class="me-2 shrink-0">
                 <a href="#"
-                  @click="$wire.set('activeTab', '{{$tab}}')"
+                  @click="$wire.set('activeTab', '{{$tab[1]}}')"
                   class="
                   inline-block p-4
-                  @if($activeTab == $tab)
+                  @if($activeTab == $tab[1])
                   text-primary border-primary border-b-2
                   @else
                   hover:text-primary
@@ -33,7 +34,7 @@
                   rounded-t-lg
                   text-sm
                   "
-                  aria-current="page">{{$tab}} ({{queryListUserTransaction($tab)->count()}})</a>
+                  aria-current="page">{{$tab[0]}} ({{queryListUserTransaction($tab[1])->count()}})</a>
               </li>
               @endforeach
             </ul>
@@ -51,7 +52,7 @@
       </div>
       <div class="mb-4 px-4 space-y-4">
         @forelse ($transactions as $row)
-        <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$row">
+        <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$row" :status="$activeTab">
         @empty
         <div class="text-center">
           Belum ada transaksi.
