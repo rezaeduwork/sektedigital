@@ -62,11 +62,11 @@ function totalTransaction($availableCarts = null)
 
 function queryListUserTransaction($tab = null)
 {
-  $list = auth()->user()->transactions();
+  $list = auth()->user()->transactions()->whereHas('payment', function ($query) {
+    $query->whereStatus('settlement');
+  });
   if ($tab) {
-    $list->whereHas('details', function ($query) use ($tab) {
-      $query->whereIn('status', [$tab]);
-    });
+    $list->whereIn('status', [$tab]);
   }
   return $list;
 }

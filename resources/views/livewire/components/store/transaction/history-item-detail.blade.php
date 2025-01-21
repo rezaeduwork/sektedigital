@@ -3,7 +3,7 @@
     @php
     $product = $detail->product;
     @endphp
-    <div class="shrink-0">
+    {{-- <div class="shrink-0">
       <div class="flex items-center">
         <input id="product-{{$detail->id}}-checkbox" type="checkbox" value="{{$detail->id}}" @change="$wire.select({{$detail->id}})"
         @if($isSelected)
@@ -11,7 +11,7 @@
         @endif
         class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
       </div>
-    </div>
+    </div> --}}
     <div class="w-full">
       <div class="flex flex-row gap-5">
         <img src="{{ productImage($product->mainImage()) }}" alt="Ecommerce" class="w-16 h-16 rounded">

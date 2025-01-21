@@ -9,15 +9,17 @@ class Profile extends Component
 {
   public $page = 'Profil';
 
-  public function mount() {
+  public function mount()
+  {
     if (session()->has('page')) {
       $this->page = session('page');
-      $this->dispatch('alert-error', message: 'Silahkan buat kios terlebih dahulu.');
+      $this->dispatch('alert-error', message: 'Silahkan buat toko terlebih dahulu.');
     }
   }
 
   #[On('change-page')]
-  public function changePage($page) {
+  public function changePage($page)
+  {
     $this->page = $page;
   }
 

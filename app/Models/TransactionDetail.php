@@ -15,7 +15,7 @@ class TransactionDetail extends Model
     'quantity',
     'subtotal',
     'note',
-    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection')
+    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection | complain')
     'status',
     'store_id'
   ];

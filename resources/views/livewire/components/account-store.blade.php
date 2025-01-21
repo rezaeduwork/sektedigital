@@ -6,14 +6,14 @@
     <div>
       @if (!auth()->user()->store)
         <div class="mb-5">
-          <h4 class="text-lg font-semibold">Buat Kios</h4>
+          <h4 class="text-lg font-semibold">Buat Toko</h4>
           <p>
-            <span class="font-semibold">Informasi!</span> Silahkan buat kios anda sendiri untuk mulai berjualan.
+            <span class="font-semibold">Informasi!</span> Silahkan buat toko anda sendiri untuk mulai berjualan.
           </p>
         </div>
         <div class="mb-5">
           <div class="space-y-2" x-data>
-            <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Foto Kios</label>
+            <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Foto Toko</label>
             @if ($photo && $photo->temporaryUrl())
               <img src="{{ $photo ? $photo->temporaryUrl() : url('storage/' . auth()->user()->photo) }}" alt=""
                 class="w-[256px] h-[256px] border object-contain object-center">
@@ -69,14 +69,14 @@
       @elseif(auth()->user()->store->status == 'inactive')
         <div class="p-4 mb-4 text-sm text-violet-800 rounded-lg bg-violet-50 dark:bg-gray-800 dark:text-violet-400"
           role="alert">
-          <span class="font-medium">Kios anda sudah tidak aktif!</span> Silahkan hubungi admin untuk mengaktifkan
+          <span class="font-medium">Toko anda sudah tidak aktif!</span> Silahkan hubungi admin untuk mengaktifkan
           kembali.
         </div>
       @else
         <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
           role="alert">
-          <span class="font-medium">Kios anda telah aktif!</span> silahkan masuk ke halaman kios untuk menambahkan
-          produk. <a href="{{ url('store') }}" class="underline text-[#0000EE]">Masuk Kios</a>
+          <span class="font-medium">Toko anda telah aktif!</span> silahkan masuk ke halaman toko untuk menambahkan
+          produk. <a href="{{ url('store') }}" class="underline text-[#0000EE]">Masuk toko</a>
         </div>
       @endif
     </div>

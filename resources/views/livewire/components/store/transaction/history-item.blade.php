@@ -1,6 +1,6 @@
-<div class="space-y-6 border-b pb-4 mb-4" x-data="{confirmationProcess: false, confirmationCompleted: false}" @close-confirmation.window="confirmationProcess = false">
+<div class="space-y-4 border-b pb-4 mb-4" x-data="{confirmationProcess: false, confirmationCompleted: false, confirmationRefund: false, confirmationRefundCancel: false}" @close-confirmation.window="confirmationProcess = false">
   @php
-  $total = $tx->storeDetails()->whereStatus($status)->count();
+  $total = $tx->storeDetails()->count();
   @endphp
   <div class="flex items-center justify-between">
     <div>
@@ -18,18 +18,16 @@
     </div>
   </div>
   @php
-  $firstDetail = $tx->storeDetails()->whereStatus($status)->orderBy('id')->first();
+  $firstDetail = $tx->storeDetails()->orderBy('id')->first();
   @endphp
   @if ($firstDetail)
   <livewire:components.store.transaction.history-item-detail :key="'item-detail'.$firstDetail->id" :detail="$firstDetail" :isSelected="in_array($firstDetail->id,$checkedIds)">
   @endif
   @if ($total > 1)
     @if ($showOthers)
-    <div class="mb-4">
-      @foreach ($tx->storeDetails()->whereStatus($status)->orderBy('id')->skip(1)->take($total)->get() as $rowDetail)
-      <livewire:components.store.transaction.history-item-detail :key="'item-detail'.$rowDetail->id" :detail="$rowDetail" :isSelected="in_array($rowDetail->id,$checkedIds)">
-      @endforeach
-    </div>
+    @foreach ($tx->storeDetails()->orderBy('id')->skip(1)->take($total)->get() as $rowDetail)
+    <livewire:components.store.transaction.history-item-detail :key="'item-detail'.$rowDetail->id" :detail="$rowDetail" :isSelected="in_array($rowDetail->id,$checkedIds)">
+    @endforeach
     @endif
     <button type="button" wire:click="toggleShowProduct">
       <span class="bg-green-100 text-green-800 text-xs font-medium me-2 text-center px-3.5 py-1.5 rounded flex items-center justify-center space-x-1">
@@ -51,7 +49,7 @@
     <div class="font-semibold text-sm">Total Harga</div>
     <div class="font-bold text-black text-2xl">Rp{{number_format($tx->amount,0,',','.')}}</div>
   </div>
-  <div class="flex items-center justify-between w-full space-x-5 bg-gray-50 rounded px-4 py-2">
+  <div class="flex items-center justify-between w-full space-x-5 bg-gray-50 rounded py-2">
     <div class="flex">
       <button class="flex items-center space-x-1 text-xs">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3" viewBox="0 0 16 16">
@@ -61,21 +59,15 @@
         <span>Hubungi Pembeli</span>
       </button>
     </div>
-    <div class="flex items-center space-x-4 shrink-0 relative">
+    <div class="flex items-center space-x-2 shrink-0 relative">
       {{-- <button class="text-gray-600 px-5">Detail Transaksi</button> --}}
       @if ($status == 'confirmed')
         <button
         class="
-        @if(sizeof($checkedIds) <= 0)
-        opacity-[0.3] cursor-default
-        @endif
         bg-primary text-white
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
-        @if(sizeof($checkedIds) > 0)
         @click="confirmationProcess = true"
-        @endif
         >Proses Pesanan</button>
-        @if(sizeof($checkedIds) > 0)
         <div x-show="confirmationProcess" style="display: none;" class="absolute z-10 min-w-[180px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
           <div class="mb-2">Yakin ingin proses ?</div>
           <div class="flex items-center space-x-2">
@@ -83,22 +75,15 @@
             <button class="text-xs rounded p-2 bg-primary text-white" wire:click.prevent="processing()">Ya, Lanjutkan</button>
           </div>
         </div>
-        @endif
       @endif
 
       @if ($status == 'processed')
         <button
         class="
-        @if(sizeof($checkedIds) <= 0)
-        opacity-[0.3] cursor-default
-        @endif
         bg-primary text-white
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
-        @if(sizeof($checkedIds) > 0)
         @click="confirmationCompleted = true"
-        @endif
         >Selesai</button>
-        @if(sizeof($checkedIds) > 0)
         <div x-show="confirmationCompleted" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
           <div class="mb-2">Yakin ingin menyelesaikan ?</div>
           <div class="flex items-center space-x-2">
@@ -106,11 +91,47 @@
             <button class="text-xs rounded p-2 bg-primary text-white" wire:click.prevent="completing()">Ya, Lanjutkan</button>
           </div>
         </div>
-        @endif
       @endif
 
       @if ($status == 'store_finished')
       <div class="font-semibold">Menunggu Konfirmasi User</div>
+      @endif
+      @if ($status == 'complain')
+      <button
+        class="
+        bg-green-600 text-white
+        font-semibold px-5 py-2 shrink-0 rounded text-sm"
+        @click="confirmationRefundCancel = true"
+      >Tolak Complain</button>
+      <div x-show="confirmationRefundCancel" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
+        <div class="mb-2">Yakin ingin tolak complain ?</div>
+        <div class="flex items-center space-x-2">
+          <button class="text-xs rounded p-2" @click="confirmationRefundCancel = false">Batal</button>
+          <button class="text-xs rounded p-2 bg-primary text-white" wire:click.prevent="rejectComplain()">Ya, Tolak</button>
+        </div>
+      </div>
+      <button
+        class="
+        bg-primary text-white
+        font-semibold px-5 py-2 shrink-0 rounded text-sm"
+        @click="confirmationRefund = true"
+      >Refund</button>
+      <div x-show="confirmationRefund" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
+        <div class="mb-2">Yakin ingin refund ?</div>
+        <div class="flex items-center space-x-2">
+          <button class="text-xs rounded p-2" @click="confirmationRefund = false">Batal</button>
+          <button class="text-xs rounded p-2 bg-primary text-white" wire:click.prevent="acceptComplain()">Ya, Refund</button>
+        </div>
+      </div>
+      @endif
+
+      @if ($status == 'finished')
+        @php
+        $log = $tx->logs()->latest()->first();
+        @endphp
+        @if ($log)
+        <div class="font-semibold">{{$log->description}}</div>
+        @endif
       @endif
 
     </div>

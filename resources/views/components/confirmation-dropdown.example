@@ -1,4 +1,4 @@
-<div x-show="" style="display: none;" class="absolute z-10 min-w-[180px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm top-[120%] right-0">
+<div x-show="" style="display: none;" class="absolute z-10 min-w-[216px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
   <div class="mb-2">Yakin ingin proses ?</div>
   <div class="flex items-center space-x-2">
     <button class="text-xs rounded p-2">Batal</button>

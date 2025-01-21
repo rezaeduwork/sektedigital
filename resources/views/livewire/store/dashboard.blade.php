@@ -51,7 +51,7 @@
 
   <!-- table -->
   <div class="table-responsive-xl mb-6 mb-lg-0 space-y-4">
-    <h1 class="text-2xl font-bold">Performa Kios</h1>
+    <h1 class="text-2xl font-bold">Performa Toko</h1>
     <div class="row flex-nowrap pb-3 pb-lg-0">
       <div class="col-lg-4 col-12 mb-6">
         <!-- card -->

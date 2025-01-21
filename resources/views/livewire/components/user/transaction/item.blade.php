@@ -1,11 +1,12 @@
-<div class="space-y-4 border-b pb-4">
+<div class="space-y-4 @if($tx->status != 'unprocessed') border-b pb-4 @endif">
   @php
-  $total = $tx->details()->when($status, function($query) use ($status) {
-    $query->whereStatus($status);
-  })->count();
+  $total = $tx->details()->count();
   @endphp
   <div class="flex items-center justify-between">
-    <div>NO. PESANAN {{$tx->id}}</div>
+    <div class="flex items-center space-x-1">
+      <span>NO. PESANAN #{{$tx->id}}</span>
+      <span class="{{$tx->getStatusColor()}} font-semibold">{{$tx->status}}</span>
+    </div>
     <div class="flex items-center space-x-2 {{$tx->getStatusColor()}} font-semibold">
       <div class="text-xs text-gray-600 flex items-center space-x-1">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3 mt-[2px]" viewBox="0 0 16 16">
@@ -16,20 +17,32 @@
     </div>
   </div>
   @php
-  $firstDetail = $tx->details()->orderBy('store_id')->orderBy('store_id')->first();
+  $firstDetail = $tx->details()->orderBy('store_id')->first();
   @endphp
   @if ($firstDetail)
     @php
     $product = $firstDetail->product;
     @endphp
+    <div class="w-full mb-2 flex justify-between items-center space-x-2">
+      <span class="text-black font-semibold">
+        {{$product->store->name}}
+      </span>
+      <div class="flex">
+        <button class="flex items-center space-x-1 text-xs">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3" viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+            <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+          </svg>
+          <span>Hubungi Penjual</span>
+        </button>
+      </div>
+    </div>
     <livewire:components.user.transaction.item-detail :detail="$firstDetail" :key="'detail-'.$firstDetail->id">
   @endif
 
   @if ($total > 1)
     @if ($showOthers)
-      @foreach ($tx->details()->when($status, function($query) use ($status) {
-        $query->whereStatus($status);
-      })->orderBy('id')->skip(1)->take($total)->get() as $rowDetail)
+      @foreach ($tx->details()->orderBy('id')->skip(1)->take($total)->get() as $rowDetail)
       <livewire:components.user.transaction.item-detail :key="'detail'.$rowDetail->id" :detail="$rowDetail">
       @endforeach
     @endif
@@ -50,12 +63,32 @@
     </button>
   @endif
 
-  <div class="flex items-center justify-end w-full space-x-5">
-    <div class="flex items-center space-x-4 shrink-0">
-      @if ($tx->status === 'finished')
-      <button class="bg-primary text-white font-semibold px-5 py-2 shrink-0 rounded">Beli Lagi</button>
-      @endif
-      <button class="hover:underline px-5">Detail Transaksi</button>
+  @if ($tx->status == 'store_finished')
+  <div class="flex items-center justify-end w-full space-x-5" x-data="{showComplainModal: false}" @alert-success.window="showComplainModal = false">
+    <div class="flex items-center space-x-2 shrink-0">
+      <button class="bg-red-600 text-white font-semibold px-5 py-2 shrink-0 rounded" @click="showComplainModal = true">Ajukan Komplain</button>
+      @include('components.modals.user-complain')
+      <div class="relative" x-data="{showConfirmation: false}">
+        <button class="bg-green-600 text-white font-semibold px-5 py-2 shrink-0 rounded" @click="showConfirmation = true">Selesaikan Pesanan</button>
+        <div x-show="showConfirmation" style="display: none;" class="absolute z-10 min-w-[216px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
+          <div class="mb-2">Yakin ingin menyelesaikan ?</div>
+          <div class="flex items-center space-x-2">
+            <button class="text-xs rounded p-2" @click="showConfirmation = false">Batal</button>
+            <button class="text-xs rounded p-2 bg-green-600 text-white" @click="$wire.finish()">Ya, Lanjutkan</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  @endif
+
+  @if ($tx->status == 'finished')
+    @php
+    $log = $tx->logs()->latest()->first();
+    @endphp
+    @if ($log)
+    <div class="font-semibold">{{$log->description}}</div>
+    @endif
+  @endif
+
 </div>

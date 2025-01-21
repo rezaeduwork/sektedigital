@@ -8,7 +8,7 @@
         data-bs-target="#navStore" aria-expanded="true" aria-controls="navStore">
         <div class="d-flex align-items-center">
           <span class="nav-link-icon"><i class="bi bi-house"></i></span>
-          <span class="nav-link-text">Kios Saya</span>
+          <span class="nav-link-text">Toko Saya</span>
         </div>
       </a>
       <div id="navStore" class="show !visible" data-bs-parent="#sideNavbar{{$uniqKey}}">

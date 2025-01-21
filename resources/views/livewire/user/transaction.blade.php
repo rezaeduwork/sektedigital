@@ -11,9 +11,11 @@
         ['Menunggu Konfirmasi','confirmed'],
         ['Proses','processed'],
         ['Menunggu Diselesaikan','store_finished'],
+        ['Di Komplain','complain'],
         ['Selesai','finished'],
         ['Dibatalkan','cancelled'],
       ];
+      $unpaidTxQuery = auth()->user()->payments()->whereStatus('pending');
       @endphp
       <div class="mb-4">
         <div class="table-responsive-xl rounded bg-white">
@@ -34,11 +36,21 @@
                   rounded-t-lg
                   text-sm
                   "
-                  aria-current="page">{{$tab[0]}} ({{queryListUserTransaction($tab[1])->count()}})</a>
+                  aria-current="page">{{$tab[0]}} ({{$tab[1] != 'unprocessed' ? queryListUserTransaction($tab[1])->count():$unpaidTxQuery->count() }})</a>
               </li>
               @endforeach
             </ul>
           </div>
+          @if (!$activeTab)
+            @if ($unpaidTxQuery->first())
+            <div class="px-4 pt-4">
+              <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 flex items-center justify-between w-full space-x-2" role="alert">
+                <div class="">Ada {{$unpaidTxQuery->count()}} pembayaran pending nih!</div>
+                <a href="#" class="font-semibold">Bayar Sekarang</a>
+              </div>
+            </div>
+            @endif
+          @endif
           <div class="p-4 grid grid-cols-12">
             <div class="col-span-6">
               <input type="text"
@@ -51,13 +63,38 @@
         </div>
       </div>
       <div class="mb-4 px-4 space-y-4">
-        @forelse ($transactions as $row)
-        <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$row" :status="$activeTab">
-        @empty
-        <div class="text-center">
-          Belum ada transaksi.
-        </div>
-        @endforelse
+        @if ($activeTab == 'unprocessed')
+          @php
+          $payments = $unpaidTxQuery->get();
+          @endphp
+          @forelse ($payments as $row)
+          <div class="space-y-4 border-b pb-4">
+            @foreach ($row->transactions as $rowTx)
+            <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$rowTx" :status="$activeTab">
+            @endforeach
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <span class="block sm:inline">Bayar dalam <span class="font-semibold text-red-600">01 : 05 : 04</span></span>
+            </div>
+            <div class="flex items-center justify-end w-full space-x-5">
+              <div class="flex items-center space-x-4 shrink-0">
+                <button class="bg-primary text-white font-semibold px-5 py-2 shrink-0 rounded" @click="$wire.pay({{$row->id}})">Bayar Sekarang</button>
+              </div>
+            </div>
+          </div>
+          @empty
+          <div class="text-center">
+            Belum ada transaksi.
+          </div>
+          @endforelse
+        @else
+          @forelse ($transactions as $row)
+          <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$row" :status="$activeTab">
+          @empty
+          <div class="text-center">
+            Belum ada transaksi.
+          </div>
+          @endforelse
+        @endif
       </div>
     </div>
   </div>

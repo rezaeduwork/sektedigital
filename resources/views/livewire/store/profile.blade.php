@@ -1,12 +1,12 @@
 <section class="container">
-  <h1 class="text-2xl font-bold mb-5">Profil Kios</h1>
+  <h1 class="text-2xl font-bold mb-5">Profil Toko</h1>
   <div class="table-responsive-xl p-6 mb-6 mb-lg-0 space-y-4  bg-white rounded border">
     <div class="mb-5">
       <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50" role="alert">
-        <span class="font-medium">Informasi!</span> Sesuaikan profil kiosmu semenarik mungkin agar pembeli tertarik mengunjungi.
+        <span class="font-medium">Informasi!</span> Sesuaikan profil tokomu semenarik mungkin agar pembeli tertarik mengunjungi.
       </div>
       <div class="space-y-2" x-data>
-        <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Foto Kios</label>
+        <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Foto Toko</label>
         @if ($photo && $photo->temporaryUrl() || (auth()->user()->store && auth()->user()->store->photo))
         <img src="{{$photo ? $photo->temporaryUrl(): ( auth()->user()->store->photo ? url('storage/'.auth()->user()->store->photo):'' )}}" alt="" class="w-full h-auto lg:w-[256px] lg:h-[256px] border object-contain object-center">
         @endif
@@ -41,7 +41,7 @@
       @error('photo') <span class="!text-primary font-semibold">{{ $message }}</span> @enderror
     </div>
     <div class="mb-5">
-      <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Nama Kios</label>
+      <label for="name" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Nama Toko</label>
       <input type="text" id="name" wire:model.live.debounce.250ms="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5" placeholder="" required />
       @error('name')
       <small class="!text-primary">{{$message}}</small>

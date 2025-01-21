@@ -38,35 +38,53 @@ class HistoryItem extends Component
   }
   public function processing()
   {
-    $confirmed = $this->tx->storeDetails()->whereIn('status', ['confirmed'])->first();
+    $confirmed = $this->tx->status == 'confirmed';
     if (!$confirmed) {
       return;
     }
-    // Add your logic to handle the acceptance of the transaction here
-    $storeTx = $this->tx->storeDetails()->whereIn('status', ['confirmed'])->whereIn('id', $this->checkedIds)->get();
-    foreach ($storeTx as $row) {
-      $row->status = 'processed';
-      $row->save();
-      transactionActivity($this->tx, auth()->id(), 'processed', ('processing by seller'), 'detail', $row->id);
-    }
+    $this->tx->status = 'processed';
+    $this->tx->save();
+    transactionActivity($this->tx, auth()->id(), 'processed', ('processing by seller'));
     $this->dispatch('alert-success', message: 'Berhasil Proses Pesanan!');
     $this->dispatch('close-confirmation');
     $this->reloadParent();
   }
   public function completing()
   {
-    $processed = $this->tx->storeDetails()->whereIn('status', ['processed'])->first();
+    $processed = $this->tx->status == 'processed';
     if (!$processed) {
       return;
     }
-    // Add your logic to handle the acceptance of the transaction here
-    $storeTx = $this->tx->storeDetails()->whereIn('status', ['processed'])->whereIn('id', $this->checkedIds)->get();
-    foreach ($storeTx as $row) {
-      $row->status = 'store_finished';
-      $row->save();
-      transactionActivity($this->tx, auth()->id(), 'store_finished', ('finished by seller'), 'detail', $row->id);
-    }
+    $this->tx->status = 'store_finished';
+    $this->tx->save();
+    transactionActivity($this->tx, auth()->id(), 'store_finished', ('finished by seller'));
     $this->dispatch('alert-success', message: 'Berhasil Menyelesaikan Pesanan!');
+    $this->dispatch('close-confirmation');
+    $this->reloadParent();
+  }
+  public function rejectComplain()
+  {
+    $complain = $this->tx->status == 'complain';
+    if (!$complain) {
+      return;
+    }
+    $this->tx->status = 'finished';
+    $this->tx->save();
+    transactionActivity($this->tx, auth()->id(), 'finished', ('complain rejected by seller'));
+    $this->dispatch('alert-success', message: 'Berhasil menyelesaikan pesanan!');
+    $this->dispatch('close-confirmation');
+    $this->reloadParent();
+  }
+  public function acceptComplain()
+  {
+    $complain = $this->tx->status == 'complain';
+    if (!$complain) {
+      return;
+    }
+    $this->tx->status = 'finished';
+    $this->tx->save();
+    transactionActivity($this->tx, auth()->id(), 'finished', ('complain accepted by seller'));
+    $this->dispatch('alert-success', message: 'Berhasil menyelesaikan pesanan!');
     $this->dispatch('close-confirmation');
     $this->reloadParent();
   }

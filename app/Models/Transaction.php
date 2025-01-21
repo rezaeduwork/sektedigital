@@ -9,17 +9,23 @@ class Transaction extends Model
 {
   use HasFactory;
   protected $fillable = [
-    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection')
+    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection | complain')
     'status',
     'amount',
     'customer_name',
     'customer_email',
     'customer_phone',
     'user_id',
+    'payment_id',
+    'store_id'
   ];
   public function user()
   {
     return $this->belongsTo('App\Models\User', 'user_id');
+  }
+  public function payment()
+  {
+    return $this->belongsTo('App\Models\Payment');
   }
   public function buyer()
   {
@@ -44,9 +50,7 @@ class Transaction extends Model
 
   public function scopeStoreTransactionQuery($query, $status)
   {
-    return $query->whereHas('details', function ($query) use ($status) {
-      $query->whereStore_id(auth()->user()->store->id)->whereStatus($status);
-    });
+    return $query->whereStore_id(auth()->user()->store->id)->whereStatus($status);
   }
   public function getStatusColor()
   {
@@ -68,6 +72,9 @@ class Transaction extends Model
         $statusText = 'text-green-600';
         break;
       case 'rejected':
+        $statusText = 'text-red-600';
+        break;
+      case 'complain':
         $statusText = 'text-red-600';
         break;
       case 'cancelled':
@@ -104,6 +111,9 @@ class Transaction extends Model
         break;
       case 'rejected':
         $statusText = 'Ditolak';
+        break;
+      case 'complain':
+        $statusText = 'Dikomplain';
         break;
       case 'cancelled':
         $statusText = 'Dibatalkan';
