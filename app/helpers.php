@@ -80,3 +80,7 @@ function userActivity($activity, $description = null)
 }
 
 function updateUserBalance($user) {}
+function tripay()
+{
+  return (new \App\Services\Tripay);
+}

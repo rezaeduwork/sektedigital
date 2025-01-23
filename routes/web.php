@@ -28,6 +28,7 @@ Route::middleware('user.auth')->group(function () {
   Route::get('/profile', \App\Livewire\Profile::class);
   Route::get('/cart', \App\Livewire\Cart::class);
   Route::get('/checkout', \App\Livewire\Checkout::class);
+  Route::get('/payment/{id}', \App\Livewire\Payment::class);
 
   Route::prefix('user')->group(function () {
     Route::get('/profile', \App\Livewire\User\Profile::class);

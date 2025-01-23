@@ -6,12 +6,41 @@ use Livewire\Component;
 
 class Checkout extends Component
 {
+  // PAYMENT ATTRIBUTE
+  public $selectedPayment;
+  public $taxFee = 0;
+  public $platformFee = 0;
+  public $productFee = 0;
+  public $totalPayment = 0;
+
+  public $channels = [];
+  // FETCH
   public function boot()
   {
     if (!session()->has('selectedCarts')) {
       $this->redirect('cart', navigate: true);
       return false;
     }
+  }
+  public function mount()
+  {
+    $this->productFee = totalTransaction();
+    $this->reloadTotalPayment();
+    $this->getChannels();
+  }
+  public function getChannels()
+  {
+    $channelsData = tripay()->getPaymentChannels();
+    if ($channelsData) {
+      $this->channels = $channelsData['data'];
+    }
+  }
+  // END FETCH
+
+  // ACTIONS
+  public function reloadTotalPayment()
+  {
+    $this->totalPayment = $this->taxFee + $this->platformFee + $this->productFee;
   }
   public function pay()
   {
@@ -98,6 +127,20 @@ class Checkout extends Component
       $this->dispatch('alert-error', message: 'Transaksi gagal.');
     }
   }
+  public function selectPayment($code)
+  {
+    $this->selectedPayment = $code;
+    // $selectedChannel = array_filter($this->channels, function ($item) use ($code) {
+    //   return $item['code'] === $code;
+    // });
+    // $selectedChannel = reset($selectedChannel);
+    $feeData = tripay()->calculateFee($code, $this->totalPayment)['data'];
+    $feeMerchant = $feeData[0]['total_fee']['merchant'];
+    $this->platformFee = ceil($feeMerchant / 2);
+    $this->reloadTotalPayment();
+  }
+  // END ACTIONS
+
   public function render()
   {
     $availableCarts = \App\Models\Cart::whereIn('id', session('selectedCarts'))->get();
