@@ -84,3 +84,17 @@ function tripay()
 {
   return (new \App\Services\Tripay);
 }
+function checkPayment($payment)
+{
+  return tripay()->checkTransactionDetail($payment->data['reference'])['data']['data'];
+}
+function storeTransactionQuery($status)
+{
+  return \App\Models\Transaction::query()->whereStore_id(auth()->user()->store->id)->whereStatus($status);
+}
+function storeTransactionDetailQuery($status)
+{
+  return \App\Models\TransactionDetail::query()->whereHas('transaction', function ($query) use ($status) {
+    $query->whereStore_id(auth()->user()->store->id)->whereStatus($status);
+  });
+}

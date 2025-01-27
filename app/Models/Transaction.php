@@ -9,7 +9,7 @@ class Transaction extends Model
 {
   use HasFactory;
   protected $fillable = [
-    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection | complain')
+    // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection | complain | expired')
     'status',
     'amount',
     'customer_name',
@@ -42,6 +42,10 @@ class Transaction extends Model
   public function stores()
   {
     return $this->hasMany('App\Models\TransactionDetail', 'transaction_id');
+  }
+  public function store()
+  {
+    return $this->belongsTo('App\Models\Store', 'store_id');
   }
   public function logs()
   {

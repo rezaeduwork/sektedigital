@@ -39,6 +39,7 @@ class Item extends Component
     $this->tx->status = 'finished';
     $this->tx->save();
     $this->dispatch('alert-success', message: 'Yeay, Pesanan kamu berhasil di selesaikan!');
+    return $this->redirect(url('user/transaction') . '?tab=finished', navigate: true);
   }
   public function render()
   {

@@ -5,8 +5,9 @@
     <div class="shrink-0">
       <a href="{{url('shop/'.$row->id)}}" class="text-decoration-none text-inherit" wire:navigate>
         <!-- card -->
-        <div class="border hover:shadow-md">
-          <div class="card-body text-center py-4">
+        <div class="border hover:shadow-md rounded-tr-3xl rounded-bl-3xl relative" style="background-image: url('{{url('assets/images/violet-category-compresseds.png')}}'); background-size: cover; background-position: center;">
+          <!-- Overlay -->
+          <div class="card-body text-center py-4 z-10">
             <div class="flex justify-center">
               <!-- img -->
               <img src="{{url('storage/'.$row->icon)}}" alt="{{$row->name}}" class="mb-3">
@@ -41,7 +42,7 @@
       z-index: 2; /* Ensure content is above the overlay */
     }
   </style>
-  <div class="background-image bg-gradient-to-b from-violet-900 to-violet-700 text-white p-4 space-y-2 rounded-md" style="background: url('{{url('assets/images/bg-violet.jpeg')}}')">
+  <div class="background-image bg-gradient-to-b from-violet-900 to-violet-700 text-white p-4 space-y-2 rounded-md hidden" style="background: url('{{url('assets/images/bg-violet.jpeg')}}')">
     @php
     $list = [
       [

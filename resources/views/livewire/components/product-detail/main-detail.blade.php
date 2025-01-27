@@ -192,8 +192,9 @@
                     <!-- button -->
                     <!-- btn -->
                     <button type="button"
+                      @click="$wire.autoCart()"
                       class="btn gap-x-1 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-primary justify-center">
-                      Beli Langsung
+                      Order Langsung
                     </button>
                   </div>
                 </div>

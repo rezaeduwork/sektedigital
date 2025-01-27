@@ -9,7 +9,7 @@ class Payment extends Model
 {
   use HasFactory;
   protected $fillable = [
-    // comment('pending | settlement')
+    // comment('pending | settlement | expired | failed')
     'status',
     'token',
     'amount',
@@ -17,6 +17,10 @@ class Payment extends Model
     'settlement_at',
     'data'
   ];
+  public function user()
+  {
+    return $this->belongsTo('App\Models\User', 'user_id');
+  }
   public function transactions()
   {
     return $this->hasMany('App\Models\Transaction', 'payment_id');
@@ -37,5 +41,12 @@ class Payment extends Model
     }
 
     return $statusText;
+  }
+  public function getDataAttribute($value)
+  {
+    if ($value) {
+      return json_decode($value, true);
+    }
+    return null;
   }
 }

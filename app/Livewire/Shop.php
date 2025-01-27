@@ -32,7 +32,11 @@ class Shop extends Component
   }
   public function render()
   {
-    $list = \App\Models\Product::where('category_product_id', $this->category->id)->where('status', 'active')->paginate($this->perPage);
+    $list = \App\Models\Product::query();
+    if ($this->category) {
+      $list = $list->where('category_product_id', $this->category->id);
+    }
+    $list = $list->where('status', 'active')->paginate($this->perPage);
     $this->hasMorePages = $list->hasMorePages();
     return view('livewire.shop', compact('list'));
   }

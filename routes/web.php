@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('errors')->group(function () {
   Route::get('/unauthenticated', \App\Livewire\Errors\Unauthenticated::class);
 });
+Route::post('/webhook/tripay', [\App\Http\Controllers\WebhookController::class, 'tripayNotification']);
 Route::get('/', \App\Livewire\Home::class);
 Route::get('/shop', \App\Livewire\Shop::class);
 Route::get('/shop/{path}', \App\Livewire\Shop::class);
@@ -28,7 +29,9 @@ Route::middleware('user.auth')->group(function () {
   Route::get('/profile', \App\Livewire\Profile::class);
   Route::get('/cart', \App\Livewire\Cart::class);
   Route::get('/checkout', \App\Livewire\Checkout::class);
+  Route::get('/payment/{id}/detail', \App\Livewire\PaymentDetail::class);
   Route::get('/payment/{id}', \App\Livewire\Payment::class);
+
 
   Route::prefix('user')->group(function () {
     Route::get('/profile', \App\Livewire\User\Profile::class);

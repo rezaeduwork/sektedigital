@@ -72,6 +72,7 @@
         <form action="#">
           <div class="flex"
           x-data="{
+            inputValue: '',
             text: '',
             textArray: ['Cari Produk Disini!'],
             textIndex: 0,
@@ -95,11 +96,12 @@
           >
             <label for="searchProducts" class="invisible hidden">Search</label>
             <input
+              x-model="inputValue"
               class="border border-gray-300 text-gray-900 rounded-l-lg !ring-none !outline-none focus:border-gray-300 shadow-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-sm"
-              :placeholder="text" id="searchProducts" />
+              :placeholder="text" id="searchProducts" @keyup.enter="Livewire.navigate('{{url('shop')}}?q='+inputValue)" />
             <button
               class="rounded-none rounded-r-lg btn text-sm font-normal inline-flex items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-100"
-              type="button">
+              type="button" @click="Livewire.navigate('{{url('shop')}}?q='+inputValue)">
               Cari
             </button>
           </div>
@@ -121,21 +123,21 @@
                         d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
                       <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
                     </svg>
+                    @auth
+                    @if (auth()->user()->unreadNotifications()->count() > 0)
                     <span
-                      class="absolute -top-3 min-w-[20px] inline-block p-[5px] h-5 w-5 left-3 text-xs align-baseline leading-none bg-primary text-white font-semibold rounded-full">1</span>
+                      class="absolute -top-3 min-w-[20px] inline-block p-[5px] h-5 w-5 left-3 text-xs align-baseline leading-none bg-primary text-white font-semibold rounded-full">
+                        {{ auth()->user()->unreadNotifications->count() }}
+                    </span>
+                    @endif
+                    @endauth
                   </div>
                 </div>
               </a>
 
               <div class="dropdown-menu dropdown-menu-lg !p-0 text-left">
                 <div>
-                  <h6 class="px-4 border-b py-2 mb-0">Notification</h6>
-                  <p class="mb-0 px-4 py-3">
-                    <a href="#" class="text-primary">Masuk</a>
-                    atau
-                    <a href="#" class="text-primary">Daftar</a>
-                    untuk melihat notifikasi!
-                  </p>
+                  <livewire:components.navbar-notification />
                 </div>
               </div>
             </div>
@@ -183,10 +185,12 @@
                     <path d="M6 5l14 1l-1 7h-13" />
                   </svg>
                   @auth
+                    @if (auth()->user()->carts()->count() > 0)
                     <span
                       class="absolute min-w-[20px] text-center flex items-center justify-center -top-3 inline-block p-[5px] h-5 left-3 text-xs align-center bg-primary text-white font-semibold rounded-full">
                       {{ auth()->user()->carts()->count() }}
                     </span>
+                    @endif
                   @endauth
                 </div>
               </div>

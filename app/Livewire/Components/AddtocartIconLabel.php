@@ -7,10 +7,12 @@ use Livewire\Component;
 class AddtocartIconLabel extends Component
 {
   public $product;
-  public function mount($product) {
+  public function mount($product)
+  {
     $this->product = $product;
   }
-  public function add($quantity = 1) {
+  public function add($quantity = 1)
+  {
     $product = \App\Models\Product::whereId($this->product->id)->where('status', 'active')->where('stock', '>', 0)->first();
     if (!$product) {
       $this->dispatch('alert-error', message: 'Produk tidak bisa dimasukkan keranjang, Silahkan reload halaman!');

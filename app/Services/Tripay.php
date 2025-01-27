@@ -19,6 +19,22 @@ class Tripay
   }
 
   /**
+   * Get secret key
+   */
+  public function getSecretKey()
+  {
+    return $this->secretKey;
+  }
+
+  /**
+   * Get merchant code
+   */
+  public function getMerchantCode()
+  {
+    return $this->merchantCode;
+  }
+
+  /**
    * Get available payment channels
    *
    * @return array|null
@@ -128,13 +144,50 @@ class Tripay
       ])->post($this->baseUrl . 'transaction/create', $payload);
 
       if ($response->successful()) {
-        return $response->json();
+        return [
+          'status' => true,
+          'data' => $response->json()
+        ];
+      } else {
+        return [
+          'status' => false,
+          'data' => 'Tripay Transaction Creation Error: ' . $response->body()
+        ];
       }
-
-      return null;
     } catch (\Exception $e) {
-      \Log::error('Tripay Transaction Creation Error: ' . $e->getMessage());
-      return null;
+      return [
+        'status' => false,
+        'data' => 'Tripay Transaction Creation Error: ' . $e->getMessage()
+      ];
+    }
+  }
+
+  /**
+   * Check Detail Transaction
+   */
+  public function checkTransactionDetail($reference)
+  {
+    try {
+      $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $this->apiKey
+      ])->get($this->baseUrl . 'transaction/detail?' . http_build_query(['reference' => $reference]));
+
+      if ($response->successful()) {
+        return [
+          'status' => true,
+          'data' => $response->json()
+        ];
+      } else {
+        return [
+          'status' => false,
+          'data' => 'Tripay Transaction Detail Error: ' . $response->body()
+        ];
+      }
+    } catch (\Exception $e) {
+      return [
+        'status' => false,
+        'data' => 'Tripay Transaction Detail Error: ' . $e->getMessage()
+      ];
     }
   }
 
@@ -145,7 +198,7 @@ class Tripay
    * @param string $merchantRef Merchant reference
    * @return string
    */
-  private function generateSignature(int $amount, string $merchantRef): string
+  public function generateSignature(int $amount, string $merchantRef): string
   {
     $signature = $this->merchantCode . $merchantRef . $amount;
     return hash_hmac('sha256', $signature, $this->secretKey);

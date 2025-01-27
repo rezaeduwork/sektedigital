@@ -46,7 +46,7 @@
             <div class="px-4 pt-4">
               <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 flex items-center justify-between w-full space-x-2" role="alert">
                 <div class="">Ada {{$unpaidTxQuery->count()}} pembayaran pending nih!</div>
-                <a href="#" class="font-semibold">Bayar Sekarang</a>
+                <button class="font-semibold" @click="$wire.set('activeTab', 'unprocessed')">Bayar Sekarang</button>
               </div>
             </div>
             @endif
@@ -72,12 +72,16 @@
             @foreach ($row->transactions as $rowTx)
             <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$rowTx" :status="$activeTab">
             @endforeach
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <span class="block sm:inline">Bayar dalam <span class="font-semibold text-red-600">01 : 05 : 04</span></span>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex items-center space-x-1" role="alert">
+              <span class="block sm:inline">Bayar dalam</span>
+              <div class="block sm:inline"
+              x-data="countdown('{{checkPayment($row)['expired_time']}}')"
+              x-init="startCountdown()"
+              x-text="timeLeft"></div>
             </div>
             <div class="flex items-center justify-end w-full space-x-5">
               <div class="flex items-center space-x-4 shrink-0">
-                <button class="bg-primary text-white font-semibold px-5 py-2 shrink-0 rounded" @click="$wire.pay({{$row->id}})">Bayar Sekarang</button>
+                <a class="bg-primary text-white font-semibold px-5 py-2 shrink-0 rounded" href="{{url('payment/'.$row->id)}}" wire:navigate>Bayar Sekarang</a>
               </div>
             </div>
           </div>
@@ -98,4 +102,5 @@
       </div>
     </div>
   </div>
+  @include('components.scripts.countdown')
 </div>

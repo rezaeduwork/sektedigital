@@ -10,21 +10,21 @@
   @php
   $importantActivities = [
     [
-      'title' => 'Belum Bayar',
-      'value' => 0,
-    ],
-    [
-      'title' => 'Menunggu Konfirmasi',
-      'value' => 0,
+      'title' => 'Perlu Proses',
+      'value' => storeTransactionQuery('confirmed')->count(),
     ],
     [
       'title' => 'Diproses',
-      'value' => 0,
+      'value' => storeTransactionQuery('processed')->count(),
+    ],
+    [
+      'title' => 'Menunggu Konfirmasi',
+      'value' => storeTransactionQuery('store_finished')->count(),
     ],
     [
       'title' => 'Selesai',
-      'value' => 0,
-    ],
+      'value' => storeTransactionQuery('finished')->count(),
+    ]
   ];
   @endphp
   <div class="table-responsive-xl mb-6 mb-lg-0 space-y-4">
@@ -69,7 +69,7 @@
             </div>
             <!-- project number -->
             <div class="lh-1">
-              <h1 class="mb-2 fw-bold fs-2">Rp. 200,000</h1>
+              <h1 class="mb-2 fw-bold fs-2">Rp{{number_format(storeTransactionQuery('finished')->sum('amount'),0,',','.')}}</h1>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
             </div>
             <!-- project number -->
             <div class="lh-1">
-              <h1 class="mb-2 fw-bold fs-2">42,339</h1>
+              <h1 class="mb-2 fw-bold fs-2">{{number_format(storeTransactionDetailQuery('finished')->count())}}</h1>
               {{-- <span>
                 <span class="text-dark me-1">35+</span>
                 New Sales
