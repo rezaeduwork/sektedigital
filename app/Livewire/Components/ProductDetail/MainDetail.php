@@ -3,6 +3,7 @@
 namespace App\Livewire\Components\ProductDetail;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class MainDetail extends Component
 {
@@ -29,8 +30,10 @@ class MainDetail extends Component
     session()->put('selectedCarts', [$existingCart->id]);
     return $this->redirect('checkout', navigate: true);
   }
+  #[On('reload')]
   public function render()
   {
-    return view('livewire.components.product-detail.main-detail');
+    $inCart = auth()->check() && auth()->user()->carts()->where('product_id', $this->product->id)->first();
+    return view('livewire.components.product-detail.main-detail', compact('inCart'));
   }
 }

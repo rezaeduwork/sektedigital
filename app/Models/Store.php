@@ -9,9 +9,18 @@ class Store extends Model
 {
   use HasFactory;
   protected $fillable = [
-    'name','status','user_id','photo'
+    'name',
+    // comment('unverified|verified|inactive')
+    'status',
+    'user_id',
+    'photo'
   ];
-  public function products() {
+  public function products()
+  {
     return $this->hasMany('App\Models\Product', 'store_id');
+  }
+  public function user()
+  {
+    return $this->belongsTo('App\Models\User', 'user_id');
   }
 }

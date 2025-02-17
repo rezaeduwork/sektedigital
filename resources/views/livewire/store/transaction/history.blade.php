@@ -6,6 +6,7 @@
     ['Menunggu Konfirmasi User','store_finished'],
     ['Pesanan Selesai','finished'],
     ['Di Komplain','complain'],
+    ['Di Batalkan','cancelled'],
     ['Semua Pesanan', null],
   ];
   @endphp

@@ -70,4 +70,19 @@ class User extends Authenticatable
   {
     return $this->hasMany('App\Models\Payment');
   }
+  public function balances()
+  {
+    return $this->hasMany('\App\Models\UserBalance');
+  }
+  public function banks()
+  {
+    return $this->hasMany('\App\Models\UserBank');
+  }
+
+  // HELPER
+  public function reloadBalance()
+  {
+    $this->balance = $this->balances()->whereIn('type', ['fund', 'store_fund', 'withdraw'])->sum('amount');
+    $this->save();
+  }
 }

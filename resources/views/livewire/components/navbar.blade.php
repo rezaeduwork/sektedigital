@@ -1,4 +1,4 @@
-<header class="shadow w-full fixed top-0 left-0 z-20 bg-white">
+<header class="shadow w-full fixed top-0 left-0 z-20 bg-white" wire:poll.8s>
   <div class="bg-primary text-white">
     <!-- navbar -->
     <div class="container max-w-[968px] mx-auto">
@@ -143,7 +143,10 @@
             </div>
           </div>
           <div class="text-center">
-            <button type="button" wire:click="openChat" role="button" class="text-reset mt-1">
+            <button type="button"
+            @click="Livewire.navigate('{{url('chat')}}')"
+            {{-- wire:click="openChat"  --}}
+            role="button" class="text-reset mt-1">
               <div class="text-center flex items-center">
                 <div class="relative inline-block m-auto">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

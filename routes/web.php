@@ -31,12 +31,14 @@ Route::middleware('user.auth')->group(function () {
   Route::get('/checkout', \App\Livewire\Checkout::class);
   Route::get('/payment/{id}/detail', \App\Livewire\PaymentDetail::class);
   Route::get('/payment/{id}', \App\Livewire\Payment::class);
+  Route::get('/chat', \App\Livewire\Chat::class);
 
 
   Route::prefix('user')->group(function () {
     Route::get('/profile', \App\Livewire\User\Profile::class);
     Route::get('/store', \App\Livewire\Components\AccountStore::class);
     Route::get('/wallet', \App\Livewire\User\Wallet::class);
+    // Route::get('/wallet/bank', \App\Livewire\User\WalletBank::class);
     Route::prefix('transaction')->group(function () {
       Route::get('/', \App\Livewire\User\Transaction::class);
     });
@@ -64,4 +66,5 @@ Route::middleware('user.admin')->prefix('admin')->group(function () {
   Route::get('/account', \App\Livewire\Admin\Account::class);
 });
 
+Route::get('s/{id}', \App\Livewire\StoreDetail::class);
 Route::get('/{slug}', \App\Livewire\ProductDetail::class);

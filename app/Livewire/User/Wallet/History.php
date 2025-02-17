@@ -4,6 +4,7 @@ namespace App\Livewire\User\Wallet;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class History extends Component
 {
@@ -18,6 +19,7 @@ class History extends Component
   {
     $this->resetPage();
   }
+  #[On('reload')]
   public function render()
   {
     $list = \App\Models\UserBalance::query();
@@ -31,7 +33,7 @@ class History extends Component
         $query->where('name', 'like', "%$search%")->orWhere('description', 'like', "%$search%");
       });
     }
-    $list = $list->latest()->paginate(2);
+    $list = $list->latest()->paginate(10);
     return view('livewire.user.wallet.history', compact('list'));
   }
 }

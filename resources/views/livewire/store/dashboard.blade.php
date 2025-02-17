@@ -1,4 +1,7 @@
 <section class="container">
+  @php
+  $store = auth()->user()->store;
+  @endphp
   <div class="table-responsive-xl mb-6 mb-lg-0 space-y-4">
     <h1 class="text-2xl font-bold">Pengumuman</h1>
     <div class="row flex-nowrap pb-3 pb-lg-0">
@@ -28,7 +31,7 @@
   ];
   @endphp
   <div class="table-responsive-xl mb-6 mb-lg-0 space-y-4">
-    <h1 class="text-2xl font-bold">Aktifitas Yang Pelu Kamu Lakukan</h1>
+    <h1 class="text-2xl font-bold">Aktifitas</h1>
     <div class="row flex-nowrap pb-3 pb-lg-0">
       @foreach ($importantActivities as $row)
       <div class="col-lg-3 col-12 mb-6">
@@ -61,7 +64,7 @@
             <!-- heading -->
             <div class="d-flex justify-content-between align-items-center mb-6">
               <div>
-                <h4 class="mb-0 fs-5">Pendapatan</h4>
+                <h4 class="mb-0 fs-5">Pendapatan Bulan Ini</h4>
               </div>
               <div class="icon-shape icon-md bg-light-danger text-dark-danger rounded-circle">
                 <i class="bi bi-currency-dollar fs-5"></i>
@@ -69,7 +72,12 @@
             </div>
             <!-- project number -->
             <div class="lh-1">
-              <h1 class="mb-2 fw-bold fs-2">Rp{{number_format(storeTransactionQuery('finished')->sum('amount'),0,',','.')}}</h1>
+              <h1 class="mb-2 fw-bold fs-2">Rp{{number_format(storeTransactionQuery('finished')->whereBetween('created_at', [now()->startOfMonth(), now()])->sum('amount'), 0,',', '.')}}</h1>
+              <span>
+                dari
+                <span class="text-dark me-1">Rp{{number_format(storeTransactionQuery('finished')->sum('amount'),0,',','.')}}</span>
+                total
+              </span>
             </div>
           </div>
         </div>
@@ -91,10 +99,10 @@
             <!-- project number -->
             <div class="lh-1">
               <h1 class="mb-2 fw-bold fs-2">{{number_format(storeTransactionDetailQuery('finished')->count())}}</h1>
-              {{-- <span>
-                <span class="text-dark me-1">35+</span>
-                New Sales
-              </span> --}}
+              <span>
+                <span class="text-dark me-1">{{storeTransactionDetailQuery('finished')->where('created_at', '>=', now()->subDay())->count()}}</span>
+                baru
+              </span>
             </div>
           </div>
         </div>
@@ -107,19 +115,33 @@
             <!-- heading -->
             <div class="d-flex justify-content-between align-items-center mb-6">
               <div>
-                <h4 class="mb-0 fs-5">Pengunjung</h4>
+                <h4 class="mb-0 fs-5">Produk Dilihat</h4>
               </div>
               <div class="icon-shape icon-md bg-light-info text-dark-info rounded-circle">
                 <i class="bi bi-people fs-5"></i>
               </div>
             </div>
+            @php
+            $totalViews = \App\Models\ProductLog::whereHas('product', function ($query) use ($store) {
+              $query->where('store_id', $store->id);
+            })->where('activity', 'view')->count();
+
+            // Calculate views from the last 24 hours
+            $viewsLastDay = \App\Models\ProductLog::whereHas('product', function ($query) use ($store) {
+              $query->where('store_id', $store->id);
+            })->where('activity', 'view')->where('created_at', '>=', now()->subDay())->count();
+            @endphp
             <!-- project number -->
             <div class="lh-1">
-              <h1 class="mb-2 fw-bold fs-2">39,354</h1>
-              {{-- <span>
-                <span class="text-dark me-1">30+</span>
-                new in 2 days
-              </span> --}}
+              <h1 class="mb-2 fw-bold fs-2">
+                {{$totalViews}}
+              </h1>
+              <span>
+                <span class="text-dark me-1">
+                  {{$viewsLastDay}}
+                </span>
+                baru
+              </span>
             </div>
           </div>
         </div>

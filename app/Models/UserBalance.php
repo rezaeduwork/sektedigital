@@ -10,12 +10,15 @@ class UserBalance extends Model
   use HasFactory;
   protected $fillable = [
     'uid',
+    // fund | store_fund | coin | withdraw
     'type',
     'amount',
     'description',
+    // pending | success
     'status',
     'token',
     'name',
-    'user_id'
+    'user_id',
+    'data'
   ];
 }

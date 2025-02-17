@@ -46,8 +46,12 @@
       <!-- CONTENT -->
       <h3 class="font-semibold">Silahkan Pilih Metode Pembayaran</h3>
       <hr class="my-2" />
-      <div class="space-y-4 mb-4 max-h-[250px] overflow-y-auto p-2">
+      <div class="space-y-4 mb-4 p-2">
         @forelse ($channels as $channel)
+        @if ($channel['group'] == 'Virtual Account' || ($channel['name'] == 'QRIS' || $channel['name'] == 'QRIS2'))
+        @else
+        @continue
+        @endif
         <button wire:click.prevent="selectPayment('{{$channel['code']}}')" class="flex w-full items-center justify-between border rounded p-2 cursor-pointer
         @if($selectedPayment == $channel['code'])
         ring-2 ring-primary font-semibold text-primary shadow
@@ -57,7 +61,14 @@
         ">
           <div class="flex items-center space-x-4">
             <img src="{{$channel['icon_url']}}" alt="" srcset="" class="size-[32px] object-contain rounded">
-            <div>{{$channel['name']}}</div>
+            <div class="text-left">
+              <div class="font-semibold">{{$channel['name']}}</div>
+              @if ($productFee > 450000 && $channel['group'] == 'Virtual Account')
+              <div class="text-xs text-red-600 font-normal">*Paling Murah</div>
+              @elseif($productFee <= 350000 && ($channel['name'] == 'QRIS' || $channel['name'] == 'QRIS2'))
+              <div class="text-xs text-red-600 font-normal">*Paling Murah</div>
+              @endif
+            </div>
           </div>
           @if ($channel['code'] === $selectedPayment)
           <div><input type="checkbox" class="rounded-full border border-primary text-primary" checked /></div>
@@ -93,7 +104,7 @@
                 </svg>
               </button>
               <div class="absolute hidden group-hover:block top-[130%] left-0 w-[300px] z-10 inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 opacity-1 bg-gray-900 rounded-lg shadow-sm">
-                Biaya jasa aplikasi kami untuk kasih kamu layanan terbaik 😊 Jumlahnya disesuaikan metode pembayaran yang kamu pilih.
+                Jumlahnya disesuaikan metode pembayaran yang kamu pilih.😊
                 <div class="tooltip-arrow" data-popper-arrow></div>
               </div>
             </div>

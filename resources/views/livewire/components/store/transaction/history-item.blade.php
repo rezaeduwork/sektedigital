@@ -1,4 +1,4 @@
-<div class="space-y-4 border-b pb-4 mb-4" x-data="{confirmationProcess: false, confirmationCompleted: false, confirmationRefund: false, confirmationRefundCancel: false}" @close-confirmation.window="confirmationProcess = false">
+<div class="space-y-4 border-b pb-4 mb-4" x-data="{confirmationProcess: false, confirmationCompleted: false, confirmationRefund: false, confirmationRefundCancel: false}" @close-confirmation.window="confirmationProcess = false; confirmationCompleted = false;confirmationRefund = false; confirmationRefundCancel = false;">
   @php
   $total = $tx->storeDetails()->count();
   @endphp
@@ -13,6 +13,15 @@
       </div>
     </div>
     <div class="flex items-center space-x-2">
+      <div class="flex">
+        <button class="flex items-center space-x-1 text-xs">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3" viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+            <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+          </svg>
+          <span>Hubungi Pembeli</span>
+        </button>
+      </div>
       <img src="{{profile($tx->user)}}" alt="" class="size-[28px] rounded-full" />
       <span class="text-sm text-gray-700">{{$tx->customer_name}}</span>
     </div>
@@ -49,17 +58,9 @@
     <div class="font-semibold text-sm">Total Harga</div>
     <div class="font-bold text-black text-2xl">Rp{{number_format($tx->amount,0,',','.')}}</div>
   </div>
+
   <div class="flex items-center justify-between w-full space-x-5 bg-gray-50 rounded py-2">
-    <div class="flex">
-      <button class="flex items-center space-x-1 text-xs">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3" viewBox="0 0 16 16">
-          <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-          <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
-        </svg>
-        <span>Hubungi Pembeli</span>
-      </button>
-    </div>
-    <div class="flex items-center space-x-2 shrink-0 relative">
+    <div class="flex items-center space-x-2 shrink-0 relative w-full">
       {{-- <button class="text-gray-600 px-5">Detail Transaksi</button> --}}
       @if ($status == 'confirmed')
         <button
@@ -68,7 +69,7 @@
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
         @click="confirmationProcess = true"
         >Proses Pesanan</button>
-        <div x-show="confirmationProcess" style="display: none;" class="absolute z-10 min-w-[180px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
+        <div x-show="confirmationProcess" style="display: none;" class="absolute z-10 min-w-[180px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] left-0">
           <div class="mb-2">Yakin ingin proses ?</div>
           <div class="flex items-center space-x-2">
             <button class="text-xs rounded p-2" @click="confirmationProcess = false">Batal</button>
@@ -78,24 +79,26 @@
       @endif
 
       @if ($status == 'processed')
-        <button
-        class="
-        bg-primary text-white
-        font-semibold px-5 py-2 shrink-0 rounded text-sm"
-        @click="confirmationCompleted = true"
-        >Selesai</button>
-        <div x-show="confirmationCompleted" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
-          <div class="mb-2">Yakin ingin menyelesaikan ?</div>
-          <div class="flex items-center space-x-2">
-            <button class="text-xs rounded p-2" @click="confirmationCompleted = false">Batal</button>
-            <button class="text-xs rounded p-2 bg-primary text-white" wire:click.prevent="completing()">Ya, Lanjutkan</button>
-          </div>
-        </div>
+      <livewire:components.store.transaction.history-finish-button :tx="$tx">
       @endif
 
       @if ($status == 'store_finished')
-      <div class="font-semibold">Menunggu Konfirmasi User</div>
+      <div>
+        <div class="font-semibold mb-2">Menunggu Konfirmasi User</div>
+        <div class="rounded bg-gray-100 p-4">
+          <div class="font-bold text-lg">Bukti Penyelesaian</div>
+          <div>{{$tx->proof_text}}</div>
+          <a href="{{url('storage/transaction_proof/'.$tx->proof_file)}}" target="_blank" class="text-link flex items-center space-x-2">
+            <div>{{$tx->proof_file}}</div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+              <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
       @endif
+
       @if ($status == 'complain')
       <button
         class="
@@ -103,7 +106,7 @@
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
         @click="confirmationRefundCancel = true"
       >Tolak Complain</button>
-      <div x-show="confirmationRefundCancel" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
+      <div x-show="confirmationRefundCancel" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] left-0">
         <div class="mb-2">Yakin ingin tolak complain ?</div>
         <div class="flex items-center space-x-2">
           <button class="text-xs rounded p-2" @click="confirmationRefundCancel = false">Batal</button>
@@ -116,7 +119,7 @@
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
         @click="confirmationRefund = true"
       >Refund</button>
-      <div x-show="confirmationRefund" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
+      <div x-show="confirmationRefund" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] left-0">
         <div class="mb-2">Yakin ingin refund ?</div>
         <div class="flex items-center space-x-2">
           <button class="text-xs rounded p-2" @click="confirmationRefund = false">Batal</button>
@@ -125,9 +128,18 @@
       </div>
       @endif
 
+      @if ($status == 'cancelled')
+        @php
+        $log = $tx->logs()->where('activity', 'cancelled')->latest()->first();
+        @endphp
+        @if ($log)
+        <div class="font-semibold text-red-600">{{$log->description}}</div>
+        @endif
+      @endif
+
       @if ($status == 'finished')
         @php
-        $log = $tx->logs()->latest()->first();
+        $log = $tx->logs()->where('activity', 'finished')->latest()->first();
         @endphp
         @if ($log)
         <div class="font-semibold">{{$log->description}}</div>

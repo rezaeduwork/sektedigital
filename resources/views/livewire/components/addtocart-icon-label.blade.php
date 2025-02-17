@@ -5,7 +5,7 @@ wire:click="add(1)"
 @guest
 data-bs-toggle="modal" data-bs-target="#userModal" href="#"
 @endguest role="button"
-class="btn gap-x-1 bg-primary shrink-0 text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-primary justify-center">
+class="btn gap-x-1 bg-primary shrink-0 text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary justify-center">
   <div wire:loading.remove wire:target="add" wire:key="add{{$product->id}}">
     <div class="flex items-center space-x-1">
       <svg xmlns="../www.w3.org/2000/svg.html" width="18" height="18" viewBox="0 0 24 24" fill="none"

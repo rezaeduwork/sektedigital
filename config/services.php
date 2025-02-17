@@ -35,6 +35,10 @@ return [
     'key' => env('TRIPAY_API_KEY'),
     'secret' => env('TRIPAY_SECRET_KEY'),
     'merchant' => env('TRIPAY_MERCHANT_CODE')
+  ],
+
+  'platform' => [
+    'fee' => env('PLATFORM_FEE', 1)
   ]
 
 ];

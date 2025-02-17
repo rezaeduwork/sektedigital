@@ -14,20 +14,22 @@ function storeProfile($store)
   }
   return url('storage/' . $store->photo);
 }
-function productActivity($activity, $by)
+function productActivity($product, $activity, $by)
 {
   if ($activity == 'view') {
-    $todayView = \App\Models\ProductLog::whereActivity($activity)->whereBy($by)->whereDate('created_at', \Carbon\Carbon::now())->first();
+    $todayView = \App\Models\ProductLog::whereProduct_id($product->id)->whereActivity($activity)->whereBy($by)->whereDate('created_at', \Carbon\Carbon::now())->first();
     if (!$todayView) {
       \App\Models\ProductLog::create([
         'activity' => $activity,
-        'by' => $by
+        'by' => $by,
+        'product_id' => $product->id
       ]);
     }
   } else {
     \App\Models\ProductLog::create([
       'activity' => $activity,
-      'by' => $by
+      'by' => $by,
+      'product_id' => $product->id
     ]);
   }
 }

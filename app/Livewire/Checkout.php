@@ -159,6 +159,14 @@ class Checkout extends Component
 
         $payment->data = $tripay['data']['data'];
         $payment->save();
+
+        // update fee merchant
+        $feeData = tripay()->calculateFee($this->selectedPayment, $this->totalPayment)['data'];
+        $feeMerchant = $feeData[0]['total_fee']['merchant'];
+        $payment->fee_amount = $feeMerchant;
+        $payment->fee_wrap_up = ($this->totalPayment - $payment->transactions()->sum('amount')) - $feeMerchant;
+        $payment->fee_total = $payment->fee_amount + $payment->fee_wrap_up;
+        $payment->save();
       }
       auth()->user()->carts()->whereIn('id', session('selectedCarts'))->delete();
       session()->forget('selectedCarts');
@@ -181,6 +189,17 @@ class Checkout extends Component
     $feeData = tripay()->calculateFee($code, $this->totalPayment)['data'];
     $feeMerchant = $feeData[0]['total_fee']['merchant'];
     $this->platformFee = ceil($feeMerchant);
+    if ($code === 'QRIS2' || $code === 'QRIS') {
+      $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
+    } else {
+      // $wrapupFee = (($this->productFee * config('services.platform.fee')) / 100);
+      // if ($wrapupFee > 5000) {
+      //   $this->platformFee = $this->platformFee + 5000;
+      // } else {
+      //   $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
+      // }
+      $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
+    }
     $this->reloadTotalPayment();
   }
   // END ACTIONS

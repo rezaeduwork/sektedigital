@@ -17,7 +17,7 @@
   }
 }">
   @if ($category)
-  <div class="flex items-center justify-center mb-4 space-x-4">
+  <div class="flex items-center justify-center mb-6 space-x-4">
     <img src="{{url('storage/'.$category->icon)}}" alt="" srcset="" class="size-24" />
     <div class="text-[56px] font-bold">{{$category->name}}</div>
   </div>

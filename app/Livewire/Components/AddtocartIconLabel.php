@@ -29,6 +29,7 @@ class AddtocartIconLabel extends Component
       'quantity' => $quantity
     ]);
     $this->dispatch('alert-success', message: 'Produk berhasil dimasukkan keranjang!');
+    $this->dispatch('reload')->to(\App\Livewire\Components\Navbar::class);
   }
   public function render()
   {

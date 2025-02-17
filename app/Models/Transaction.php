@@ -17,7 +17,9 @@ class Transaction extends Model
     'customer_phone',
     'user_id',
     'payment_id',
-    'store_id'
+    'store_id',
+    'proof_text',
+    'proof_file'
   ];
   public function user()
   {
@@ -102,7 +104,7 @@ class Transaction extends Model
         $statusText = 'Belum Bayar';
         break;
       case 'confirmed':
-        $statusText = 'Menunggu Konfirmasi';
+        $statusText = 'Menunggu Proses';
         break;
       case 'accepted':
         $statusText = 'Dikonfirmasi';
@@ -112,6 +114,9 @@ class Transaction extends Model
         break;
       case 'finished':
         $statusText = 'Selesai';
+        break;
+      case 'store_finished':
+        $statusText = 'Menunggu Diselesaikan';
         break;
       case 'rejected':
         $statusText = 'Ditolak';

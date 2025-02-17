@@ -12,6 +12,13 @@ class ProductLog extends Model
    * activity: 'create','update','view'
    */
   protected $fillable = [
-    'activity','description','by','product_id'
+    'activity',
+    'description',
+    'by',
+    'product_id'
   ];
+  public function product()
+  {
+    return $this->belongsTo(\App\Models\Product::class, 'product_id');
+  }
 }

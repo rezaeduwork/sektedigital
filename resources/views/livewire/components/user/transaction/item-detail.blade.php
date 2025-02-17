@@ -10,7 +10,7 @@
           <div class="space-y-2">
             <!-- title -->
             <a href="#" class="text-inherit">
-              <h6 class="font-black text-lg">{{ $product->title }}</h6>
+              <a class="font-black text-lg text-link" href="{{url($product->slug)}}" wire:navigate>{{ $product->title }}</a>
             </a>
             <span class="text-gray-500 text-sm flex items-center space-x-1">
               <img src="{{ categoryImage($product->category) }}" alt="" srcset="" class="size-4">
@@ -29,4 +29,7 @@
   <div class="relative z-0 w-full">
     {{$detail->note ?? 'Tidak ada catatan'}}
   </div>
+  @if ($detail->transaction->status == 'finished')
+  <livewire:components.user.transaction.rating-box :product="$detail->product" :detailTx="$detail">
+  @endif
 </div>

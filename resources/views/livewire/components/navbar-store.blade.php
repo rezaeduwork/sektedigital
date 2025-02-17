@@ -21,7 +21,7 @@
           </li>
           <!-- Nav item -->
           <li class="nav-item">
-            <a class="nav-link " href="{{url('/store/setting')}}" wire:navigate>Pengaturan</a>
+            <a class="nav-link " href="{{url('/user/wallet')}}" target="_blank">Wallet</a>
           </li>
         </ul>
       </div>
@@ -68,7 +68,7 @@
       </div>
     </li>
 
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link" href="#" data-bs-toggle="collapse"
         data-bs-target="#navMoney" aria-expanded="true" aria-controls="navMoney">
         <div class="d-flex align-items-center">
@@ -81,13 +81,12 @@
           <li class="nav-item">
             <a class="nav-link" href="{{url('/finance')}}" wire:navigate>Saldo</a>
           </li>
-          <!-- Nav item -->
           <li class="nav-item">
             <a class="nav-link " href="{{url('/finance/ref')}}" wire:navigate>Rekening</a>
           </li>
         </ul>
       </div>
-    </li>
+    </li> --}}
   </ul>
 
 </div>

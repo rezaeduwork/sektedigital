@@ -11,6 +11,7 @@ class HistoryItem extends Component
   public $showOthers = false;
   public $status;
   public $checkedIds = [];
+
   public function mount($tx, $status)
   {
     $this->tx = $tx;
@@ -45,10 +46,12 @@ class HistoryItem extends Component
     $this->tx->status = 'processed';
     $this->tx->save();
     transactionActivity($this->tx, auth()->id(), 'processed', ('processing by seller'));
+    $this->tx->user->notify(new \App\Notifications\TransactionNotification($this->tx, 'Transaksi proses', 'Pesananmu diproses seller, silahkan ditunggu 🙏'));
     $this->dispatch('alert-success', message: 'Berhasil Proses Pesanan!');
     $this->dispatch('close-confirmation');
     $this->reloadParent();
   }
+  #[On('completing.{tx.id}')]
   public function completing()
   {
     $processed = $this->tx->status == 'processed';
@@ -58,6 +61,7 @@ class HistoryItem extends Component
     $this->tx->status = 'store_finished';
     $this->tx->save();
     transactionActivity($this->tx, auth()->id(), 'store_finished', ('finished by seller'));
+    $this->tx->user->notify(new \App\Notifications\TransactionNotification($this->tx, 'Transaksi selesai', 'Pesananmu diselesaikan seller, silahkan konfirmasi di menu transaksi 🥳'));
     $this->dispatch('alert-success', message: 'Berhasil Menyelesaikan Pesanan!');
     $this->dispatch('close-confirmation');
     $this->reloadParent();
@@ -71,6 +75,7 @@ class HistoryItem extends Component
     $this->tx->status = 'finished';
     $this->tx->save();
     transactionActivity($this->tx, auth()->id(), 'finished', ('complain rejected by seller'));
+    $this->tx->user->notify(new \App\Notifications\TransactionNotification($this->tx, 'Transaksi dikomplain', 'Complainmu ditolak seller! 😔'));
     $this->dispatch('alert-success', message: 'Berhasil menyelesaikan pesanan!');
     $this->dispatch('close-confirmation');
     $this->reloadParent();
@@ -84,6 +89,7 @@ class HistoryItem extends Component
     $this->tx->status = 'finished';
     $this->tx->save();
     transactionActivity($this->tx, auth()->id(), 'finished', ('complain accepted by seller'));
+    $this->tx->user->notify(new \App\Notifications\TransactionNotification($this->tx, 'Transaksi dikomplain', 'Complainmu diterima seller! Dana akan di kembalikan.'));
     $this->dispatch('alert-success', message: 'Berhasil menyelesaikan pesanan!');
     $this->dispatch('close-confirmation');
     $this->reloadParent();

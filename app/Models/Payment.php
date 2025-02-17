@@ -15,7 +15,10 @@ class Payment extends Model
     'amount',
     'user_id',
     'settlement_at',
-    'data'
+    'data',
+    'fee_amount',
+    'fee_wrap_up',
+    'fee_total'
   ];
   public function user()
   {

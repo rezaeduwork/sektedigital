@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
   public function run(): void
   {
     // ADMIN
-    \App\Models\User::whereIn('email', ['admin@gmail.com'])->delete();
+    \App\Models\User::query()->delete();
+    \App\Models\Store::query()->delete();
     $user = \App\Models\User::create([
       'name' => 'admin',
       'email' => 'admin@gmail.com',
@@ -30,29 +31,27 @@ class DatabaseSeeder extends Seeder
       'status' => 'verified'
     ]);
 
-    // USER
-    \App\Models\User::whereIn('email', ['member@gmail.com'])->delete();
-    $user = \App\Models\User::create([
+    $createUser = $this->createUser([
       'name' => 'member',
       'email' => 'member@gmail.com',
       'role' => 'member',
       'phone' => '000000000000',
       'password' => \Hash::make('12345678')
     ]);
-    $store1 = $user->store()->create([
-      'name' => 'Dummy Store',
-      'photo' => 'store.png',
-      'status' => 'verified'
+    $user1 = $createUser['user'];
+    $store1 = $createUser['store'];
+
+    $createUser2 = $this->createUser([
+      'name' => 'member2',
+      'email' => 'member2@gmail.com',
+      'role' => 'member',
+      'phone' => '0000000000002',
+      'password' => \Hash::make('12345678')
     ]);
 
-    $productImages = \App\Models\ProductImage::all();
-    // Delete each image from storage
-    foreach ($productImages as $rowProductImage) {
-      // Delete the file if it exists in storage
-      if (Storage::exists('public/' . $rowProductImage->name)) {
-        Storage::delete('public/' . $rowProductImage->name);
-      }
-    }
+    $user2 = $createUser2['user'];
+    $store2 = $createUser2['store'];
+
     \App\Models\Product::query()->delete();
     \App\Models\CategoryProduct::query()->delete();
     foreach (
@@ -116,46 +115,74 @@ class DatabaseSeeder extends Seeder
       ] as $row
     ) {
       $category = \App\Models\CategoryProduct::create($row);
-      foreach (range(1, 20) as $rowProduct) {
-        $faker = Faker::create();
-
-        $product = $category->products()->create([
-          'title' => $faker->words(3, true),
-          'description' => $faker->paragraph(10),
-          'highlight' => $faker->paragraph(1),
-          'price' => $faker->numberBetween(10000, 1000000),
-          'slug' => Str::slug($faker->words(3, true)),
-          'stock' => $faker->numberBetween(50, 1000),
-          'store_id' => $store1->id,
-          'status' => 'active'
-        ]);
-
-        // Handle main product image
-        $sourcePath = public_path('assets/images/bg-violet.jpeg');
-        $randomFilename = Str::random(20) . '.jpeg';
-        $destinationPath = 'public/' . $randomFilename;
-
-        Storage::put($destinationPath, file_get_contents($sourcePath));
-
-        $product->images()->create([
-          'name' => $randomFilename, // Remove 'public/' from stored path
-          'type' => 'main'
-        ]);
-
-        // Handle additional product images
-        $additionalImagesCount = mt_rand(2, 10);
-        foreach (range(1, $additionalImagesCount) as $row) {
-          $randomFilename = Str::random(20) . '.jpeg';
-          $destinationPath = 'public/' . $randomFilename;
-
-          Storage::put($destinationPath, file_get_contents($sourcePath));
-
-          $product->images()->create([
-            'name' => $randomFilename,
-            'type' => 'additional'
-          ]);
-        }
+      foreach (range(1, 100) as $rowProduct) {
+        $this->createProduct($category, $store1);
+        $this->createProduct($category, $store2);
       }
+    }
+  }
+  public function createUser($userParams)
+  {
+    $user = \App\Models\User::create($userParams);
+    $store1 = $user->store()->create([
+      'name' => $userParams['name'] . ' Store',
+      'photo' => 'store.png',
+      'status' => 'verified'
+    ]);
+
+    $productImages = \App\Models\ProductImage::all();
+    // Delete each image from storage
+    foreach ($productImages as $rowProductImage) {
+      // Delete the file if it exists in storage
+      if (Storage::exists('public/' . $rowProductImage->name)) {
+        Storage::delete('public/' . $rowProductImage->name);
+      }
+    }
+
+    return [
+      'user' => $user,
+      'store' => $store1
+    ];
+  }
+  public function createProduct($category, $store)
+  {
+    $faker = Faker::create();
+
+    $product = $category->products()->create([
+      'title' => $faker->words(3, true),
+      'description' => $faker->paragraph(10),
+      'highlight' => $faker->paragraph(1),
+      'price' => $faker->numberBetween(10000, 1000000),
+      'slug' => Str::slug($faker->words(3, true)),
+      'stock' => $faker->numberBetween(50, 1000),
+      'store_id' => $store->id,
+      'status' => 'active'
+    ]);
+
+    // Handle main product image
+    $sourcePath = public_path('assets/images/bg-violet.jpeg');
+    $randomFilename = Str::random(20) . '.jpeg';
+    $destinationPath = 'public/' . $randomFilename;
+
+    Storage::put($destinationPath, file_get_contents($sourcePath));
+
+    $product->images()->create([
+      'name' => $randomFilename, // Remove 'public/' from stored path
+      'type' => 'main'
+    ]);
+
+    // Handle additional product images
+    $additionalImagesCount = mt_rand(2, 10);
+    foreach (range(1, $additionalImagesCount) as $row) {
+      $randomFilename = Str::random(20) . '.jpeg';
+      $destinationPath = 'public/' . $randomFilename;
+
+      Storage::put($destinationPath, file_get_contents($sourcePath));
+
+      $product->images()->create([
+        'name' => $randomFilename,
+        'type' => 'additional'
+      ]);
     }
   }
 }

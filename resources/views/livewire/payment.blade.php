@@ -1,5 +1,6 @@
 <div class="w-full flex items-center justify-center">
   <div class="bg-white rounded-2xl shadow-lg p-6 max-w-md w-full">
+    @if ($payment->status != 'settlement')
     <h1 class="text-xl font-bold text-center text-gray-800 mb-2">Selesaikan pembayaran dalam</h1>
     <div class="text-center text-orange-500 text-2xl font-bold mb-4"
      x-data="countdown('{{$paymentDetail['expired_time']}}')"
@@ -7,6 +8,11 @@
      x-text="timeLeft"></div>
     <p class="text-center text-gray-600 mb-2">Batas Akhir Pembayaran</p>
     <p class="text-center font-bold text-gray-800">{{\Carbon\Carbon::createFromTimestamp($paymentDetail['expired_time'])->translatedFormat('l, d F Y H:i')}}</p>
+    @else
+    <h1 class="text-xl font-bold text-center text-green-600 mb-2">Pembayaran Berhasil</h1>
+    <p class="text-center text-gray-600 mb-2">Dibayar Pada</p>
+    <p class="text-center font-bold text-gray-800">{{\Carbon\Carbon::createFromTimestamp($payment->settlement_at)->translatedFormat('l, d F Y H:i')}}</p>
+    @endif
 
     <div class="border-t border-gray-200 my-6"></div>
 

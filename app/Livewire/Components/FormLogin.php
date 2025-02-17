@@ -12,13 +12,15 @@ class FormLogin extends Component
 
   #[Validate('required|min:8', onUpdate: false)]
   public $password;
-  public function login() {
+  public function login()
+  {
     $this->validate();
     $credentials = [
       'email' => $this->email,
       'password' => $this->password
     ];
     if (auth()->attempt($credentials)) {
+      auth()->user()->reloadBalance();
       $this->redirect('/');
       $this->dispatch('alert-success', message: 'Login Berhasil');
       return;

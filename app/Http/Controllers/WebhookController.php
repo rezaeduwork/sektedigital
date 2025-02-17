@@ -10,16 +10,15 @@ class WebhookController extends Controller
   {
     $callbackSignature = $request->server('HTTP_X_CALLBACK_SIGNATURE');
     $json = $request->getContent();
-    // $jsonArray = json_decode($json, true);
-    // $signatureData = tripay()->getMerchantCode() . $jsonArray['merchant_ref'] . $jsonArray['total_amount'];
-    // $signature = hash_hmac('sha256', preg_replace('/\s+/', '', $json), tripay()->getSecretKey());
 
-    // if ($signature !== (string) $callbackSignature) {
-    //   return response()->json([
-    //     'success' => false,
-    //     'message' => 'Invalid signature',
-    //   ]);
-    // }
+    $signatureformatted = hash_hmac('sha256', $json, tripay()->getSecretKey());
+
+    if ($request->server('HTTP_X_CALLBACK_SIGNATURE') != $signatureformatted) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Invalid signature',
+      ]);
+    }
 
     if ('payment_status' !== (string) $request->server('HTTP_X_CALLBACK_EVENT')) {
       return response()->json([
@@ -62,8 +61,11 @@ class WebhookController extends Controller
 
             $invoice->transactions()->update(['status' => 'confirmed']);
             foreach ($invoice->transactions as $tx) {
-              transactionActivity($tx, $tx->user_id, 'unprocessed', ('transaction confirmed'));
+              transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
             }
+
+            \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id)->delay(now()->addDays(3));
+            // \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id);
 
             $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'settlement'));
           } else {

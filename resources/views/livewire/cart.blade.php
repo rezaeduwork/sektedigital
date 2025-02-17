@@ -145,7 +145,7 @@
                   <li
                     class="relative py-3 px-4 -mb-px border-r-0 border-l-0 border-gray-300 no-underline flex justify-between items-start">
                     <div>
-                      <div class="font-bold text-gray-800">Total Pembayaran</div>
+                      <div class="font-bold text-gray-800">Total Harga Barang</div>
                     </div>
                     <span class="font-bold text-gray-800">Rp. {{number_format(totalTransaction(auth()->user()->carts()->whereIn('id', collect($selected))->get()))}}</span>
                   </li>

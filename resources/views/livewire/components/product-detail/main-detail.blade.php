@@ -116,39 +116,7 @@
                   <div class="flex items-center gap-2">
                     <!-- rating -->
                     <!-- rating -->
-                    <small class="text-yellow-500 inline-flex items-center">
-                      <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-star-filled"
-                        width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path
-                          d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
-                          stroke-width="0" fill="currentColor"></path>
-                      </svg>
-                      <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-star-filled"
-                        width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path
-                          d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
-                          stroke-width="0" fill="currentColor"></path>
-                      </svg>
-                      <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-star-filled"
-                        width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path
-                          d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
-                          stroke-width="0" fill="currentColor"></path>
-                      </svg>
-                      <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-star-filled"
-                        width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path
-                          d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
-                          stroke-width="0" fill="currentColor"></path>
-                      </svg>
+                    <small class="text-yellow-300 inline-flex items-center">
                       <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-star-filled"
                         width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                         fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -158,7 +126,7 @@
                           stroke-width="0" fill="currentColor"></path>
                       </svg>
                     </small>
-                    <a href="#" class="text-primary">(30 reviews)</a>
+                    <a href="#" class="text-primary">({{$product->ratings()->count()}} reviews)</a>
                   </div>
                   <div class="text-md">
                     <span class="text-gray-900 font-semibold">Rp. {{number_format($product->price)}}</span>
@@ -170,6 +138,7 @@
               <hr />
               <!-- hr -->
               <div class="flex flex-col gap-6">
+                @if (!$inCart)
                 <div>
                   <!-- input -->
                   <div class="w-1/3 md:w-1/4 lg:w-1/5">
@@ -184,19 +153,26 @@
                     </div>
                   </div>
                 </div>
+                @endif
                 <div class="flex items-center justify-start gap-2 items-center">
-                  <div class="grid shrink-0">
+                  @if ($inCart)
+                  <div class="grid w-full text-center">
+                    Sudah di keranjang
+                  </div>
+                  @else
+                  <div class="grid w-full">
                     <livewire:components.addtocart-icon-label :product="$product">
                   </div>
-                  <div class="grid shrink-0">
+                  <div class="grid w-full">
                     <!-- button -->
                     <!-- btn -->
                     <button type="button"
                       @click="$wire.autoCart()"
-                      class="btn gap-x-1 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-primary justify-center">
+                      class="btn gap-x-1 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary justify-center">
                       Order Langsung
                     </button>
                   </div>
+                  @endif
                 </div>
                 <!-- hr -->
                 <hr />
@@ -207,10 +183,10 @@
                   'Dilihat',$product->views()
                 ],
                 [
-                  'Disimpan',$product->views()
+                  'Dikeranjang',$product->inCartsCount()
                 ],
                 [
-                  'Terjual',$product->views()
+                  'Terjual',$product->inTransactionFinished()
                 ],
               ];
               @endphp

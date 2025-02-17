@@ -5,7 +5,7 @@
   <div class="flex items-center justify-between">
     <div class="flex items-center space-x-1">
       <span>NO. PESANAN #{{$tx->id}}</span>
-      <span class="{{$tx->getStatusColor()}} font-semibold">{{$tx->status}}</span>
+      <span class="{{$tx->getStatusColor()}} font-semibold">{{$tx->getStatusText()}}</span>
     </div>
     <div class="flex items-center space-x-2 {{$tx->getStatusColor()}} font-semibold">
       <div class="text-xs text-gray-600 flex items-center space-x-1">
@@ -63,18 +63,51 @@
     </button>
   @endif
 
+  @if ($tx->status == 'confirmed')
+    <hr />
+    @php
+    $log = $tx->logs()->where(['activity' => 'confirmed', 'by' => $tx->user_id])->first();
+    @endphp
+    @if ($log)
+    <div class="flex items-center justify-end w-full space-x-5">
+      <div class="flex items-center space-x-2 shrink-0">
+        <div class="text-red-600 text-lg">
+          Batal Otomatis
+          <div class="block sm:inline"
+          x-data="countdown('{{\Carbon\Carbon::parse($log->created_at)->addDays(3)->timestamp}}')"
+          x-init="startCountdown()"
+          x-text="timeLeft"></div>
+        </div>
+      </div>
+    </div>
+    @endif
+  @endif
+
   @if ($tx->status == 'store_finished')
-  <div class="flex items-center justify-end w-full space-x-5" x-data="{showComplainModal: false}" @alert-success.window="showComplainModal = false">
-    <div class="flex items-center space-x-2 shrink-0">
-      <button class="bg-red-600 text-white font-semibold px-5 py-2 shrink-0 rounded" @click="showComplainModal = true">Ajukan Komplain</button>
-      @include('components.modals.user-complain')
-      <div class="relative" x-data="{showConfirmation: false}">
-        <button class="bg-green-600 text-white font-semibold px-5 py-2 shrink-0 rounded" @click="showConfirmation = true">Selesaikan Pesanan</button>
-        <div x-show="showConfirmation" style="display: none;" class="absolute z-10 min-w-[216px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
-          <div class="mb-2">Yakin ingin menyelesaikan ?</div>
-          <div class="flex items-center space-x-2">
-            <button class="text-xs rounded p-2" @click="showConfirmation = false">Batal</button>
-            <button class="text-xs rounded p-2 bg-green-600 text-white" @click="$wire.finish()">Ya, Lanjutkan</button>
+  <div>
+    <div class="rounded bg-gray-100 p-4 mb-4">
+      <div class="font-bold text-lg mb-2">Bukti Penyelesaian</div>
+      <div class="mb-2">{{$tx->proof_text}}</div>
+      <a href="{{url('storage/transaction_proof/'.$tx->proof_file)}}" target="_blank" class="text-link flex items-center space-x-2">
+        <div>{{$tx->proof_file}}</div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+          <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="flex items-center justify-end w-full space-x-5" x-data="{showComplainModal: false}" @alert-success.window="showComplainModal = false">
+      <div class="flex items-center space-x-2 shrink-0">
+        <button class="bg-red-600 text-white font-semibold px-5 py-2 shrink-0 rounded" @click="showComplainModal = true">Ajukan Komplain</button>
+        @include('components.modals.user-complain')
+        <div class="relative" x-data="{showConfirmation: false}">
+          <button class="bg-green-600 text-white font-semibold px-5 py-2 shrink-0 rounded" @click="showConfirmation = true">Selesaikan Pesanan</button>
+          <div x-show="showConfirmation" style="display: none;" class="absolute z-10 min-w-[216px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
+            <div class="mb-2">Yakin ingin menyelesaikan ?</div>
+            <div class="flex items-center space-x-2">
+              <button class="text-xs rounded p-2" @click="showConfirmation = false">Batal</button>
+              <button class="text-xs rounded p-2 bg-green-600 text-white" @click="$wire.finish()">Ya, Lanjutkan</button>
+            </div>
           </div>
         </div>
       </div>
@@ -82,9 +115,18 @@
   </div>
   @endif
 
+  @if ($tx->status == 'cancelled')
+    @php
+    $log = $tx->logs()->where('activity', 'cancelled')->latest()->first();
+    @endphp
+    @if ($log)
+    <div class="font-semibold text-red-600">{{$log->description}}</div>
+    @endif
+  @endif
+
   @if ($tx->status == 'finished')
     @php
-    $log = $tx->logs()->latest()->first();
+    $log = $tx->logs()->where('activity', 'finished')->latest()->first();
     @endphp
     @if ($log)
     <div class="font-semibold">{{$log->description}}</div>
