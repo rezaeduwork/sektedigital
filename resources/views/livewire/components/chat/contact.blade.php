@@ -1,9 +1,30 @@
-<div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-  <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
-    <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
+<div wire:poll.10s>
+  <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+    <ul class="flex flex-wrap -mb-px">
+      <li class="me-2">
+        <button class="inline-block p-4 @if(!$tab) text-blue-600 border-b-2 border-blue-600 @endif rounded-t-lg hover:text-blue-600 hover:border-b-2 hover:border-blue-600" @click="$wire.set('tab', null)">Semua</button>
+      </li>
+      <li class="me-2">
+        <button class="inline-block p-4 @if($tab == 'member') text-blue-600 border-b-2 border-blue-600 @endif rounded-t-lg hover:text-gray-600 hover:text-blue-600 hover:border-b-2 hover:border-blue-600" @click="$wire.set('tab', 'member')">Member</button>
+      </li>
+      <li class="me-2">
+        <button class="inline-block p-4 @if($tab == 'store') text-blue-600 border-b-2 border-blue-600 @endif rounded-t-lg hover:text-gray-600 hover:text-blue-600 hover:border-b-2 hover:border-blue-600" @click="$wire.set('tab', 'store')">Toko</button>
+      </li>
+    </ul>
   </div>
-  <div class="flex-1">
-    <h2 class="text-lg font-semibold">Alice</h2>
-    <p class="text-gray-600">Hoorayy!!</p>
+  <div class="overflow-y-auto p-3 mb-9 pb-20" style="height: calc(100vh - 150px - 64px - 54px)">
+    @forelse ($list as $row)
+    <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
+      <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
+        <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
+      </div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold">Alice</h2>
+        <p class="text-gray-600">Hoorayy!!</p>
+      </div>
+    </div>
+    @empty
+    <div>Belum ada pesan</div>
+    @endforelse
   </div>
 </div>

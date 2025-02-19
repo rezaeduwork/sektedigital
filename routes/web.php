@@ -32,6 +32,7 @@ Route::middleware('user.auth')->group(function () {
   Route::get('/payment/{id}/detail', \App\Livewire\PaymentDetail::class);
   Route::get('/payment/{id}', \App\Livewire\Payment::class);
   Route::get('/chat', \App\Livewire\Chat::class);
+  Route::get('/chat/{user_id}', \App\Livewire\Chat::class);
 
 
   Route::prefix('user')->group(function () {
