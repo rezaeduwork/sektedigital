@@ -17,4 +17,16 @@ class ChatSession extends Model
   {
     return $this->hasMany(\App\Models\Chat::class, 'chat_session_id');
   }
+  public function member()
+  {
+    return $this->belongsTo(\App\Models\User::class, 'user_id');
+  }
+  public function storeUser()
+  {
+    return $this->belongsTo(\App\Models\User::class, 'user_store_id');
+  }
+  public function store()
+  {
+    return $this->belongsTo(\App\Models\Store::class, 'store_id');
+  }
 }

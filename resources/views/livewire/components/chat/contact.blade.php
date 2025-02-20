@@ -14,13 +14,19 @@
   </div>
   <div class="overflow-y-auto p-3 mb-9 pb-20" style="height: calc(100vh - 150px - 64px - 54px)">
     @forelse ($list as $row)
+    @php
+    $isStore = true;
+    if (auth()->id() == $row->user_store_id) {
+      $isStore = false;
+    }
+    @endphp
     <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
       <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
-        <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-12 h-12 rounded-full">
+        <img src="{{$isStore ? storeProfile($row->store): profile($row->member)}}" alt="User Avatar" class="w-12 h-12 rounded-full">
       </div>
       <div class="flex-1">
-        <h2 class="text-lg font-semibold">Alice</h2>
-        <p class="text-gray-600">Hoorayy!!</p>
+        <h2 class="text-lg font-semibold">{{$isStore ? $row->store->name: $row->member->name}}</h2>
+        <p class="text-gray-600">{{\Str::limit($row->chats()->latest()->first()->text, 20, '...') ?? '...'}}</p>
       </div>
     </div>
     @empty
