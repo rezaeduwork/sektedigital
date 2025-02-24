@@ -69,8 +69,8 @@
                       <a href="{{url('admin/account/'.$row->id)}}" class="btn btn-xs btn-secondary" wire:navigate>Detail</a>
                       <a href="http://" class="btn btn-xs btn-secondary" wire:navigate>Ubah</a>
                     </td>
-                  @endforeach
                   </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>

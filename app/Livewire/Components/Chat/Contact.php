@@ -15,9 +15,20 @@ class Contact extends Component
   #[On('reload')]
   public function render()
   {
-    $list = \App\Models\ChatSession::where(function ($query) {
-      $query->where('user_id', auth()->id())->orWhere('user_store_id', auth()->id());
-    });
+    $list = \App\Models\ChatSession::query();
+    if ($this->tab == 'member') {
+      $list->where(function ($query) {
+        $query->where('user_store_id', auth()->id());
+      });
+    } else if ($this->tab == 'store') {
+      $list->where(function ($query) {
+        $query->where('user_id', auth()->id());
+      });
+    } else {
+      $list->where(function ($query) {
+        $query->where('user_id', auth()->id())->orWhere('user_store_id', auth()->id());
+      });
+    }
     $list = $list->get();
     return view('livewire.components.chat.contact', compact('list'));
   }

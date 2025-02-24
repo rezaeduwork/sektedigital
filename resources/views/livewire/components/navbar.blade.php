@@ -135,7 +135,7 @@
                 </div>
               </a>
 
-              <div class="dropdown-menu dropdown-menu-lg !p-0 text-left">
+              <div class="dropdown-menu dropdown-menu-lg !p-0 text-left" wire:ignore>
                 <div>
                   <livewire:components.navbar-notification />
                 </div>
@@ -158,10 +158,19 @@
                       d="M17.802 17.292s.077 -.055 .2 -.149c1.843 -1.425 3 -3.49 3 -5.789c0 -4.286 -4.03 -7.764 -9 -7.764c-4.97 0 -9 3.478 -9 7.764c0 4.288 4.03 7.646 9 7.646c.424 0 1.12 -.028 2.088 -.084c1.262 .82 3.104 1.493 4.716 1.493c.499 0 .734 -.41 .414 -.828c-.486 -.596 -1.156 -1.551 -1.416 -2.29z" />
                     <path d="M7.5 13.5c2.5 2.5 6.5 2.5 9 0" />
                   </svg>
+                  @php
+                  $chatCount = \App\Models\ChatSession::where(function($query) {
+                    $query->where('user_id', auth()->id())->orWhere('user_store_id', auth()->id());
+                  })->whereHas('chats', function($query) {
+                    $query->whereNull('read_at')->where('receiver_id', auth()->id());
+                  })->count();
+                  @endphp
+                  @if ($chatCount > 0)
                   <span
                     class="absolute text-center min-w-[20px] flex items-center justify-center -top-3 inline-block p-[5px] h-5 left-3 text-xs align-center bg-primary text-white font-semibold rounded-full">
-                    12
+                    {{$chatCount}}
                   </span>
+                  @endif
                 </div>
               </div>
             </button>
@@ -220,7 +229,7 @@
                   </div>
                 </div>
               </a>
-              <div class="dropdown-menu dropdown-menu-lg !p-0 text-left">
+              <div class="dropdown-menu dropdown-menu-lg !p-0 text-left" wire:ignore>
                 <div>
                   <livewire:components.menu-user>
                 </div>

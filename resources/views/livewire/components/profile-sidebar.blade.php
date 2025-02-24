@@ -59,7 +59,7 @@
         </div>
       </a>
     </li>
-    <li>
+    {{-- <li>
       <a href="{{url('user/wallet')}}" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group text-xs" wire:navigate>
         <img src="{{url('assets/images/coin.png')}}" alt="" srcset="" class="size-6 shrink-0">
         <div class="ms-3 flex w-full justify-between items-center">
@@ -72,7 +72,7 @@
           </div>
         </div>
       </a>
-    </li>
+    </li> --}}
   </ul>
   <ul></ul>
   <hr />

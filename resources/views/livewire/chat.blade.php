@@ -17,16 +17,17 @@
       <header class="bg-white text-gray-700 h-[54px] flex justify-between items-center px-4">
         @if ($user)
         <div class="flex items-center space-x-2">
-          <img src="{{$isStore ? storeProfile($user->store): profile($user)}}" alt="" srcset="" class="size-[24px]">
+          <img src="{{$isStore ? storeProfile($user->store): profile($user)}}" alt="" srcset="" class="size-[24px] rounded-full">
           <h1 class="font-semibold">{{$isStore ? $user->store->name: $user->name}}</h1>
         </div>
         @else
         <h1 class="font-semibold">Jendela Pesan</h1>
         @endif
-        <button class="size-[24px] flex items-center justify-center rounded" @click="Livewire.navigate('{{url('/')}}')">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-[16px]" viewBox="0 0 16 16">
+        <button class="flex items-center justify-center rounded bg-primary text-white px-4 py-2 space-x-1" @click="Livewire.navigate('{{url('/')}}')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-[14px]" viewBox="0 0 16 16">
             <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
           </svg>
+          <div>Home</div>
         </button>
       </header>
 

@@ -18,6 +18,7 @@ class MessageBody extends Component
   #[On('reload')]
   public function render()
   {
+    \App\Models\Chat::whereNull('read_at')->where('receiver_id', auth()->id())->update(['read_at' => now()]);
     $list = \App\Models\Chat::where('chat_session_id', $this->session->id ?? null);
     $list = $list->get();
     return view('livewire.components.chat.message-body', compact('list'));

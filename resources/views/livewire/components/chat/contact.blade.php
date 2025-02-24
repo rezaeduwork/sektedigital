@@ -1,4 +1,4 @@
-<div wire:poll.10s>
+<div wire:poll.8s>
   <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
     <ul class="flex flex-wrap -mb-px">
       <li class="me-2">
@@ -19,16 +19,21 @@
     if (auth()->id() == $row->user_store_id) {
       $isStore = false;
     }
+    $lastChat = $row->chats()->latest()->first();
+    $isRead = true;
+    if ($lastChat->receiver_id == auth()->id() && $lastChat->read_at === null) {
+      $isRead = false;
+    }
     @endphp
-    <div class="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-      <div class="w-12 h-12 bg-gray-300 rounded-full mr-3">
-        <img src="{{$isStore ? storeProfile($row->store): profile($row->member)}}" alt="User Avatar" class="w-12 h-12 rounded-full">
+    <a class="flex items-center mb-4 {{!$isRead ? 'bg-gray-100':''}} cursor-pointer hover:bg-gray-100 p-2 rounded-md" href="{{url('chat/'.($isStore ? $row->user_store_id: $row->user_id))}}" wire:navigate>
+      <div class="size-10 bg-gray-300 rounded-full mr-3 flex items-center justify-center shrink-0">
+        <img src="{{$isStore ? storeProfile($row->store): profile($row->member)}}" alt="User Avatar" class="size-8 rounded-full">
       </div>
       <div class="flex-1">
-        <h2 class="text-lg font-semibold">{{$isStore ? $row->store->name: $row->member->name}}</h2>
-        <p class="text-gray-600">{{\Str::limit($row->chats()->latest()->first()->text, 20, '...') ?? '...'}}</p>
+        <h2 class="@if(!$isRead) font-bold @else font-semibold @endif">{{$isStore ? $row->store->name: $row->member->name}}</h2>
+        <p class="text-xs text-gray-500 @if(!$isRead) font-semibold @endif">{{\Str::limit($lastChat->text, 20, '...') ?? '...'}}</p>
       </div>
-    </div>
+    </a>
     @empty
     <div>Belum ada pesan</div>
     @endforelse

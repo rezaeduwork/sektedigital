@@ -1,4 +1,4 @@
-<div class="space-y-4 p-4" wire:ignore>
+<div class="space-y-4 p-4">
   <div class="flex items-center gap-3">
     <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-lg border-2 border-slate-600">
       <img class="w-full object-cover" src="{{profile(auth()->user())}}" alt="Profile" />

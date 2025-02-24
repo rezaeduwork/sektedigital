@@ -15,7 +15,8 @@ class Chat extends Model
     'reply_id',
     'chat_session_id',
     // comment('text | file')
-    'type'
+    'type',
+    'read_at'
   ];
   public function chatSession()
   {

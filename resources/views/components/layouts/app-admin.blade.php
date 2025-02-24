@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard 2</title>
+  <title>Administrator</title>
 
   <link rel="stylesheet" href="{{url('asset-admin')}}/plugins/fontawesome-free/css/all.min.css">
   <!-- Google Font: Source Sans Pro -->
@@ -14,9 +14,47 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{url('/asset-admin')}}/css/adminlte.min.css">
 
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+  <style>
+    .form-control {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    /* Focus Effect */
+    .form-control:focus {
+      border-color: #80bdff;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Disabled Input */
+    .form-control:disabled {
+      background-color: #e9ecef;
+      opacity: 1;
+    }
+
+    /* Readonly Input */
+    .form-control[readonly] {
+      background-color: #f8f9fa;
+      opacity
+    }
+
+  </style>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
   @livewireStyles
 
 </head>
@@ -74,6 +112,9 @@
           text: event.message,
           icon: "success"
         });
+      });
+      Livewire.on('reload', (event) => {
+        $('.modal').modal('hide')
       });
     });
   </script>

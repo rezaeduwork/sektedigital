@@ -118,7 +118,7 @@
       <a href="#" target="_blank" class="text-green-600 mt-2 block underline">Deposit Manual ? Klik disini</a>
       <a href="#" target="_blank" class="text-red-600 mt-2 block underline">Deposit / Withdrawal bermasalah ? Lapor disini</a>
       <hr class="mt-3 mb-2" />
-      <div class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group text-xs">
+      {{-- <div class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group text-xs">
         <img src="{{ url('assets/images/coin.png') }}" alt="" srcset="" class="size-6 shrink-0">
         <div class="ms-3 flex w-full justify-between items-center">
           <div>Koin</div>
@@ -128,12 +128,20 @@
       <div class="p-2">
         Lihat penjelasan Koin <a href="http://" class="text-link">di sini</a>
       </div>
-      <hr class="mt-3 mb-2" />
+      <hr class="mt-3 mb-2" /> --}}
       <button @click="$wire.set('page', 'bank')" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group bg-gray-100 rounded text-xs">
         <img src="{{ url('assets/images/bank.png') }}" alt="" srcset="" class="size-6 shrink-0">
         <div class="ms-3 flex w-full justify-between items-center">
           <div>Rekening Penarikan</div>
-          <div>0</div>
+          @if (auth()->user()->banks()->count())
+          <div>{{auth()->user()->banks()->count()}}</div>
+          @else
+          <div class="text-yellow-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+            </svg>
+          </div>
+          @endif
         </div>
       </button>
     </div>

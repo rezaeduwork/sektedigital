@@ -7,11 +7,12 @@ use Livewire\WithPagination;
 
 class Account extends Component
 {
+  use WithPagination;
   public function render()
   {
     $list = \App\Models\User::query();
 
     $list = $list->paginate(10);
-    return view('livewire.admin.account',compact('list'))->layout('components.layouts.app-admin');
+    return view('livewire.admin.account', compact('list'))->layout('components.layouts.app-admin');
   }
 }
