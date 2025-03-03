@@ -137,4 +137,20 @@ class Transaction extends Model
 
     return $statusText;
   }
+  public static function getStatusses()
+  {
+    return [
+      'unprocessed',
+      'confirmed',
+      'accepted',
+      'processed',
+      'store_finished',
+      'finished',
+      'rejected',
+      'cancelled',
+      'inspection',
+      'complain',
+      'expired'
+    ];
+  }
 }

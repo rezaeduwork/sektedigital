@@ -82,7 +82,7 @@ class User extends Authenticatable
   // HELPER
   public function reloadBalance()
   {
-    $this->balance = $this->balances()->whereIn('type', ['fund', 'store_fund', 'withdraw'])->sum('amount');
+    $this->balance = $this->balances()->whereIn('type', ['fund', 'store_fund', 'withdraw'])->whereIn('status', ['pending', 'success'])->sum('amount');
     $this->save();
   }
 }

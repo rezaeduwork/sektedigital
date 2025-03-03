@@ -19,28 +19,68 @@
               placeholder="Search"
             />
           </div>
-          <table class="table table-stripped mb-2">
+          <table class="table table-hover text-nowrap text-xs">
             <thead>
               <tr>
+                <th>Image</th>
                 <th>Name</th>
-                <th>Total Products</th>
-                <th>Icon</th>
-                <th>Action</th>
+                <th>Category</th>
+                <th>Store</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              @foreach ($list as $row)
-              <tr wire:key="{{'table-deleted-modal'.$row->id}}">
-                <td>{{$row->name}}</td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                  <livewire:admin.product.restore :id="$row->id" :key="'restore-'.$row->id" />
-                </td>
-              </tr>
-              @endforeach
+            @foreach ($list as $row)
+            <tr wire:key="{{'table'.$row->id}}">
+              <td>
+                <div class="flex items-center space-x-1">
+                  <img src="{{productImage($row->mainImage())}}" alt="" class="size-[24px]" />
+                  @if ($row->images()->count() > 1)
+                  <button class="btn btn-xs btn-default" data-toggle="modal" data-target="#modal-show-image-{{$row->id}}">+{{$row->images()->count() - 1}}</button>
+                  <div class="modal fade" id="modal-show-image-{{$row->id}}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Product Images</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="grid grid-cols-4 gap-2">
+                            @foreach ($row->images as $image)
+                            <img src="{{productImage($image)}}" alt="" class="w-full h-auto">
+                            @endforeach
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @endif
+                </div>
+              </td>
+              <td class="w-full font-bold text-sm" style="white-space: normal;">{{$row->title}}</td>
+              <td>
+                <div class="flex items-center space-x-1">
+                  <img src="{{url('storage/'.$row->category->icon)}}" alt="" srcset="" class="size-5">
+                  <div>
+                    {{$row->category->name}}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="flex items-center space-x-1">
+                  <img src="{{storeProfile($row->store)}}" alt="" srcset="" class="size-5">
+                  <div>
+                    {{$row->store->name}}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <livewire:admin.product.restore :id="$row->id" :key="'restore-'.$row->id" />
+              </td>
+            </tr>
+            @endforeach
             </tbody>
           </table>
           {{-- LOAD MORE --}}

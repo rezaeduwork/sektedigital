@@ -73,4 +73,11 @@ class Product extends Model
       $query->whereStatus('finished');
     })->count();
   }
+  public static function getStatusses()
+  {
+    return [
+      'active',
+      'inactive'
+    ];
+  }
 }

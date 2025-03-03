@@ -4,9 +4,8 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\On;
 
-class Product extends Component
+class Transaction extends Component
 {
   use WithPagination;
   public $search;
@@ -14,16 +13,16 @@ class Product extends Component
   public $sort;
   public function updateStatus($id, $status)
   {
-    \App\Models\Product::find($id)->update(['status' => $status]);
+    \App\Models\Transaction::find($id)->update(['status' => $status]);
     $this->dispatch('reload')->self();
   }
   #[On('reload')]
   public function render()
   {
-    $list = \App\Models\Product::query();
+    $list = \App\Models\Transaction::query()->has('user')->has('store');
     if ($this->search) {
       $list->where(function ($query) {
-        $query->where('title', 'like', '%' . $this->search . '%')->orWhere('highlight', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%');
+        $query->whereId('id', $this->search)->orWhere('user_id', $this->search);
       });
     }
     if ($this->searchStore) {
@@ -35,6 +34,6 @@ class Product extends Component
       $list->latest();
     }
     $list = $list->simplePaginate(10);
-    return view('livewire.admin.product', compact('list'))->layout('components.layouts.app-admin');
+    return view('livewire.admin.transaction', compact('list'))->layout('components.layouts.app-admin');
   }
 }

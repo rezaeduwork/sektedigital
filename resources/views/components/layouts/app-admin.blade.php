@@ -50,7 +50,6 @@
       background-color: #f8f9fa;
       opacity
     }
-
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -20,9 +20,14 @@ class FormLogin extends Component
       'password' => $this->password
     ];
     if (auth()->attempt($credentials)) {
+      if (auth()->user()->role == 'admin') {
+        $this->dispatch('alert-success', message: 'Selamat Datang');
+        $this->redirect('/admin');
+        return;
+      }
       auth()->user()->reloadBalance();
+      $this->dispatch('alert-success', message: 'Selamat Datang');
       $this->redirect('/');
-      $this->dispatch('alert-success', message: 'Login Berhasil');
       return;
     }
     $this->dispatch('alert-error', message: 'Username / Password Salah!');

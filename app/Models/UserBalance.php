@@ -14,11 +14,15 @@ class UserBalance extends Model
     'type',
     'amount',
     'description',
-    // pending | success
+    // pending | success | rejected
     'status',
     'token',
     'name',
     'user_id',
     'data'
   ];
+  public function user()
+  {
+    return $this->belongsTo(\App\Models\User::class, 'user_id');
+  }
 }

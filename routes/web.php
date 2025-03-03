@@ -67,6 +67,8 @@ Route::middleware('user.admin')->prefix('admin')->group(function () {
   Route::get('/account', \App\Livewire\Admin\Account::class);
   Route::get('/product', \App\Livewire\Admin\Product::class);
   Route::get('/category', \App\Livewire\Admin\Category::class);
+  Route::get('/transaction', \App\Livewire\Admin\Transaction::class);
+  Route::get('/withdrawal', \App\Livewire\Admin\Withdrawal::class);
 });
 
 Route::get('s/{id}', \App\Livewire\StoreDetail::class);
