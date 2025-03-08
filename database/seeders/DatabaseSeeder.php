@@ -158,9 +158,13 @@ class DatabaseSeeder extends Seeder
       'store_id' => $store->id,
       'status' => 'active'
     ]);
-
+    $mainImage = $this->fetchAndStoreRandomImage('main');
+    if (!$mainImage) {
+      $product->delete();
+      return;
+    }
     $product->images()->create([
-      'name' => $this->fetchAndStoreRandomImage('main'),
+      'name' => $mainImage,
       'type' => 'main'
     ]);
 
@@ -188,8 +192,12 @@ class DatabaseSeeder extends Seeder
     $randomFilename = Str::random(20) . '.jpeg';
     $destinationPath = 'public/' . $randomFilename;
 
-    // Download and store the image
-    Storage::put($destinationPath, file_get_contents($imageUrl));
+    try {
+      // Download and store the image
+      Storage::put($destinationPath, file_get_contents($imageUrl));
+    } catch (\Throwable $th) {
+      return null;
+    }
 
     return $randomFilename;
   }
