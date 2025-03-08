@@ -183,7 +183,7 @@ class DatabaseSeeder extends Seeder
     $height = 800;  // Keep a reasonable height
 
     // Get random image from Lorem Picsum (landscape)
-    $imageUrl = "https://picsum.photos/id/{$randomId}/{$width}/{$height}";
+    $imageUrl = "https://picsum.photos/{$width}/{$height}";
 
     $randomFilename = Str::random(20) . '.jpeg';
     $destinationPath = 'public/' . $randomFilename;
