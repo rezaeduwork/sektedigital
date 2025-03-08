@@ -178,11 +178,11 @@ class DatabaseSeeder extends Seeder
   {
     // Generate a random ID for Lorem Picsum
     $randomId = mt_rand(1, 1000);
-    // Width and height for the image
-    $width = 800;
-    $height = 600;
+    // Landscape aspect ratio (wider)
+    $width = 1200;  // Increase width
+    $height = 800;  // Keep a reasonable height
 
-    // Get random image from Lorem Picsum
+    // Get random image from Lorem Picsum (landscape)
     $imageUrl = "https://picsum.photos/id/{$randomId}/{$width}/{$height}";
 
     $randomFilename = Str::random(20) . '.jpeg';
