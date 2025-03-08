@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class DatabaseSeeder extends Seeder
 {
@@ -116,6 +117,7 @@ class DatabaseSeeder extends Seeder
     ) {
       $category = \App\Models\CategoryProduct::create($row);
       foreach (range(1, 10) as $rowProduct) {
+        File::copy(public_path('category-icons.bak/' . $category->icon), storage_path('app/public/' . $category->icon));
         $this->createProduct($category, $store1);
         $this->createProduct($category, $store2);
       }
