@@ -171,10 +171,13 @@ class DatabaseSeeder extends Seeder
     // Handle additional product images
     $additionalImagesCount = mt_rand(2, 10);
     foreach (range(1, $additionalImagesCount) as $row) {
-      $product->images()->create([
-        'name' => $this->fetchAndStoreRandomImage('additional'),
-        'type' => 'additional'
-      ]);
+      $additionalImage = $this->fetchAndStoreRandomImage('additional');
+      if (!$additionalImage) {
+        $product->images()->create([
+          'name' => $this->fetchAndStoreRandomImage('additional'),
+          'type' => 'additional'
+        ]);
+      }
     }
   }
   // Helper function to fetch and store a random image
