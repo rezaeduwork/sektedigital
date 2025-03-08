@@ -115,7 +115,7 @@ class DatabaseSeeder extends Seeder
       ] as $row
     ) {
       $category = \App\Models\CategoryProduct::create($row);
-      foreach (range(1, 100) as $rowProduct) {
+      foreach (range(1, 10) as $rowProduct) {
         $this->createProduct($category, $store1);
         $this->createProduct($category, $store2);
       }
