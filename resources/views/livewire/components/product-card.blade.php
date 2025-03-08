@@ -14,7 +14,7 @@
     <div class="flex-grow flex flex-col gap-3 p-4">
       <a href="#!" class="text-decoration-none text-gray-500"><small>{{$product->category->name ?? ''}}</small></a>
       <div class="h-full flex flex-col gap-2">
-        <h3 class="text-base truncate"><a href="#" class="hover:text-primary">{{\Str::limit($product->title,100,'...')}}</a></h3>
+        <h3 class="text-base truncate"><a href="#" class="hover:text-primary font-bold">{{\Str::limit($product->title,100,'...')}}</a></h3>
         <div class="flex-grow">
           {{\Str::limit($product->highlight,50,'...')}}
         </div>
@@ -57,7 +57,7 @@
       </div>
       <div class="flex justify-between items-center">
         <div>
-          <span class="text-gray-900 font-semibold">Rp{{number_format($product->price,0,',','.')}}</span>
+          <span class="text-red-600 font-semibold text-lg">Rp{{number_format($product->price,0,',','.')}}</span>
           {{-- <span class="line-through text-gray-500">$24</span> --}}
         </div>
         <div>

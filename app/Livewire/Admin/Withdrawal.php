@@ -3,21 +3,20 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class Withdrawal extends Component
 {
+  use WithPagination;
   public $search;
   public $status;
+  public $type;
   public $sort;
-  public function approve($id)
-  {
-    \App\Models\UserBalance::find($id)->update(['status' => 'success']);
-    $this->dispatch('alert-success', message: "Berhasil approve withdrawal!");
-    $this->dispatch('reload')->self();
-  }
+  #[On('reload')]
   public function render()
   {
-    $list = \App\Models\UserBalance::query()->where('type', 'withdraw')->whereStatus('pending');
+    $list = \App\Models\UserBalance::query()->has('user');
     if ($this->search) {
       $list->where(function ($query) {
         $query->where('user_id', $this->search);
@@ -25,6 +24,9 @@ class Withdrawal extends Component
     }
     if ($this->status) {
       $list->where('status', $this->status);
+    }
+    if ($this->type) {
+      $list->where('type', $this->type);
     }
     if (!$this->sort) {
       $list->latest();

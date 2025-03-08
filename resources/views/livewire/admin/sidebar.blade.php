@@ -67,21 +67,9 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{url('admin/withdrawal')}}" class="nav-link">
+              <a href="{{url('admin/withdrawal')}}" class="nav-link" wire:navigate>
                 <i class="far fa-circle nav-icon invisible"></i>
-                <p>Withdrawal Request</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/tables/simple.html" class="nav-link">
-                <i class="far fa-circle nav-icon invisible"></i>
-                <p>Member Balance</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/tables/simple.html" class="nav-link">
-                <i class="far fa-circle nav-icon invisible"></i>
-                <p>Store Balance</p>
+                <p>Balances</p>
               </a>
             </li>
           </ul>

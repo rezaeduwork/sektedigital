@@ -25,4 +25,15 @@ class UserBalance extends Model
   {
     return $this->belongsTo(\App\Models\User::class, 'user_id');
   }
+
+  // HELPER
+  public static function getTypes()
+  {
+    return [
+      'fund',
+      'store_fund',
+      'coin',
+      'withdraw'
+    ];
+  }
 }

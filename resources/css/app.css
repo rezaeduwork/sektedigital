@@ -12,6 +12,12 @@
     font-family: "Mako", "Roboto", sans-serif;
   }
 }
+html {
+  scroll-behavior: smooth;
+}
+div {
+  scroll-behavior: smooth;
+}
 input {
   box-shadow: none!important;
 }

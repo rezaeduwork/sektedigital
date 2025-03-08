@@ -22,7 +22,8 @@
         <span class="text-gray-900 text-base font-bold">Rp. {{number_format($product->price)}}</span>
         {{-- <span class="line-through text-gray-500">$24</span> --}}
       </div>
-      <div class="flex items-center justify-between w-full">
+      <div class="flex items-center @if ($total_rating_star > 0) justify-between @endif w-full">
+        @if ($total_rating_star > 0)
         <div class="text-yellow-500 flex items-center gap-2 mt-3">
           <!-- rating -->
           <div class="flex items-center">
@@ -43,6 +44,8 @@
           </div>
           <span class="text-gray-500 small">{{round($total_rating_star,1)}}</span>
         </div>
+        @endif
+
         <div class="text-yellow-500 flex items-center gap-2 mt-3">
           @php
           $ordered = $product->transactionDetails()->whereHas('transaction', function($query) {

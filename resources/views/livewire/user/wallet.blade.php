@@ -12,7 +12,7 @@
       <div>Kembali</div>
     </button>
     @else
-    <button type="button" class="text-primary px-4 py-2 underline rounded-md shrink-0">Download Riwayat</button>
+    {{-- <button type="button" class="text-primary px-4 py-2 underline rounded-md shrink-0">Download Riwayat</button> --}}
     @endif
   </div>
   <div class="flex items-start flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
@@ -34,9 +34,9 @@
       <div class="p-2">
         Lihat penjelasan Saldo <a href="http://" class="text-link">di sini</a>
       </div>
-      <hr class="mt-2 mb-3" />
+      <hr class="mt-2 mb-4" />
       <div class="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0 text-white" x-data="{withdrawOpen: false}" @alert-success.window="withdrawOpen = false">
-        <button class="bg-primary py-2 w-full rounded">Deposit</button>
+        {{-- <button class="bg-primary py-2 w-full rounded">Deposit</button> --}}
         <button class="bg-primary py-2 w-full rounded" @click="withdrawOpen = true">Tarik Saldo</button>
         <template x-teleport="body">
           <div class="relative z-[999]" style="display: none;" x-show="withdrawOpen" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -115,8 +115,8 @@
         </template>
 
       </div>
-      <a href="#" target="_blank" class="text-green-600 mt-2 block underline">Deposit Manual ? Klik disini</a>
-      <a href="#" target="_blank" class="text-red-600 mt-2 block underline">Deposit / Withdrawal bermasalah ? Lapor disini</a>
+      {{-- <a href="#" target="_blank" class="text-green-600 mt-2 block underline">Deposit Manual ? Klik disini</a> --}}
+      <a href="https://api.whatsapp.com/send?phone=62895355094422" target="_blank" class="text-red-600 mt-2 block underline">Withdrawal bermasalah ? Lapor disini</a>
       <hr class="mt-3 mb-2" />
       {{-- <div class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group text-xs">
         <img src="{{ url('assets/images/coin.png') }}" alt="" srcset="" class="size-6 shrink-0">
