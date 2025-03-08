@@ -159,30 +159,38 @@ class DatabaseSeeder extends Seeder
       'status' => 'active'
     ]);
 
-    // Handle main product image
-    $sourcePath = public_path('assets/images/bg-violet.jpeg');
-    $randomFilename = Str::random(20) . '.jpeg';
-    $destinationPath = 'public/' . $randomFilename;
-
-    Storage::put($destinationPath, file_get_contents($sourcePath));
-
     $product->images()->create([
-      'name' => $randomFilename, // Remove 'public/' from stored path
+      'name' => $this->fetchAndStoreRandomImage('main'),
       'type' => 'main'
     ]);
 
     // Handle additional product images
     $additionalImagesCount = mt_rand(2, 10);
     foreach (range(1, $additionalImagesCount) as $row) {
-      $randomFilename = Str::random(20) . '.jpeg';
-      $destinationPath = 'public/' . $randomFilename;
-
-      Storage::put($destinationPath, file_get_contents($sourcePath));
-
       $product->images()->create([
-        'name' => $randomFilename,
+        'name' => $this->fetchAndStoreRandomImage('additional'),
         'type' => 'additional'
       ]);
     }
+  }
+  // Helper function to fetch and store a random image
+  private function fetchAndStoreRandomImage($type)
+  {
+    // Generate a random ID for Lorem Picsum
+    $randomId = mt_rand(1, 1000);
+    // Width and height for the image
+    $width = 800;
+    $height = 600;
+
+    // Get random image from Lorem Picsum
+    $imageUrl = "https://picsum.photos/id/{$randomId}/{$width}/{$height}";
+
+    $randomFilename = Str::random(20) . '.jpeg';
+    $destinationPath = 'public/' . $randomFilename;
+
+    // Download and store the image
+    Storage::put($destinationPath, file_get_contents($imageUrl));
+
+    return $randomFilename;
   }
 }
