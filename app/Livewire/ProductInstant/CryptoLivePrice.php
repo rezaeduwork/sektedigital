@@ -16,20 +16,10 @@ class CryptoLivePrice extends Component
   }
   public function getPrice()
   {
-    $price = 0;
-    $apiKey = config('services.crypto.bsc.api_key');
-    $url = "https://api.bscscan.com/api?module=stats&action=bnbprice&apikey={$apiKey}";
-
-    $response = Http::get($url);
-
-    if ($response->successful()) {
-      $data = $response->json();
-      $price = round($data['result']['ethusd'], 1);
-    }
-    $priceIdr = \App\Models\Currency::where('symbol', 'usdidr')->first();
-    if ($priceIdr) {
-      $this->price = $price * $priceIdr->price;
-      // $this->price = null;
+    \App\Models\Currency::reloadRate('bnbidr');
+    $bnbidr = \App\Models\Currency::where('symbol', 'bnbidr')->first();
+    if ($bnbidr) {
+      $this->price = $bnbidr->price;
     }
   }
   public function render()

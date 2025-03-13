@@ -103,7 +103,6 @@ class Tripay
       if ($response->successful()) {
         return $response->json();
       }
-
       return null;
     } catch (\Exception $e) {
       \Log::error('Tripay Fee Calculation Error: ' . $e->getMessage());

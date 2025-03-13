@@ -4,6 +4,7 @@ return [
   [
     'id' => 1,
     'code' => 'bsc',
+    'category' => 'buy_crypto',
     'title' => 'Ecer Binance Smart Chain',
     'highlight' => 'Jaringan cepat dan murah untuk transaksi DeFi, NFT, dan dApps berbasis BNB.',
     'description' => '',
@@ -16,6 +17,7 @@ return [
   [
     'id' => 2,
     'code' => 'eth',
+    'category' => 'buy_crypto',
     'title' => 'Ecer Ethereum',
     'highlight' => 'Blockchain terbesar untuk smart contract, DeFi, dan NFT dengan keamanan tinggi.',
     'description' => '',
@@ -28,6 +30,7 @@ return [
   [
     'id' => 3,
     'code' => 'sol',
+    'category' => 'buy_crypto',
     'title' => 'Ecer Solana',
     'highlight' => 'Blockchain berkecepatan tinggi dan biaya rendah untuk DeFi serta aplikasi Web3.',
     'description' => '',

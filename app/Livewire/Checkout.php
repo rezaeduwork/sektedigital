@@ -172,8 +172,7 @@ class Checkout extends Component
       session()->forget('selectedCarts');
       \DB::commit();
       $this->dispatch('alert-success', message: 'Transaksi berhasil dibuat.');
-      $this->redirect('user/transaction', navigate: true);
-      $this->redirect('payment/' . $payment->id, navigate: true);
+      $this->redirect(url('payment/' . $payment->id), navigate: true);
     } catch (\Throwable $th) {
       \DB::rollBack();
       $this->dispatch('alert-error', message: 'Transaksi gagal.');
@@ -182,22 +181,12 @@ class Checkout extends Component
   public function selectPayment($code)
   {
     $this->selectedPayment = $code;
-    // $selectedChannel = array_filter($this->channels, function ($item) use ($code) {
-    //   return $item['code'] === $code;
-    // });
-    // $selectedChannel = reset($selectedChannel);
     $feeData = tripay()->calculateFee($code, $this->totalPayment)['data'];
     $feeMerchant = $feeData[0]['total_fee']['merchant'];
     $this->platformFee = ceil($feeMerchant);
     if ($code === 'QRIS2' || $code === 'QRIS') {
       $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
     } else {
-      // $wrapupFee = (($this->productFee * config('services.platform.fee')) / 100);
-      // if ($wrapupFee > 5000) {
-      //   $this->platformFee = $this->platformFee + 5000;
-      // } else {
-      //   $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
-      // }
       $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
     }
     $this->reloadTotalPayment();

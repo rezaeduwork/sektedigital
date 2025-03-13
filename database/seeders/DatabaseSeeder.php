@@ -124,8 +124,7 @@ class DatabaseSeeder extends Seeder
     }
 
     // USDIDR CONVERSION
-    \App\Models\Currency::query()->delete();
-    \App\Models\Currency::reloadUsdIdr();
+    \App\Models\Currency::reloadRate('usdidr');
   }
   public function createUser($userParams)
   {

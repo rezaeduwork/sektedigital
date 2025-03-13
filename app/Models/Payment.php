@@ -30,6 +30,10 @@ class Payment extends Model
   {
     return $this->hasMany('App\Models\Transaction', 'payment_id');
   }
+  public function singleTransaction()
+  {
+    return $this->hasOne('App\Models\TransactionSingle', 'payment_id');
+  }
   public function getStatusColor()
   {
     $statusText = $this->status;

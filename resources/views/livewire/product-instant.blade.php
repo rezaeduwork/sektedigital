@@ -4,7 +4,7 @@
       <!-- Produk -->
       <div class="w-full">
         <nav class="text-xs text-gray-500 mb-6">
-          <a href="#" class="text-blue-500">Beranda</a> > <a href="#" class="text-blue-500">Beli Cepat</a> > <span>{{$product->title}}</span>
+          <a href="#" class="text-blue-500">Beranda</a> > <span>{{$product->title}}</span>
         </nav>
         <div class="flex items-start gap-4 mb-6">
           <img src="{{url($product->image)}}" alt="ML Logo" class="w-12 h-12 rounded-full">
@@ -25,34 +25,7 @@
             </div>
           </div>
         </div>
-        <div class="rounded space-y-4">
-          <div>
-            <h2 class="font-semibold mb-2">Masukan Alamat Wallet Tujuan</h2>
-            <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 mb-2" role="alert">
-              <p class="font-bold">Perhatian!</p>
-              <div class="">Mohon perhatikan alamat tujuan, platform tidak bertanggung jawab atas kesalahan pengguna</div>
-            </div>
-            <input type="text" placeholder="alamat {{$product->code}}" class="form-control w-full p-2 border border-gray-200 outline-none ring-none rounded">
-          </div>
-          <div>
-            <h2 class="font-semibold mb-2">Masukan Nominal</h2>
-            <input type="text" placeholder="Rp. " class="form-control w-full p-2 border border-gray-200 outline-none ring-none rounded">
-          </div>
-          <div class="flex gap-2 text-xs">
-            <span class="p-2 bg-green-100 rounded-lg flex items-center gap-2">
-                🏆 Terbaik
-            </span>
-            <span class="p-2 bg-white rounded-lg flex items-center gap-2">
-                🚀 Transaksi Instan
-            </span>
-            <span class="p-2 bg-white rounded-lg flex items-center gap-2">
-                💰 Termurah
-            </span>
-            <span class="p-2 bg-white rounded-lg flex items-center gap-2">
-                ⏳ 5-10 Detik Selesai
-            </span>
-          </div>
-        </div>
+        <livewire:product-instant.crypto-input :product="$product">
         <hr class="my-4" />
         <div class="mb-4">
           <h2 class="font-semibold mb-2">✨ Ulasan</h2>
@@ -138,22 +111,7 @@
       </div>
 
       <!-- Informasi Pesanan -->
-      <div class="w-[350px] shrink-0 sticky top-[110px] self-start">
-        <div class="bg-white border border-violet-100 p-4 rounded-lg space-y-4">
-          <h2 class="font-semibold">Pembayaran</h2>
-
-          {{-- <label class="text-sm text-gray-500">User ID</label>
-          <input type="text" placeholder="Contoh: 12345678" class="w-full p-2 border rounded mb-2"> --}}
-
-          <h2 class="text-xl font-bold text-orange-500">Rp-</h2>
-          <div class="space-y-2">
-            <button class="w-full py-2 bg-primary/50 text-white rounded">Bayar Sekarang</button>
-            <p class="text-xs text-gray-500 text-center">
-              ✅ 100% Transaksi Aman Dijamin oleh <span class="text-blue-500">Trade Guard</span>
-            </p>
-          </div>
-        </div>
-      </div>
+      <livewire:product-instant.payment-info :product="$product">
     </div>
   </div>
   <div class="mb-4">
@@ -188,7 +146,7 @@
       ]
        as $key => $row)
         <div class="border rounded-lg bg-white">
-          <button @click="open = open === {{$key}} ? 0 : {{$key}}" class="w-full text-left p-3 text-black flex justify-between">
+          <button @click="open = open === {{$key}} ? 0 : {{$key}}" class="w-full text-left p-3 text-black flex justify-between font-semibold">
               {{$row['question']}}
               <span class="text-primary" x-text="open === {{$key}} ? '▲' : '▼'"></span>
           </button>
