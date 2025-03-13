@@ -18,7 +18,9 @@ class Payment extends Model
     'data',
     'fee_amount',
     'fee_wrap_up',
-    'fee_total'
+    'fee_total',
+    'proof_text',
+    'proof_file'
   ];
   public function user()
   {

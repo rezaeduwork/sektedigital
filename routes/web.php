@@ -72,4 +72,5 @@ Route::middleware('user.admin')->prefix('admin')->group(function () {
 });
 
 Route::get('s/{id}', \App\Livewire\StoreDetail::class);
+Route::get('i/{code}', \App\Livewire\ProductInstant::class);
 Route::get('/{slug}', \App\Livewire\ProductDetail::class);

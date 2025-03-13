@@ -39,6 +39,25 @@ return [
 
   'platform' => [
     'fee' => env('PLATFORM_FEE', 1)
+  ],
+
+  'crypto' => [
+    'bsc' => [
+      'api_key' => env('BSCSCAN_API_KEY', null)
+    ],
+    'eth' => [
+      'api_key' => env('ETHERSCAN_API_KEY', null)
+    ],
+    'sol' => [
+      'api_key' => env('SOLSCAN_API_KEY', null)
+    ],
+    'idr' => [
+      'api_key' => env('IDR_API_KEY', null)
+    ],
+    'metamask' => [
+      'private_key' => env('METAMASK_PRIVATE_KEY', null),
+      'eth_address' => env('METAMAS_ETH_ADDRESS', null)
+    ],
   ]
 
 ];

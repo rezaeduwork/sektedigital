@@ -1,4 +1,12 @@
 <div class="space-y-6">
+  <div class="flex">
+    <div class="w-full flex items-center justify-between">
+      <h2 class="text-md lg:text-lg flex items-center">
+        <img src="{{url('assets/images/category.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
+        <div class="ms-3 font-black text-2xl">Semua Kategori</div>
+      </h2>
+    </div>
+  </div>
   <style>
     .background-image {
       position: relative;
@@ -22,7 +30,7 @@
     }
   </style>
   <div class="flex">
-    <div class="space-y-6">
+    <div class="space-y-10">
       <div class="grid md:grid-cols-4 lg:grid-cols-7 gap-4 lg:gap-4">
         @foreach (\App\Models\CategoryProduct::all() as $row)
         <!-- col -->
@@ -44,21 +52,35 @@
         </div>
         @endforeach
       </div>
-      <div>
-        <template x-if="true">
-          <livewire:components.service.ppob>
-        </template>
-        <template x-if="true">
-
-        </template>
-      </div>
-      <div class="flex items-center space-x-2">
-        @foreach ([
-          ['label' => 'Jasa Rekber', 'url' => '#'],
-          ['label' => 'Ecer Crypto', 'url' => '#'],
-        ] as $row)
-        <a href="{{$row['url']}}" class="border rounded-full bg-gray-100 px-3 py-1 text-xs text-black">{{$row['label']}}</a>
-        @endforeach
+      <div class="space-y-6">
+        <div class="w-full flex items-center justify-between">
+          <h2 class="text-md lg:text-lg flex items-center">
+            <img src="{{url('assets/images/instant.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
+            <div class="ms-3 font-black text-2xl">Transaksi Cepat</div>
+          </h2>
+        </div>
+        <div class="space-y-4">
+          <template x-if="true">
+            <livewire:components.service.ppob>
+          </template>
+          <template x-if="true">
+            <div class="flex items-center space-x-2">
+              @foreach (config('product') as $row)
+                @if($row['status'] == 'active')
+                <button onclick="Livewire.navigate('{{url('i/'.$row['code'])}}')" class="border rounded-full bg-gray-100 px-3 py-1 text-xs text-black flex items-center space-x-1">
+                  <img src="{{url($row['image'])}}" alt="" srcset="" class="size-4 shrink-0">
+                  <div class="">{{$row['title']}}</div>
+                </button>
+                @else
+                <button class="border rounded-full bg-gray-100 opacity-50 px-3 py-1 text-xs text-black flex items-center space-x-1 cursor-default">
+                  <img src="{{url($row['image'])}}" alt="" srcset="" class="size-4 shrink-0">
+                  <div class="">{{$row['title']}}</div>
+                </button>
+                @endif
+              @endforeach
+            </div>
+          </template>
+        </div>
       </div>
     </div>
   </div>

@@ -122,6 +122,10 @@ class DatabaseSeeder extends Seeder
         $this->createProduct($category, $store2);
       }
     }
+
+    // USDIDR CONVERSION
+    \App\Models\Currency::query()->delete();
+    \App\Models\Currency::reloadUsdIdr();
   }
   public function createUser($userParams)
   {

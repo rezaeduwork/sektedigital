@@ -28,10 +28,11 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+
   @livewireStyles
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-violet-50">
   <livewire:components.navbar>
 
   <!-- Modal -->
