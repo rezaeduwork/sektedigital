@@ -15,13 +15,15 @@
       {{-- <span class="inline-block px-2 py-1 text-sm align-baseline leading-none rounded-full bg-primary text-white font-semibold w-auto absolute top-[1rem] right-[1rem]">-45%</span> --}}
     </div>
     <div class="p-4 h-full flex flex-col items-start">
-      <h2 class="mb-1 text-base h-full">
-        <span href="#" class="text-inherit group-hover:text-primary group-hover:font-semibold h-full">{{ \Str::limit($product->title, 30, '...') }}</span>
-      </h2>
-      <div>
-        <span class="text-gray-900 text-base font-bold">Rp. {{number_format($product->price)}}</span>
-        {{-- <span class="line-through text-gray-500">$24</span> --}}
+      <div class="text-gray-600 text-xs flex items-center space-x-1 mb-2">
+        <img src="{{url('storage/'.$product->category->icon)}}" alt="" srcset="" class="size-4 shrink-0" />
+        <div>
+          {{$product->category->name}}
+        </div>
       </div>
+      <h2 class="mb-2 text-base h-full leading-[20px]">
+        <span href="#" class="text-inherit font-semibold group-hover:text-primary group-hover:font-bold h-full block break-all">{{ \Str::limit($product->title, 30, '...') }}</span>
+      </h2>
       <div class="flex items-center @if ($total_rating_star > 0) justify-between @endif w-full">
         @if ($total_rating_star > 0)
         <div class="text-yellow-500 flex items-center gap-2 mt-3">
@@ -45,15 +47,20 @@
           <span class="text-gray-500 small">{{round($total_rating_star,1)}}</span>
         </div>
         @endif
-
+        @php
+        $ordered = $product->transactionDetails()->whereHas('transaction', function($query) {
+          $query->whereNotIn('status', ['unprocessed','cancelled','inspection','rejected']);
+        })->count();
+        @endphp
+        @if ($ordered > 0 || mt_rand(1,2) === 1)
         <div class="text-yellow-500 flex items-center gap-2 mt-3">
-          @php
-          $ordered = $product->transactionDetails()->whereHas('transaction', function($query) {
-            $query->whereNotIn('status', ['unprocessed','cancelled','inspection','rejected']);
-          })->count();
-          @endphp
           <span class="text-gray-500 small">{{$ordered}} Terjual</span>
         </div>
+        @endif
+      </div>
+      <div>
+        <span class="text-gray-900 text-base font-bold text-lg">Rp. {{number_format($product->price)}}</span>
+        {{-- <span class="line-through text-gray-500">$24</span> --}}
       </div>
     </div>
   </div>

@@ -135,7 +135,7 @@
   <livewire:components.popover-user>
   @endauth
 
-  <main class="mt-[3rem] lg:mt-[119px] max-w-[968px] mx-auto">
+  <main class="{{isset($contentClasses) ? $contentClasses: 'mt-[3rem] lg:mt-[119px] max-w-[968px] mx-auto'}}">
     {{$slot}}
   </main>
 

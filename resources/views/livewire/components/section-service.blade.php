@@ -1,12 +1,4 @@
-<div class="space-y-6">
-  <div class="flex">
-    <div class="w-full flex items-center justify-between">
-      <h2 class="text-md lg:text-lg flex items-center">
-        <img src="{{url('assets/images/category.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
-        <div class="ms-3 font-black text-2xl">Semua Kategori</div>
-      </h2>
-    </div>
-  </div>
+<div>
   <style>
     .background-image {
       position: relative;
@@ -31,32 +23,11 @@
   </style>
   <div class="flex">
     <div class="space-y-10">
-      <div class="grid md:grid-cols-4 lg:grid-cols-7 gap-4 lg:gap-4">
-        @foreach (\App\Models\CategoryProduct::all() as $row)
-        <!-- col -->
-        <div class="shrink-0">
-          <a href="{{url('shop/'.$row->id)}}" class="text-decoration-none text-inherit" wire:navigate>
-            <!-- card -->
-            <div class="border hover:shadow-md rounded-tr-3xl rounded-bl-3xl relative" style="background-image: url('{{url('assets/images/violet-category-compresseds.png')}}'); background-size: cover; background-position: center;">
-              <!-- Overlay -->
-              <div class="card-body text-center py-4 z-10">
-                <div class="flex justify-center">
-                  <!-- img -->
-                  <img src="{{url('storage/'.$row->icon)}}" alt="{{$row->name}}" class="mb-3">
-                </div>
-                <!-- text -->
-                <div class="truncate">{{$row->name}}</div>
-              </div>
-            </div>
-          </a>
-        </div>
-        @endforeach
-      </div>
       <div class="space-y-6">
-        <div class="w-full flex items-center justify-between">
+        <div class="w-full flex items-center justify-between" id="ppob-section">
           <h2 class="text-md lg:text-lg flex items-center">
             <img src="{{url('assets/images/instant.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
-            <div class="ms-3 font-black text-2xl">Transaksi Cepat</div>
+            <div class="ms-3 font-black text-2xl">Top Up Cepat</div>
           </h2>
         </div>
         <div class="space-y-4">
@@ -82,6 +53,38 @@
           </template>
         </div>
       </div>
+      <div class="space-y-6">
+        <div class="flex" id="category-section">
+          <div class="w-full flex items-center justify-between">
+            <h2 class="text-md lg:text-lg flex items-center">
+              <img src="{{url('assets/images/category.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
+              <div class="ms-3 font-black text-2xl">Semua Kategori</div>
+            </h2>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-4 lg:grid-cols-7 gap-4 lg:gap-4">
+          @foreach (\App\Models\CategoryProduct::all() as $row)
+          <!-- col -->
+          <div class="shrink-0">
+            <a href="{{url('shop/'.$row->id)}}" class="text-decoration-none text-inherit" wire:navigate>
+              <!-- card -->
+              <div class="border hover:shadow-md rounded-tr-3xl rounded-bl-3xl relative" style="background-image: url('{{url('assets/images/violet-category-compresseds.png')}}'); background-size: cover; background-position: center;">
+                <!-- Overlay -->
+                <div class="card-body text-center py-4 z-10">
+                  <div class="flex justify-center">
+                    <!-- img -->
+                    <img src="{{url('storage/'.$row->icon)}}" alt="{{$row->name}}" class="mb-3">
+                  </div>
+                  <!-- text -->
+                  <div class="truncate">{{$row->name}}</div>
+                </div>
+              </div>
+            </a>
+          </div>
+          @endforeach
+        </div>
+      </div>
+
     </div>
   </div>
   {{-- <div class="flex pt-6">

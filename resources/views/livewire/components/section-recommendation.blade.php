@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="swiper-container swiper">
-    <div class="py-5 grid md:grid-cols-3 gap-6 lg:grid-cols-4">
+    <div class="py-5 grid md:grid-cols-3 gap-4 lg:grid-cols-4">
       @foreach($this->recommendationProduct as $row)
       <livewire:components.popular-card :product="$row" :key="$row->id">
       @endforeach

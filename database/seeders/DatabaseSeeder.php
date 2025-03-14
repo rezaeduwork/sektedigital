@@ -116,8 +116,8 @@ class DatabaseSeeder extends Seeder
       ] as $row
     ) {
       $category = \App\Models\CategoryProduct::create($row);
-      foreach (range(1, 10) as $rowProduct) {
-        File::copy(public_path('category-icons.bak/' . $category->icon), storage_path('app/public/' . $category->icon));
+      File::copy(public_path('category-icons.bak/' . $category->icon), storage_path('app/public/' . $category->icon));
+      foreach (range(1, mt_rand(2, 5)) as $rowProduct) {
         $this->createProduct($category, $store1);
         $this->createProduct($category, $store2);
       }
@@ -125,6 +125,23 @@ class DatabaseSeeder extends Seeder
 
     // USDIDR CONVERSION
     \App\Models\Currency::reloadRate('usdidr');
+
+    \App\Models\ProductInstant::query()->delete();
+    foreach (config('product') as $row) {
+      \App\Models\ProductInstant::create([
+        'id' => $row['id'],
+        'code' => $row['code'],
+        'category' => $row['category'],
+        'title' => $row['title'],
+        'highlight' => $row['highlight'],
+        'description' => $row['description'],
+        'price' => 0,
+        'slug' => $row['slug'],
+        'stock' => 0,
+        'status' => $row['status'],
+        'image' => $row['image']
+      ]);
+    }
   }
   public function createUser($userParams)
   {
