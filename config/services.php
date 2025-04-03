@@ -58,6 +58,11 @@ return [
       'private_key' => env('METAMASK_PRIVATE_KEY', null),
       'eth_address' => env('METAMAS_ETH_ADDRESS', null)
     ],
-  ]
+  ],
+
+  'digiflazz' => [
+    'username' => env('DIGIFLAZZ_USERNAME', null),
+    'api_key' => env('DIGIFLAZZ_API_KEY', null)
+  ],
 
 ];

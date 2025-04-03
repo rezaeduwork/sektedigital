@@ -59,13 +59,16 @@ class WebhookController extends Controller
           if ($checkTx['status'] === true) {
             $invoice->update(['status' => 'settlement', 'settlement_at' => now()]);
 
-            $invoice->transactions()->update(['status' => 'confirmed']);
-            foreach ($invoice->transactions as $tx) {
-              transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
-            }
+            if ($invoice->singleTransaction) {
+            } else {
+              $invoice->transactions()->update(['status' => 'confirmed']);
+              foreach ($invoice->transactions as $tx) {
+                transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
+              }
 
-            \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id)->delay(now()->addDays(3));
-            // \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id);
+              \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id)->delay(now()->addDays(3));
+              // \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id);
+            }
 
             $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'settlement'));
           } else {
@@ -79,18 +82,24 @@ class WebhookController extends Controller
 
         case 'EXPIRED':
           $invoice->update(['status' => 'expired']);
-          $invoice->transactions()->update(['status' => 'expired']);
-          foreach ($invoice->transactions as $tx) {
-            transactionActivity($tx, $tx->user_id, 'expired', ('transaction expired'));
+          if ($invoice->singleTransaction) {
+          } else {
+            $invoice->transactions()->update(['status' => 'expired']);
+            foreach ($invoice->transactions as $tx) {
+              transactionActivity($tx, $tx->user_id, 'expired', ('transaction expired'));
+            }
           }
           break;
 
           $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'expired'));
         case 'FAILED':
           $invoice->update(['status' => 'rejected']);
-          $invoice->transactions()->update(['status' => 'rejected']);
-          foreach ($invoice->transactions as $tx) {
-            transactionActivity($tx, $tx->user_id, 'rejected', ('transaction rejected'));
+          if ($invoice->singleTransaction) {
+          } else {
+            $invoice->transactions()->update(['status' => 'rejected']);
+            foreach ($invoice->transactions as $tx) {
+              transactionActivity($tx, $tx->user_id, 'rejected', ('transaction rejected'));
+            }
           }
           break;
 

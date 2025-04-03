@@ -1,4 +1,4 @@
-<a class="swiper-slide shadow border rounded-lg hover:shadow-lg h-[unset] bg-white cursor-pointer group z-[1]" href="#" @click="Livewire.navigate('{{url($product->slug)}}')">
+<button class="swiper-slide shadow border rounded-lg hover:shadow-lg h-[unset] bg-white cursor-pointer group z-[1]" @click="Livewire.navigate('{{url($product->slug)}}')">
   @php
   $total_rating = $product->ratings()->count();
   $total_rating_star = $total_rating > 0 ? $product->ratings()->avg('rating') : 0;
@@ -64,4 +64,4 @@
       </div>
     </div>
   </div>
-</a>
+</button>

@@ -19,7 +19,7 @@
   <div class="mb-4">
     <div class="font-semibold mb-4">Riwayat Transaksi</div>
     <div class="grid grid-cols-3 gap-2">
-      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer" @click="Livewire.navigate('{{url('user/transaction')}}?tab={{'confirmed'}}')">
+      <div class="flex flex-col items-center justify-center space-y-2 border shadow p-4 rounded cursor-pointer" @click="Livewire.navigate('{{url('user/transaction')}}?tab={{'unprocessed'}}')">
         <img src="{{url('assets/images/time-is-money.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
         <div class="text-xs text-center">Menunggu Pembayaran</div>
       </div>

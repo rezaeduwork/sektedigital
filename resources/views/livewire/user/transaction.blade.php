@@ -15,7 +15,11 @@
         ['Selesai','finished'],
         ['Dibatalkan','cancelled'],
       ];
-      $unpaidTxQuery = auth()->user()->payments()->whereStatus('pending');
+      $unpaidTxQuery = auth()->user()->payments()->whereStatus('pending')->where(function($query) {
+        $query->has('transactions')->orWhereHas('singleTransaction', function($query) {
+          $query->whereNotNull('product_id');
+        });
+      });
       @endphp
       <div class="mb-4">
         <div class="table-responsive-xl rounded bg-white">
@@ -65,41 +69,53 @@
       <div class="mb-4 px-4 space-y-4">
         @if ($activeTab == 'unprocessed')
           @php
-          $payments = $unpaidTxQuery->get()->filter(function ($item) {
-            if ($item->singleTransaction) {
-              return (bool)$item->singleTransaction->product();
-            }
-            return true;
-          });
+          $payments = $unpaidTxQuery->get();
           @endphp
           @forelse ($payments as $row)
           <div class="space-y-4 border-b pb-4" wire:key="{{'payment-'.$row->id}}">
             @if ($row->singleTransaction)
             @php
-            $product = $row->singleTransaction->product();
+            $tx = $row->singleTransaction;
+            $product = $row->singleTransaction->product;
             @endphp
-            <div class="flex items-center justify-between space-x-5">
-              <div class="w-full">
-                <div class="flex flex-row gap-5">
-                  <img src="{{ productImage($product->mainImage()) }}" alt="Ecommerce" class="w-16 h-16 rounded">
-                  <div class="flex flex-col gap-2">
-                    <div class="space-y-2">
-                      <!-- title -->
-                      <a href="#" class="text-inherit">
-                        <a class="font-black text-lg text-link" href="{{url($product->slug)}}" wire:navigate>{{ $product->title }}</a>
-                      </a>
-                      <span class="text-gray-500 text-sm flex items-center space-x-1">
-                        <img src="{{ categoryImage($product->category) }}" alt="" srcset="" class="size-4">
-                        <span>{{ $product->category->name }}</span>
-                      </span>
-                    </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between w-full">
+                <div class="flex items-center space-x-1">
+                  <span>NO. PESANAN #{{$tx->id}}</span>
+                  <span class="{{$tx->getStatusColor()}} font-semibold">{{$tx->getStatusText()}}</span>
+                </div>
+                <div class="flex items-center space-x-2 {{$tx->getStatusColor()}} font-semibold">
+                  <div class="text-xs text-gray-600 flex items-center space-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3 mt-[2px]" viewBox="0 0 16 16">
+                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path>
+                    </svg>
+                    <span>{{\Carbon\Carbon::parse($tx->created_at)->format('Y-m-d H:i')}}</span>
                   </div>
                 </div>
               </div>
-              <!-- price -->
-              <div class="text-right shrink-0 space-y-4 text-2xl font-bold text-primary">
-                <div>Rp{{number_format($detail->price * $detail->quantity,0,',','.')}}</div>
-                <span class="text-xs font-medium me-2 px-2.5 py-0.5 rounded">{{$detail->quantity}} x Rp{{number_format($detail->price,0,',','.')}}</span>
+              <div class="flex items-center justify-between space-x-5">
+                <div class="w-full">
+                  <div class="flex flex-row gap-5">
+                    <img src="{{ productInstantImage($product) }}" alt="Ecommerce" class="w-16 h-16 rounded shrink-0">
+                    <div class="flex flex-col gap-2">
+                      <div class="space-y-2">
+                        <!-- title -->
+                        <a href="#" class="text-inherit">
+                          <a class="font-black text-lg text-link" href="{{url($product->slug)}}" wire:navigate>{{ $product->title }}</a>
+                        </a>
+                        <span class="text-gray-500 text-sm flex items-center space-x-1">
+                          {{-- <img src="{{ categoryImage($product->category) }}" alt="" srcset="" class="size-4"> --}}
+                          <span>{{ $product->category }}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- price -->
+                <div class="text-right shrink-0 space-y-4 text-2xl font-bold text-primary">
+                  <div>Rp{{number_format($row->amount,0,',','.')}}</div>
+                  {{-- <span class="text-xs font-medium me-2 px-2.5 py-0.5 rounded">{{$detail->quantity}} x Rp{{number_format($detail->price,0,',','.')}}</span> --}}
+                </div>
               </div>
             </div>
             @else

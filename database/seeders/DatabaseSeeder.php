@@ -127,21 +127,7 @@ class DatabaseSeeder extends Seeder
     \App\Models\Currency::reloadRate('usdidr');
 
     \App\Models\ProductInstant::query()->delete();
-    foreach (config('product') as $row) {
-      \App\Models\ProductInstant::create([
-        'id' => $row['id'],
-        'code' => $row['code'],
-        'category' => $row['category'],
-        'title' => $row['title'],
-        'highlight' => $row['highlight'],
-        'description' => $row['description'],
-        'price' => 0,
-        'slug' => $row['slug'],
-        'stock' => 0,
-        'status' => $row['status'],
-        'image' => $row['image']
-      ]);
-    }
+    \App\Models\ProductInstant::reloadCrypto();
   }
   public function createUser($userParams)
   {

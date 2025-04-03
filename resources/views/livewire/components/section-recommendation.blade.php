@@ -1,4 +1,4 @@
-<div class="mb-6 product-content">
+<div class="mb-6 product-content" id="recommendation-section">
   <div class="flex">
     <div class="w-full flex items-center justify-between">
       <h2 class="text-md lg:text-lg flex items-center">

@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="mx-auto rounded-lg mt-10 mb-4">
+<div class="container bg-white rounded-lg py-4">
+  <div class="mx-auto mb-4">
     <div class="flex gap-6">
       <!-- Produk -->
       <div class="w-full">
@@ -7,7 +7,11 @@
           <a href="#" class="text-blue-500">Beranda</a> > <span>{{$product->title}}</span>
         </nav>
         <div class="flex items-start gap-4 mb-6">
-          <img src="{{url($product->image)}}" alt="ML Logo" class="w-12 h-12 rounded-full">
+          @if ($product->image)
+          <img src="{{url($product->image)}}" alt="ML Logo" class="w-12 h-12 rounded-full shrink-0">
+          @else
+          <div class="w-12 h-12 rounded-full shrink-0 bg-gray-100 border border-gray-400"></div>
+          @endif
           <div class="space-y-2">
             <h1 class="font-bold flex items-center">
               <span class="text-xl">
@@ -18,14 +22,20 @@
               {{$product->highlight}}
             </p>
             <div class="flex pt-2">
+              @if ($product->category == 'buy-crypto')
               <livewire:product-instant.crypto-live-price :ticker="$product->code">
+              @endif
               <div class="px-2 py-1 bg-white rounded flex items-center gap-2 text-red-600 font-semibold text-xs">
-                Stok (0.62893746 BNB)
+                Stok ({{$product->stock == -1 ? 'Unlimited': $product->stock}})
               </div>
             </div>
           </div>
         </div>
+        @if ($product->category == 'buy-crypto')
         <livewire:product-instant.crypto-input :product="$product">
+        @elseif(in_array($product->category, ['Pulsa','Data']))
+        <livewire:product-instant.pulsadata-input :product="$product">
+        @endif
         <hr class="my-4" />
         <div class="mb-4">
           <h2 class="font-semibold mb-2">✨ Ulasan</h2>

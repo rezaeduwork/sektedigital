@@ -1,4 +1,4 @@
-<div class="py-6" @if($list->count() <= 0) style="display: none;" @endif>
+<div class="py-6" @if($list->count() <= 0) style="display: none;" @endif id="store-list-section">
   <div class="flex flex-col md:flex-row justify-between lg:items-center gap-3 mb-6">
     <div class="text-2xl font-bold text-gray-600 flex items-center space-x-1">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-[24px] mr-2 !text-gray-600">
@@ -8,7 +8,7 @@
       <span class="mt-[2px]">{{$list->count()}}</span>
       <div class="mt-[2px]">Store</div>
     </div>
-    <a href="http://sektedigital.test/shop/store" class="btn inline-flex items-center gap-x-2 bg-white text-gray-800 border-gray-200 border disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300" wire:navigate="">
+    <a href="http://sektedigital.test/shop/store" class="btn inline-flex items-center gap-x-2 bg-white text-gray-800 border-gray-200 border font-medium text-xs disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300" wire:navigate="">
       Lihat Semua
     </a>
   </div>

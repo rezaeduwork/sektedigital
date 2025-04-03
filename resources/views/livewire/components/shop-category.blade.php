@@ -8,11 +8,13 @@
       $refs.tab.style.width = document.getElementById('shop-container').offsetWidth+'px';
       $refs.tab.style.top = (document.querySelector('header').offsetHeight)+'px';
       document.querySelector('header').classList.remove('shadow');
+      $refs.tab.classList.add('bg-white');
     } else {
       this.stickyTab = false
       $refs.tab.style.position = 'unset';
       document.querySelector('header').classList.add('shadow');
       $refs.tab.style.zIndex = 'unset';
+      $refs.tab.classList.remove('bg-white');
     }
   }
 }">
@@ -22,7 +24,7 @@
     <div class="text-[56px] font-bold">{{$category->name}}</div>
   </div>
   @endif
-  <div class="border-gray-200 dark:border-gray-700 w-full text-center flex items-center justify-center sticky bg-white"
+  <div class="border-gray-200 dark:border-gray-700 w-full text-center flex items-center justify-center sticky"
     x-ref="tab" @scroll.window="checkSticky()">
     <ul class="grid grid-cols-2 w-full lg:w-auto lg:flex lg:flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
       <li class="me-2">
@@ -53,11 +55,12 @@
       <button type="button" id="dropdownCategory" data-dropdown-toggle="dropdown" class="
       inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg group cursor-pointer text-primary
       ">
-        <div class="bg-gray-100 rounded p-1 px-2">+{{$totalCategory - $show}} Kategori</div>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 mt-[3px]">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-        </svg>
-
+        <div class="bg-primary text-white rounded-md flex items-center px-2 py-1">
+          <div class="rounded p-1 px-2">+{{$totalCategory - $show}} Kategori</div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 mt-[3px]">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
       </button>
       <!-- Dropdown menu -->
       <div id="dropdown" class="hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 z-[2]">

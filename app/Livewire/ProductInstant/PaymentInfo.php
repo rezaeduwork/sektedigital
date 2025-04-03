@@ -4,11 +4,21 @@ namespace App\Livewire\ProductInstant;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 
 class PaymentInfo extends Component
 {
   public $product;
+
+  // CRYPTO
   public $address;
+
+  // PULSA DATA
+  #[Url]
+  public ?string $provider;
+  #[Url]
+  public ?string $phone;
+
   public $selectedPayment;
   public $taxFee = 0;
   public $platformFee = 0;
@@ -18,8 +28,11 @@ class PaymentInfo extends Component
   public function mount($product)
   {
     $this->product = $product;
+    if (in_array($this->product->category, ['Pulsa', 'Data'])) {
+      $this->reloadPulsadataPayment();
+    }
   }
-  #[On('reload-payment.{product.id}')]
+  #[On('reload-crypto-payment.{product.id}')]
   public function reloadCryptoPayment($address, $amount)
   {
     if ($amount > 0) {
@@ -32,6 +45,19 @@ class PaymentInfo extends Component
     }
     if ($address) {
       $this->address = $address;
+    }
+  }
+  public function reloadPulsadataPayment()
+  {
+    $amount = $this->product->price;
+    if ($amount > 0) {
+      $this->selectedPayment = null;
+      $this->platformFee = 0;
+      $this->taxFee = 0;
+      $this->totalPayment = 0;
+
+      $this->productFee = $amount;
+      $this->getChannels();
     }
   }
   public function getChannels()
@@ -48,7 +74,18 @@ class PaymentInfo extends Component
   }
   public function pay()
   {
-    if (!$this->totalPayment > 0) {
+    $this->reloadTotalPayment();
+    $digiflazz = new \App\Services\Digiflazz;
+    $digiflazzBalance = $digiflazz->checkBalances();
+    if ($digiflazzBalance['success'] === false) {
+      $this->dispatch('alert-error', message: 'Gagal memproses pembayaran, silahkan hubungi admin.');
+      return false;
+    }
+    if ($digiflazzBalance['data']['deposit'] < $this->totalPayment) {
+      $this->dispatch('alert-error', message: 'Gagal memproses pembayaran, silahkan hubungi admin.');
+      return false;
+    }
+    if ($this->totalPayment <= 0) {
       $this->dispatch('alert-error', message: 'Pembayaran gagal di proses, silahkan refresh halaman!');
       return false;
     }
@@ -62,7 +99,16 @@ class PaymentInfo extends Component
         'user_id' => auth()->id(),
       ]);
 
-      $bnbidr = \App\Models\Currency::where('symbol', 'bnbidr')->first();
+      $dataTx = [];
+      $quantityTx = 1;
+      if ($this->product->category == 'buy-crypto') {
+        $bnbidr = \App\Models\Currency::where('symbol', 'bnbidr')->first();
+        $dataTx = ['address' => $this->address, 'product_category' => $this->product->category];
+        $quantityTx = round($this->totalPayment / $bnbidr->first()->price, 8);
+      } else if (in_array($this->product->category, ['Pulsa', 'Data'])) {
+        $dataTx = ['provider' => $this->provider, 'phone' => $this->phone, 'product_category' => $this->product->category];
+        $quantityTx = 1;
+      }
 
       // CREATE TRANSACTION
       $transaction = \App\Models\TransactionSingle::create([
@@ -70,12 +116,13 @@ class PaymentInfo extends Component
         'amount' => $this->productFee,
         'customer_name' => auth()->user()->name,
         'product_name' => $this->product->title,
+        'product_id' => $this->product->id,
         'customer_email' => auth()->user()->email,
         'customer_phone' => auth()->user()->phone,
         'user_id' => auth()->user()->id,
         'payment_id' => $payment->id,
-        'quantity' => round($this->totalPayment / $bnbidr->first()->price, 8),
-        'data' => json_encode(['address' => $this->address, 'product_category' => $this->product->category])
+        'quantity' => $quantityTx,
+        'data' => json_encode($dataTx)
       ]);
 
       $items = [

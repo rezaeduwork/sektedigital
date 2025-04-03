@@ -10,16 +10,16 @@
           <button type="button" data-bs-toggle="modal" data-bs-target="#userModal" class="bg-white text-primary rounded text-[16px] px-5 py-3 font-bold flex items-center justify-center space-x-2">
             <div>Daftar Sekarang</div>
           </button>
-          <a href="#category-section" class="text-white border-2 border-white rounded text-[16px] px-5 py-3 font-bold flex items-center justify-center space-x-2 inline">
+          <a href="#recommendation-section" class="text-white border-2 border-white rounded text-[16px] px-5 py-3 font-bold flex items-center justify-center space-x-2 inline">
             <div>Explore Produk</div>
           </a>
         </div>
         @else
-        <div class="mt-[32px] flex">
+        <div class="mt-[32px] flex space-x-2">
           <a href="#ppob-section" class="bg-white text-primary rounded text-[16px] px-5 py-3 font-bold flex items-center justify-center space-x-2 inline">
             <div>Top Up Instan</div>
           </a>
-          <a href="#category-section" class="text-white border-2 border-white rounded text-[16px] px-5 py-3 font-bold flex items-center justify-center space-x-2 inline">
+          <a href="#recommendation-section" class="text-white border-2 border-white rounded text-[16px] px-5 py-3 font-bold flex items-center justify-center space-x-2 inline">
             <div>Explore Produk</div>
           </a>
         </div>

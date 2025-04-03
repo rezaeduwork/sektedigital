@@ -15,11 +15,11 @@ class CryptoInput extends Component
   }
   public function updatedAmount()
   {
-    $this->dispatch('reload-payment.' . $this->product->id, amount: $this->amount, address: $this->address)->to(\App\Livewire\ProductInstant\PaymentInfo::class);
+    $this->dispatch('reload-crypto-payment.' . $this->product->id, amount: $this->amount, address: $this->address)->to(\App\Livewire\ProductInstant\PaymentInfo::class);
   }
   public function updatedAddress()
   {
-    $this->dispatch('reload-payment.' . $this->product->id, amount: $this->amount, address: $this->address)->to(\App\Livewire\ProductInstant\PaymentInfo::class);
+    $this->dispatch('reload-crypto-payment.' . $this->product->id, amount: $this->amount, address: $this->address)->to(\App\Livewire\ProductInstant\PaymentInfo::class);
   }
   public function render()
   {

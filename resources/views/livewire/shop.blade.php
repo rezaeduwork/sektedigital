@@ -1,10 +1,12 @@
 <div class="my-4">
   <div class="container">
     <livewire:components.shop-category :category="$category">
-    <hr />
+    {{-- <hr /> --}}
+    <a href="#store-list-section">
+      <img src="{{url('assets/images/banner/cashback.jpg')}}" alt="" srcset="" class="w-full rounded-md my-4">
+    </a>
     <livewire:components.shop.store-list :category="$category">
-    <hr />
-    <div class="flex flex-col md:flex-row justify-between lg:items-center mb-6 gap-3 mt-4">
+    <div class="flex flex-col md:flex-row justify-between lg:items-center mb-6 gap-3 mt-4" id="product-list-section">
       <div class="text-2xl font-bold text-gray-600 flex items-center space-x-1">
         {{-- <svg xmlns="http://www.w3.org/2000/svg" class="size-[24px] mr-2 !text-black" fill="currentColor" viewBox="0 0 16 16">
           <path d="M2.95.4a1 1 0 0 1 .8-.4h8.5a1 1 0 0 1 .8.4l2.85 3.8a.5.5 0 0 1 .1.3V15a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4.5a.5.5 0 0 1 .1-.3zM7.5 1H3.75L1.5 4h6zm1 0v3h6l-2.25-3zM15 5H1v10h14z"/>

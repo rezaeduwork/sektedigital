@@ -1,5 +1,5 @@
 <div class="w-[350px] shrink-0 sticky top-[110px] self-start">
-  <div class="bg-white border border-violet-100 p-4 rounded-lg space-y-4">
+  <div class="bg-white border border-violet-100 p-4 rounded-lg space-y-4 shadow">
     <h2 class="font-semibold">Ringkasan Transaksi</h2>
     <hr class="my-2" />
     @if ($productFee > 0)
@@ -87,14 +87,19 @@
 
     <h2 class="text-xl font-bold text-orange-500">Rp{{$totalPayment > 0 ? number_format($totalPayment,0,',','.'):'-'}}</h2>
     <div class="space-y-2">
-      <button class="w-full py-2 @if(($totalPayment !== null && $totalPayment > 0) && $address) bg-primary @else bg-primary/50 cursor-default @endif text-white rounded" wire:loading.remove wire:key="pay" wire:target="pay" wire:click="pay">Bayar Sekarang</button>
+      <button class="w-full py-2 @if(($totalPayment !== null && $totalPayment > 0)) bg-primary @else bg-primary/50 cursor-default @endif text-white rounded"
+      wire:loading.remove wire:key="pay" wire:target="pay"
+      @if(($totalPayment !== null && $totalPayment > 0))
+      wire:click="pay"
+      @endif
+      >Bayar Sekarang</button>
       <button class="w-full py-2 bg-primary/50 cursor-default text-white rounded" wire:loading wire:key="pay" wire:target="pay">
         <div class="w-full flex items-center justify-center">
           @include('components.spinner')
         </div>
       </button>
       <p class="text-xs text-gray-500 text-center">
-        ✅ 100% Transaksi Aman Dijamin oleh <span class="text-blue-500">Trade Guard</span>
+        ✅ 100% Transaksi Aman
       </p>
     </div>
   </div>

@@ -47,6 +47,13 @@ function productImage($image)
 {
   return url('storage/' . $image->name);
 }
+function productInstantImage($product)
+{
+  if (!$product->image) {
+    return url('assets/images/product-instant.png');
+  }
+  return $product->image;
+}
 function categoryImage($category)
 {
   return url('storage/' . $category->icon);

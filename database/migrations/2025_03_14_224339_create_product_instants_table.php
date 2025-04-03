@@ -15,14 +15,18 @@ return new class extends Migration
       $table->id();
       $table->string('code');
       $table->string('slug');
+      $table->string('provider')->nullable();
       $table->string('category');
+      $table->string('brand')->nullable();
       $table->string('title');
-      $table->string('highlight');
-      $table->string('description');
+      $table->string('highlight')->nullable();
+      $table->string('description')->nullable();
       $table->integer('price');
-      $table->integer('stock');
+      $table->double('stock');
       $table->string('status')->comment('active | inactive');
-      $table->string('image');
+      $table->string('provider_buyer_status')->default('unset')->comment('unset | active | inactive');
+      $table->double('provider_stock')->default(-1);
+      $table->string('image')->nullable();
       $table->timestamps();
     });
   }

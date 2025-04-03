@@ -12,48 +12,50 @@
           class="w-full h-auto rounded-t-xl"></a>
     </div>
     <div class="flex-grow flex flex-col gap-3 p-4">
-      <a href="#!" class="text-decoration-none text-gray-500"><small>{{$product->category->name ?? ''}}</small></a>
-      <div class="h-full flex flex-col gap-2">
-        <h3 class="text-base truncate"><a href="#" class="hover:text-primary font-bold">{{\Str::limit($product->title,100,'...')}}</a></h3>
-        <div class="flex-grow">
-          {{\Str::limit($product->highlight,50,'...')}}
-        </div>
-        @if ($product->transactionDetails()->count() > 0)
-          @php
-          $total_rating = $product->ratings()->count();
-          $total_rating_star = $total_rating > 0 ? $product->ratings()->avg('rating') : 0;
-          @endphp
-          <div class="flex items-center justify-between w-full">
-            <div class="text-yellow-500 flex items-center gap-2 mt-3">
-              <!-- rating -->
-              <div class="flex items-center">
-                <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler
-                @if($total_rating_star < 5)
-                icon-tabler-star-half-filled
-                @else
-                icon-tabler-star-filled
-                @endif
-                "
-                  width="14" height="14" viewBox="0 0 24 24" stroke-width="2"
-                  stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
-                    stroke-width="0" fill="currentColor"></path>
-                </svg>
-              </div>
-              <span class="text-gray-500 small">{{round($total_rating_star,1)}}</span>
-            </div>
-            <div class="text-yellow-500 flex items-center gap-2 mt-3">
-              @php
-              $ordered = $product->transactionDetails()->whereHas('transaction', function($query) {
-                $query->whereNotIn('status', ['unprocessed','cancelled','inspection','rejected']);
-              })->count();
-              @endphp
-              <span class="text-gray-500 small">{{$ordered}} Terjual</span>
-            </div>
+      <div>
+        <a href="#!" class="text-decoration-none text-gray-500"><small>{{$product->category->name ?? ''}}</small></a>
+        <div class="h-full flex flex-col gap-2">
+          <h3 class="truncate text-lg"><a href="#" class="hover:text-primary font-bold">{{\Str::limit($product->title,100,'...')}}</a></h3>
+          <div class="flex-grow text-sm">
+            {{\Str::limit($product->highlight,50,'...')}}
           </div>
-        @endif
+          @if ($product->transactionDetails()->count() > 0)
+            @php
+            $total_rating = $product->ratings()->count();
+            $total_rating_star = $total_rating > 0 ? $product->ratings()->avg('rating') : 0;
+            @endphp
+            <div class="flex items-center justify-between w-full">
+              <div class="text-yellow-500 flex items-center gap-2 mt-3">
+                <!-- rating -->
+                <div class="flex items-center">
+                  <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler
+                  @if($total_rating_star < 5)
+                  icon-tabler-star-half-filled
+                  @else
+                  icon-tabler-star-filled
+                  @endif
+                  "
+                    width="14" height="14" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
+                      stroke-width="0" fill="currentColor"></path>
+                  </svg>
+                </div>
+                <span class="text-gray-500 small">{{round($total_rating_star,1)}}</span>
+              </div>
+              <div class="text-yellow-500 flex items-center gap-2 mt-3">
+                @php
+                $ordered = $product->transactionDetails()->whereHas('transaction', function($query) {
+                  $query->whereNotIn('status', ['unprocessed','cancelled','inspection','rejected']);
+                })->count();
+                @endphp
+                <span class="text-gray-500 small">{{$ordered}} Terjual</span>
+              </div>
+            </div>
+          @endif
+        </div>
       </div>
       <div class="flex justify-between items-center">
         <div>

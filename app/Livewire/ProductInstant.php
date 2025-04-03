@@ -9,9 +9,9 @@ class ProductInstant extends Component
   public $product;
   public function mount($code)
   {
-    $product = collect(config('product'))->firstWhere('code', $code);
+    $product = \App\Models\ProductInstant::where('code', $code)->first();
     if ($product) {
-      $this->product = (object)$product;
+      $this->product = $product;
     } else {
       abort(404);
     }

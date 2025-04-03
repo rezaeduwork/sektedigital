@@ -14,7 +14,12 @@
           </div>
           <div class="ms-6">
             <div class="selectBox">
-              <a class="selectValue text-reset text-xs lg:text-sm" href="javascript:void(0)" aria-expanded="false">Buka Jasa</a>
+              <a class="selectValue text-reset text-xs lg:text-sm" href="javascript:void(0)" aria-expanded="false">Beli Bot Whatsapp</a>
+            </div>
+          </div>
+          <div class="ms-6">
+            <div class="selectBox">
+              <a class="selectValue text-reset text-xs lg:text-sm" href="javascript:void(0)" aria-expanded="false">Beli Bot Telegram</a>
             </div>
           </div>
         </div>

@@ -46,7 +46,7 @@
       <!-- CONTENT -->
       <h3 class="font-semibold">Silahkan Pilih Metode Pembayaran</h3>
       <hr class="my-2" />
-      <div class="space-y-4 mb-4 p-2">
+      <div class="space-y-4 mb-4">
         @forelse ($channels as $channel)
         @if ($channel['group'] == 'Virtual Account' || ($channel['name'] == 'QRIS' || $channel['name'] == 'QRIS2'))
         @else
@@ -103,7 +103,7 @@
                   <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
                 </svg>
               </button>
-              <div class="absolute hidden group-hover:block top-[130%] left-0 w-[300px] z-10 inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 opacity-1 bg-gray-900 rounded-lg shadow-sm">
+              <div class="absolute hidden group-hover:block bottom-[130%] left-0 w-[300px] z-10 inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 opacity-1 bg-gray-900 rounded-lg shadow-sm">
                 Jumlahnya disesuaikan metode pembayaran yang kamu pilih.😊
                 <div class="tooltip-arrow" data-popper-arrow></div>
               </div>
