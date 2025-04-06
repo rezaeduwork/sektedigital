@@ -35,6 +35,8 @@
         <livewire:product-instant.crypto-input :product="$product">
         @elseif(in_array($product->category, ['Pulsa','Data']))
         <livewire:product-instant.pulsadata-input :product="$product">
+        @elseif(in_array($product->category, ['Games']))
+        <livewire:product-instant.game-input :product="$product">
         @endif
         <hr class="my-4" />
         <div class="mb-4">

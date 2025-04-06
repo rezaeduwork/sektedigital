@@ -73,7 +73,23 @@ class ProductInstant extends Model
         break;
     }
   }
-
+  public static function getBrandLogo($brand)
+  {
+    switch ($brand) {
+      case 'MOBILE LEGENDS':
+        return 'assets/images/logo/ml.webp';
+        break;
+      case 'FREE FIRE':
+        return 'assets/images/logo/ff.webp';
+        break;
+      case 'PUBG MOBILE':
+        return 'assets/images/logo/pubgm.webp';
+        break;
+      default:
+        return null;
+        break;
+    }
+  }
   public static function getStatusses()
   {
     return ['active', 'inactive'];

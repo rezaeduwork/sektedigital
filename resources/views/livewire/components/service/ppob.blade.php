@@ -11,39 +11,46 @@ style="background: url('{{url('assets/images/bg-violet.jpeg')}}')">
   @php
   $list = [
     [
+      'image' => url('storage/online-game.png'),
+      'name' => 'Game Online',
+      'open' => true,
+      'url' => url('topup')
+    ],
+    [
       'image' => url('storage/smartphone.png'),
       'name' => 'Pulsa',
-      'url' => url('pulsa')
+      'url' => url('pulsa'),
+      'open' => true,
     ],
     [
       'image' => url('storage/smartphone.png'),
       'name' => 'Paket Data',
+      'open' => false,
       'url' => url('paketdata')
     ],
     [
       'image' => url('storage/lightning.png'),
       'name' => 'Listrik Pln',
+      'open' => false,
       'url' => null
     ],
     [
       'image' => url('storage/e-payment.png'),
       'name' => 'E Money',
+      'open' => false,
       'url' => null
     ],
     [
       'image' => url('storage/live.png'),
       'name' => 'Streaming',
+      'open' => false,
       'url' => null
     ],
     [
       'image' => url('storage/gift-voucher.png'),
       'name' => 'Voucher',
+      'open' => false,
       'url' => null
-    ],
-    [
-      'image' => url('storage/online-game.png'),
-      'name' => 'Game Online',
-      'url' => url('topup')
     ],
     // [
     //   'image' => url('storage/rekber.png'),
@@ -51,6 +58,9 @@ style="background: url('{{url('assets/images/bg-violet.jpeg')}}')">
     //   'url' => url('rekber')
     // ]
   ];
+  $list = collect($list)->filter(function($item) {
+    return $item['open'];
+  });
   @endphp
   <div class="relative">
     <div class="flex items-center space-x-2 w-full overflow-x-auto overflow-y-hidden max-w-full hidden-scroll pb-2" x-ref="tabscontainer" @scroll="checkScroll()">

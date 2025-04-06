@@ -49,10 +49,13 @@ function productImage($image)
 }
 function productInstantImage($product)
 {
-  if (!$product->image) {
-    return url('assets/images/product-instant.png');
+  if ($product->image) {
+    return url($product->image);
   }
-  return $product->image;
+  if (\App\Models\ProductInstant::getBrandLogo($product->brand)) {
+    return url(\App\Models\ProductInstant::getBrandLogo($product->brand));
+  }
+  return url('assets/images/product-instant.png');
 }
 function categoryImage($category)
 {

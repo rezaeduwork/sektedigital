@@ -29,7 +29,9 @@ class PaymentInfo extends Component
   {
     $this->product = $product;
     if (in_array($this->product->category, ['Pulsa', 'Data'])) {
-      $this->reloadPulsadataPayment();
+      $this->reloadPaymentAttributes();
+    } else {
+      $this->reloadPaymentAttributes();
     }
   }
   #[On('reload-crypto-payment.{product.id}')]
@@ -47,7 +49,7 @@ class PaymentInfo extends Component
       $this->address = $address;
     }
   }
-  public function reloadPulsadataPayment()
+  public function reloadPaymentAttributes()
   {
     $amount = $this->product->price;
     if ($amount > 0) {
