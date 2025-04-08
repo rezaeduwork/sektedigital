@@ -181,14 +181,7 @@ class Checkout extends Component
   public function selectPayment($code)
   {
     $this->selectedPayment = $code;
-    $feeData = tripay()->calculateFee($code, $this->totalPayment)['data'];
-    $feeMerchant = $feeData[0]['total_fee']['merchant'];
-    $this->platformFee = ceil($feeMerchant);
-    if ($code === 'QRIS2' || $code === 'QRIS') {
-      $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
-    } else {
-      $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
-    }
+    $this->platformFee = platformFee($code, $this->productFee);
     $this->reloadTotalPayment();
   }
   // END ACTIONS

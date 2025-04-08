@@ -12,6 +12,9 @@
     /* font-family: "Mako", "Roboto", sans-serif; */
     font-family: "Mako", "Roboto", sans-serif;
   }
+  .container {
+    @apply max-sm:px-2
+  }
 }
 html {
   scroll-behavior: smooth;

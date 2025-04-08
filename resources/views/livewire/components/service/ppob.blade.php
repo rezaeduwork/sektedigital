@@ -1,4 +1,4 @@
-<div class="background-image bg-gradient-to-b from-violet-900 to-violet-700 text-white p-4 space-y-2 rounded-md"
+<div class="background-image ppob-bg sm:bg-gradient-to-b sm:from-violet-900 sm:to-violet-700 text-white sm:p-4 space-y-0 sm:space-y-2 rounded-lg"
 x-data="{
   checkScroll() {
     this.showLeft = this.$refs.tabscontainer.scrollLeft > 0;
@@ -6,8 +6,14 @@ x-data="{
   },
   showLeft: false,
   showRight: true
-}" x-init="checkScroll()"
-style="background: url('{{url('assets/images/bg-violet.jpeg')}}')">
+}" x-init="checkScroll()">
+  <style>
+    @media (min-width: 640px) {
+      .ppob-bg {
+        background: url('{{url('assets/images/bg-violet.jpeg')}}')
+      }
+    }
+  </style>
   @php
   $list = [
     [
@@ -63,7 +69,7 @@ style="background: url('{{url('assets/images/bg-violet.jpeg')}}')">
   });
   @endphp
   <div class="relative">
-    <div class="flex items-center space-x-2 w-full overflow-x-auto overflow-y-hidden max-w-full hidden-scroll pb-2" x-ref="tabscontainer" @scroll="checkScroll()">
+    <div class="flex items-center space-x-2 w-full overflow-x-auto overflow-y-hidden max-w-full hidden-scroll max-sm:p-2 sm:pb-2" x-ref="tabscontainer" @scroll="checkScroll()">
       @foreach ($list as $row)
       <div class="border-2 border-white py-2 px-4 rounded-md bg-violet-900 text-white hover:bg-white hover:text-primary relative cursor-pointer shadow shrink-0
       @if($row["name"] == $activeTab)
@@ -81,9 +87,9 @@ style="background: url('{{url('assets/images/bg-violet.jpeg')}}')">
               <div class="flex space-x-2 items-center">
                 <!-- img -->
                 @if ($row["image"])
-                <img src="{{$row['image']}}" alt="{{$row['name']}} Image" class="size-5">
+                <img src="{{$row['image']}}" alt="{{$row['name']}} Image" class="size-4 sm:size-5">
                 @endif
-                <div class="font-bold">{{$row['name']}}</div>
+                <div class="font-bold max-sm:text-xs">{{$row['name']}}</div>
               </div>
             </div>
           </div>

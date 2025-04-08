@@ -8,21 +8,21 @@
     <div class="rounded-t-lg relative">
       <div class="text-center p-0">
         <!-- img -->
-        <span class="flex justify-center rounded-t-lg h-[100px] md:h-[150px]"><img class="rounded-t-lg w-full h-full"
+        <span class="flex justify-center rounded-t-lg sm:h-[150px]"><img class="rounded-t-lg w-full h-full"
             src="{{ productImage($product->images()->whereType('main')->first()) }}" alt="Sekte Digital Product" /></span>
         <!-- text -->
       </div>
       {{-- <span class="inline-block px-2 py-1 text-sm align-baseline leading-none rounded-full bg-primary text-white font-semibold w-auto absolute top-[1rem] right-[1rem]">-45%</span> --}}
     </div>
-    <div class="p-4 h-full flex flex-col items-start">
+    <div class="p-2 sm:p-4 h-full flex flex-col items-start">
       <div class="text-gray-600 text-xs flex items-center space-x-1 mb-2">
-        <img src="{{url('storage/'.$product->category->icon)}}" alt="" srcset="" class="size-4 shrink-0" />
-        <div>
+        <img src="{{url('storage/'.$product->category->icon)}}" alt="" srcset="" class="size-3 sm:size-4 shrink-0" />
+        <div class="max-sm:text-xs">
           {{$product->category->name}}
         </div>
       </div>
       <h2 class="mb-2 text-base h-full leading-[20px]">
-        <span href="#" class="text-inherit font-semibold group-hover:text-primary group-hover:font-bold h-full block break-all">{{ \Str::limit($product->title, 30, '...') }}</span>
+        <span href="#" class="text-inherit group-hover:text-primary group-hover:font-bold h-full block break-all max-sm:text-sm text-left">{{ \Str::limit($product->title, 30, '...') }}</span>
       </h2>
       <div class="flex items-center @if ($total_rating_star > 0) justify-between @endif w-full">
         @if ($total_rating_star > 0)
@@ -54,12 +54,12 @@
         @endphp
         @if ($ordered > 0 || mt_rand(1,2) === 1)
         <div class="text-yellow-500 flex items-center gap-2 mt-3">
-          <span class="text-gray-500 small">{{$ordered}} Terjual</span>
+          <span class="text-gray-500 small max-sm:text-xs">{{$ordered}} Terjual</span>
         </div>
         @endif
       </div>
       <div>
-        <span class="text-gray-900 text-base font-bold text-lg">Rp. {{number_format($product->price)}}</span>
+        <span class="text-gray-900 text-base font-bold text-sm sm:text-lg">Rp. {{number_format($product->price)}}</span>
         {{-- <span class="line-through text-gray-500">$24</span> --}}
       </div>
     </div>

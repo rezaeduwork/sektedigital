@@ -18,6 +18,7 @@ class PaymentInfo extends Component
   public ?string $provider;
   #[Url]
   public ?string $phone;
+  public $informations = [];
 
   public $selectedPayment;
   public $taxFee = 0;
@@ -25,7 +26,7 @@ class PaymentInfo extends Component
   public $productFee = 0;
   public $totalPayment = 0;
   public $channels = [];
-  public function mount($product)
+  public function mount($product, $informations)
   {
     $this->product = $product;
     if (in_array($this->product->category, ['Pulsa', 'Data'])) {
@@ -33,6 +34,7 @@ class PaymentInfo extends Component
     } else {
       $this->reloadPaymentAttributes();
     }
+    $this->informations = $informations;
   }
   #[On('reload-crypto-payment.{product.id}')]
   public function reloadCryptoPayment($address, $amount)
@@ -83,9 +85,11 @@ class PaymentInfo extends Component
       $this->dispatch('alert-error', message: 'Gagal memproses pembayaran, silahkan hubungi admin.');
       return false;
     }
-    if ($digiflazzBalance['data']['deposit'] < $this->totalPayment) {
-      $this->dispatch('alert-error', message: 'Gagal memproses pembayaran, silahkan hubungi admin.');
-      return false;
+    if (config('app.env') == 'production') {
+      if ($digiflazzBalance['data']['deposit'] < $this->totalPayment) {
+        $this->dispatch('alert-error', message: 'Gagal memproses pembayaran, silahkan hubungi admin.');
+        return false;
+      }
     }
     if ($this->totalPayment <= 0) {
       $this->dispatch('alert-error', message: 'Pembayaran gagal di proses, silahkan refresh halaman!');
@@ -97,35 +101,33 @@ class PaymentInfo extends Component
       // CREATE PAYMENT
       $payment = \App\Models\Payment::create([
         'status' => 'pending',
+        'transaction_type' => 'instant',
         'amount' => $this->totalPayment,
         'user_id' => auth()->id(),
       ]);
 
-      $dataTx = [];
+      $dataTx = $this->informations;
       $quantityTx = 1;
       if ($this->product->category == 'buy-crypto') {
         $bnbidr = \App\Models\Currency::where('symbol', 'bnbidr')->first();
         $dataTx = ['address' => $this->address, 'product_category' => $this->product->category];
         $quantityTx = round($this->totalPayment / $bnbidr->first()->price, 8);
-      } else if (in_array($this->product->category, ['Pulsa', 'Data'])) {
-        $dataTx = ['provider' => $this->provider, 'phone' => $this->phone, 'product_category' => $this->product->category];
-        $quantityTx = 1;
       }
 
-      // CREATE TRANSACTION
-      $transaction = \App\Models\TransactionSingle::create([
+      $transactionData = [
         'status' => 'unprocessed',
         'amount' => $this->productFee,
-        'customer_name' => auth()->user()->name,
         'product_name' => $this->product->title,
         'product_id' => $this->product->id,
-        'customer_email' => auth()->user()->email,
-        'customer_phone' => auth()->user()->phone,
-        'user_id' => auth()->user()->id,
+        ...getRandomGuestDetail(),
+        'user_id' => auth()->user() ? auth()->user()->id : null,
         'payment_id' => $payment->id,
         'quantity' => $quantityTx,
         'data' => json_encode($dataTx)
-      ]);
+      ];
+
+      // CREATE TRANSACTION
+      $transaction = \App\Models\TransactionSingle::create($transactionData);
 
       $items = [
         [
@@ -153,16 +155,13 @@ class PaymentInfo extends Component
           'quantity' => 1,
         ];
       }
-
       $tripay = tripay()->createTransaction([
         'method' => $this->selectedPayment,
         'merchant_ref' => $payment->id,
         'amount' => $this->totalPayment,
-        'customer_name' => auth()->user()->name,
-        'customer_email' => auth()->user()->email,
-        'customer_phone' => auth()->user()->phone,
+        ...getRandomGuestDetail(),
         'order_items' => $items,
-        'return_url' => url('user/transaction?tab=confirmed'),
+        'return_url' => auth()->check() ? url('user/transaction?tab=confirmed') : url('payment/' . $payment->id . '/success'),
         'expired_time' => null, // Default 24 hours
       ]);
 
@@ -187,20 +186,16 @@ class PaymentInfo extends Component
       $this->redirect(url('payment/' . $payment->id), navigate: true);
     } catch (\Throwable $th) {
       \DB::rollBack();
+      if (config('app.env') == 'local') {
+        dd($th);
+      }
       $this->dispatch('alert-error', message: 'Transaksi gagal.');
     }
   }
   public function selectPayment($code)
   {
     $this->selectedPayment = $code;
-    $feeData = tripay()->calculateFee($code, $this->productFee)['data'];
-    $feeMerchant = $feeData[0]['total_fee']['merchant'];
-    $this->platformFee = ceil($feeMerchant);
-    if ($code === 'QRIS2' || $code === 'QRIS') {
-      $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
-    } else {
-      $this->platformFee = $this->platformFee + (($this->productFee * config('services.platform.fee')) / 100);
-    }
+    $this->platformFee = platformFee($code, $this->productFee);
     $this->reloadTotalPayment();
   }
   // END ACTIONS

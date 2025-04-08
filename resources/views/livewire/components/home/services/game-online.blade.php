@@ -1,18 +1,14 @@
 <div class="space-y-4">
-  <div class="space-y-4 bg-white rounded-lg p-4 @if($brand) hidden @endif">
-    @php
-    $list = \App\Models\ProductInstant::select('brand')->where('category', 'Games')->groupBy('brand')->get();
-    @endphp
-    <div class="font-semibold text-black text-lg">Pilih Game</div>
+  <div class="space-y-4 bg-white rounded-lg p-2 sm:p-4 @if($brand) hidden @endif">
+    {{-- <div class="font-semibold text-black text-lg">Pilih Game</div> --}}
     <div class="">
       <input type="text" name="" id="" class="border border-gray-300 text-gray-900 rounded-lg !ring-none !outline-none focus:border-gray-300 shadow-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-sm"
-      placeholder="Cari" wire:model.debounce.500ms="search">
+      placeholder="Cari" wire:model.live.debounce.500ms="search">
     </div>
-    <div class="text-gray-700 rounded-md grid grid-cols-8 gap-4">
+    <div class="text-gray-700 rounded-md grid grid-cols-4 sm:grid-cols-8 gap-4 w-full">
       @foreach ($list as $row)
-      <a href="#ppob-section" @click="$wire.changeProductSelected('{{$row->brand}}')" class="shrink-0 flex flex-col items-center space-y-2 cursor-pointer">
-        <img src="{{productInstantImage($row)}}" alt="{{$row->brand}} Image"
-        alt="" srcset="" class="w-full h-auto rounded-md">
+      <a href="#ppob-section" @click="$wire.changeProductSelected('{{$row->brand}}')" class="shrink-0 flex flex-col items-center space-y-2 cursor-pointer w-full">
+        <img src="{{productInstantImage($row)}}" alt="{{$row->brand}} Image" alt="" srcset="" class="w-full h-auto rounded-md">
         <div class="font-bold w-full text-center leading-5 text-xs">{{$row->brand}}</div>
       </a>
       @endforeach

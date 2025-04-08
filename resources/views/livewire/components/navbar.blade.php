@@ -1,5 +1,5 @@
-<header class="shadow w-full fixed top-0 left-0 z-20 bg-white" wire:poll.8s>
-  <div class="bg-primary text-white">
+<header class="shadow w-full fixed top-0 left-0 z-20 bg-white max-sm:h-[47px]" wire:poll.8s>
+  <div class="bg-primary text-white max-sm:hidden">
     <!-- navbar -->
     <div class="container max-w-[968px] mx-auto">
       <div class="flex justify-between items-center py-2">
@@ -46,25 +46,27 @@
       </div>
     </div>
   </div>
-  <div class="container hidden lg:block max-w-[968px] mx-auto">
-    <div class="flex flex-wrap md:flex-nowrap w-full items-center justify-between py-3 gap-4">
-      <div class="flex items-center justify-center md:justify-start shrink-0 space-x-4">
+  <div class="container max-w-[968px] mx-auto">
+    <div class="flex w-full items-center justify-between py-1 sm:py-3 gap-4">
+      <div class="flex items-center justify-center md:justify-start shrink-0">
         <a href="{{ url('/') }}">
-          <img src="{{ url('logo.png') }}" alt="" srcset="" class="w-[200px] h-auto" />
+          <img src="{{ url('logo-full.png') }}" alt="" srcset="" class="h-[39px] w-auto" />
         </a>
-        <div class="dropdown hidden lg:block">
-          <button class="mr-0 btn !p-2 inline-flex items-center gap-x-2 text-gray-600" type="button"
+      </div>
+      <div class="flex items-center sm:space-x-4 w-full max-sm:flex-row-reverse">
+        <div class="dropdown">
+          <button class="mr-0 btn !p-2 inline-flex items-center gap-x-2 text-gray-600 max-sm:ml-4" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="font-medium">Kategori</span>
+            <span class="font-medium max-sm:text-xs">Kategori</span>
           </button>
-          <div class="dropdown-menu md:w-[400px]">
-            <ul class="max-h-[300px] overflow-y-auto gap-4 grid grid-cols-12">
+          <div class="dropdown-menu w-[280px] sm:w-[400px]" wire:ignore>
+            <ul class="max-h-[300px] overflow-y-auto gap-4 grid grid-cols-1 sm:grid-cols-12">
               @foreach (\App\Models\CategoryProduct::all() as $row)
-              <li class="col-span-6" @click="Livewire.navigate('{{url('shop/'.$row->id)}}')">
+              <li class="sm:col-span-6" @click="Livewire.navigate('{{url('shop/'.$row->id)}}')">
                 <a href="#" class="dropdown-item mb-1 py-1 flex justify-between">
                   <div class="flex items-center">
                     <img src="{{url('storage/'.$row->icon)}}" alt="{{$row->name}}" class="size-6">
-                    <span class="ms-3">{{$row->name}}</span>
+                    <div class="ms-2 sm:ms-3">{{$row->name}}</div>
                   </div>
                 </a>
               </li>
@@ -72,45 +74,45 @@
             </ul>
           </div>
         </div>
-      </div>
-      <div class="w-full">
-        <form action="#">
-          <div class="flex"
-          x-data="{
-            inputValue: '',
-            text: '',
-            textArray: ['Cari Produk Disini!'],
-            textIndex: 0,
-            charIndex: 0,
-            typeSpeed: 150,
-            placeholder() {
-              var ival = setInterval(() => {
-                let current = this.textArray[ this.textIndex ];
-                this.text = current.substring(0, this.charIndex);
-                this.charIndex += 1;
-                if(this.text == 'Cari Produk Disini!') {
-                  clearInterval(ival)
-                  ival = null
-                }
-              }, (Math.floor(Math.random() * 200) + this.typeSpeed) );
-            },
-            init() {
-              this.placeholder()
-            }
-          }"
-          >
-            <label for="searchProducts" class="invisible hidden">Search</label>
-            <input
-              x-model="inputValue"
-              class="border border-gray-300 text-gray-900 rounded-l-lg !ring-none !outline-none focus:border-gray-300 shadow-primary block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-sm"
-              :placeholder="text" id="searchProducts" @keyup.enter="Livewire.navigate('{{url('shop')}}?q='+inputValue)" />
-            <button
-              class="rounded-none rounded-r-lg btn text-sm font-normal inline-flex items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-100"
-              type="button" @click="Livewire.navigate('{{url('shop')}}?q='+inputValue)">
-              Cari
-            </button>
-          </div>
-        </form>
+        <div class="w-full">
+          <form action="#">
+            <div class="flex"
+            x-data="{
+              inputValue: '',
+              text: '',
+              textArray: ['Cari Produk Disini!'],
+              textIndex: 0,
+              charIndex: 0,
+              typeSpeed: 150,
+              placeholder() {
+                var ival = setInterval(() => {
+                  let current = this.textArray[ this.textIndex ];
+                  this.text = current.substring(0, this.charIndex);
+                  this.charIndex += 1;
+                  if(this.text == 'Cari Produk Disini!') {
+                    clearInterval(ival)
+                    ival = null
+                  }
+                }, (Math.floor(Math.random() * 200) + this.typeSpeed) );
+              },
+              init() {
+                this.placeholder()
+              }
+            }"
+            >
+              <label for="searchProducts" class="invisible hidden">Search</label>
+              <input
+                x-model="inputValue"
+                class="border border-gray-300 text-gray-900 rounded-l-lg !ring-none !outline-none focus:border-gray-300 shadow-primary block p-2 sm:p-2 sm:px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-xs sm:text-sm"
+                :placeholder="text" id="searchProducts" @keyup.enter="Livewire.navigate('{{url('shop')}}?q='+inputValue)" />
+              <button
+                class="rounded-none rounded-r-lg btn text-xs sm:text-sm font-normal inline-flex items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-100"
+                type="button" @click="Livewire.navigate('{{url('shop')}}?q='+inputValue)">
+                Cari
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
       <div class="hidden lg:block shrink-0">

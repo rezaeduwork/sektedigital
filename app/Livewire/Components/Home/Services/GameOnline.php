@@ -8,6 +8,7 @@ use Livewire\Attributes\On;
 class GameOnline extends Component
 {
   public $brand;
+  public $search;
   public function changeProductSelected($brand)
   {
     $this->brand = $brand;
@@ -19,6 +20,11 @@ class GameOnline extends Component
   }
   public function render()
   {
-    return view('livewire.components.home.services.game-online');
+    $list = \App\Models\ProductInstant::select('brand')->where('category', 'Games');
+    if ($this->search) {
+      $list->where('brand', 'like', '%' . $this->search . '%');
+    }
+    $list = $list->groupBy('brand')->get();
+    return view('livewire.components.home.services.game-online', compact('list'));
   }
 }

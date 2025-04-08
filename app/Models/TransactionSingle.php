@@ -22,6 +22,10 @@ class TransactionSingle extends Model
     'quantity',
     'data'
   ];
+  public function payment()
+  {
+    return $this->belongsTo(\App\Models\Payment::class, 'payment_id');
+  }
   public function product()
   {
     return $this->belongsTo(\App\Models\ProductInstant::class, 'product_id');

@@ -21,31 +21,31 @@
       z-index: 2; /* Ensure content is above the overlay */
     }
   </style>
-  <div class="flex">
-    <div class="space-y-10">
-      <div class="space-y-6">
+  <div class="">
+    <div class="space-y-6 sm:space-y-10">
+      <div class="space-y-3 sm:space-y-6">
         <div class="w-full flex items-center justify-between" id="ppob-section">
           <h2 class="text-md lg:text-lg flex items-center">
-            <img src="{{url('assets/images/instant.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
-            <div class="ms-3 font-black text-2xl">Top Up Cepat</div>
+            <img src="{{url('assets/images/instant.png')}}" alt="" srcset="" class="size-[20px] sm:size-[24px]" />
+            <div class="ms-3 font-black sm:text-2xl">Top Up Cepat</div>
           </h2>
         </div>
-        <div class="space-y-4">
+        <div class="space-y-2 sm:space-y-4">
           <template x-if="true">
             <livewire:components.service.ppob>
           </template>
           <template x-if="true">
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2 overflow-x-auto overflow-y-hidden max-w-full">
               @foreach (config('product') as $row)
                 @if($row['status'] == 'active')
-                <button onclick="Livewire.navigate('{{url('i/'.$row['code'])}}')" class="border rounded-full bg-gray-100 px-3 py-1 text-xs text-black flex items-center space-x-1">
+                <button onclick="Livewire.navigate('{{url('i/'.$row['code'])}}')" class="border rounded-full bg-white px-3 py-1 text-xs text-black flex items-center space-x-1 shrink-0">
                   <img src="{{url($row['image'])}}" alt="" srcset="" class="size-4 shrink-0">
-                  <div class="">{{$row['title']}}</div>
+                  <div class="max-sm:text-xs">{{$row['title']}}</div>
                 </button>
                 @else
-                <button class="border rounded-full bg-gray-100 opacity-50 px-3 py-1 text-xs text-black flex items-center space-x-1 cursor-default">
+                <button class="border rounded-full bg-white opacity-50 px-3 py-1 text-xs text-black flex items-center space-x-1 cursor-default shrink-0">
                   <img src="{{url($row['image'])}}" alt="" srcset="" class="size-4 shrink-0">
-                  <div class="">{{$row['title']}}</div>
+                  <div class="max-sm:text-xs">{{$row['title']}}</div>
                 </button>
                 @endif
               @endforeach
@@ -57,26 +57,26 @@
         <div class="flex" id="category-section">
           <div class="w-full flex items-center justify-between">
             <h2 class="text-md lg:text-lg flex items-center">
-              <img src="{{url('assets/images/category.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
-              <div class="ms-3 font-black text-2xl">Semua Kategori</div>
+              <img src="{{url('assets/images/category.png')}}" alt="" srcset="" class="size-[20px] sm:size-[24px]" />
+              <div class="ms-3 font-black sm:text-2xl">Semua Kategori</div>
             </h2>
           </div>
         </div>
-        <div class="grid md:grid-cols-4 lg:grid-cols-7 gap-4 lg:gap-4">
+        <div class="flex items-center sm:grid sm:grid-cols-7 gap-2 sm:gap-4 max-sm:overflow-x-auto max-sm:overflow-y-hidden max-sm:max-w-full">
           @foreach (\App\Models\CategoryProduct::all() as $row)
           <!-- col -->
           <div class="shrink-0">
             <a href="{{url('shop/'.$row->id)}}" class="text-decoration-none text-inherit" wire:navigate>
               <!-- card -->
-              <div class="border hover:shadow-md rounded-tr-3xl rounded-bl-3xl relative" style="background-image: url('{{url('assets/images/violet-category-compresseds.png')}}'); background-size: cover; background-position: center;">
+              <div class="border hover:shadow-md max-sm:rounded-lg sm:rounded-tr-3xl sm:rounded-bl-3xl relative" style="background-image: url('{{url('assets/images/violet-category-compresseds.png')}}'); background-size: cover; background-position: center;">
                 <!-- Overlay -->
-                <div class="card-body text-center py-4 z-10">
+                <div class="card-body text-center max-sm:py-2 max-sm:px-3 sm:py-4 z-10">
                   <div class="flex justify-center">
                     <!-- img -->
-                    <img src="{{url('storage/'.$row->icon)}}" alt="{{$row->name}}" class="mb-3">
+                    <img src="{{url('storage/'.$row->icon)}}" alt="{{$row->name}}" class="mb-1 sm:mb-3 max-sm:w-[32px] h-auto">
                   </div>
                   <!-- text -->
-                  <div class="truncate">{{$row->name}}</div>
+                  <div class="truncate max-sm:text-xs">{{$row->name}}</div>
                 </div>
               </div>
             </a>

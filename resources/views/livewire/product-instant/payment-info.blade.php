@@ -1,10 +1,17 @@
-<div class="w-[350px] shrink-0 sticky top-[110px] self-start">
-  <div class="bg-white border border-violet-100 p-4 rounded-lg space-y-4 shadow">
-    <h2 class="font-semibold">Ringkasan Transaksi</h2>
+<div class="w-full sm:w-[350px] shrink-0 sm:sticky top-[110px] self-end sm:self-start max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:flex max-sm:items-end max-sm:z-[99]">
+  <div class="bg-white border border-violet-100 p-4 rounded-lg space-y-4 shadow w-full" x-data="{ open: false }">
+    <div class="flex items-center max-sm:cursor-pointer" @click="open = !open">
+      <h2 class="font-semibold text-lg">Pilih Metode Pembayaran</h2>
+      <button class="ml-auto sm:hidden transition-all duration-300" :class="open ? '' : 'rotate-180'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+        </svg>
+      </button>
+    </div>
     <hr class="my-2" />
     @if ($productFee > 0)
-    <h3 class="font-semibold">Silahkan Pilih Metode</h3>
-    <div class="space-y-4 mb-4">
+    {{-- <h3 class="font-semibold">Silahkan Pilih Metode</h3> --}}
+    <div class="transition-all duration-300 sm:!max-h-[unset] sm:!space-y-2 sm:!mb-4" :class="open ? 'max-sm:max-h-[800px] max-sm:opacity-[1] max-sm:mb-4 max-sm:space-y-2' : 'max-sm:max-h-[0px] max-sm:overflow-hidden max-sm:opacity-[0] max-sm:m-0'">
       @forelse ($channels as $channel)
       @if ($channel['group'] == 'Virtual Account' || ($channel['name'] == 'QRIS' || $channel['name'] == 'QRIS2'))
       @else
@@ -12,9 +19,9 @@
       @endif
       <button wire:click.prevent="selectPayment('{{$channel['code']}}')" class="flex w-full items-center justify-between border rounded p-2 cursor-pointer
       @if($selectedPayment == $channel['code'])
-      ring-2 ring-primary font-semibold text-primary shadow
+      border-2 border-primary font-semibold text-primary shadow
       @else
-      hover:ring-2 hover:ring-primary hover:font-semibold hover:text-primary hover:shadow
+      hover:border-2 hover:border-primary hover:font-semibold hover:text-primary hover:shadow
       @endif
       ">
         <div class="flex items-center space-x-4">
@@ -42,6 +49,14 @@
       </div>
       @endforelse
     </div>
+    <div class="flex items-center justify-between">
+      <div class="relative group">
+        <button type="button" class="flex items-center space-x-2">
+          <div class="">Subtotal</div>
+        </button>
+      </div>
+      <p class="text-black">Rp. {{number_format($productFee,0,',','.')}}</p>
+    </div>
     @endif
     @if ($platformFee > 0 || $taxFee > 0)
     <div class="border-l-4 border-l-gray-400 pl-2">
@@ -49,7 +64,7 @@
       <div class="flex items-center justify-between">
         <div class="relative group">
           <button type="button" class="flex items-center space-x-2">
-            <div class="">Biaya Jasa Aplikasi</div>
+            <div class="">Biaya Channel Pembayaran</div>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
               <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
@@ -84,8 +99,13 @@
     @endif
     {{-- <label class="text-sm text-gray-500">User ID</label>
     <input type="text" placeholder="Contoh: 12345678" class="w-full p-2 border rounded mb-2"> --}}
-
-    <h2 class="text-xl font-bold text-orange-500">Rp{{$totalPayment > 0 ? number_format($totalPayment,0,',','.'):'-'}}</h2>
+    @if ($totalPayment > 0)
+    <hr class="my-2" />
+    <div class="flex items-center justify-between">
+      <div class="font-semibold text-black">Total</div>
+      <h2 class="text-xl font-bold text-orange-500">Rp{{$totalPayment > 0 ? number_format($totalPayment,0,',','.'):'-'}}</h2>
+    </div>
+    @endif
     <div class="space-y-2">
       <button class="w-full py-2 @if(($totalPayment !== null && $totalPayment > 0)) bg-primary @else bg-primary/50 cursor-default @endif text-white rounded"
       wire:loading.remove wire:key="pay" wire:target="pay"

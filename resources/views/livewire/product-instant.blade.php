@@ -1,6 +1,6 @@
-<div class="container bg-white rounded-lg py-4">
-  <div class="mx-auto mb-4">
-    <div class="flex gap-6">
+<div class="container max-sm:!mb-[350px] max-sm:!mt-[4rem]">
+  <div class="mx-auto bg-white rounded-lg p-4 mb-4">
+    <div class="flex max-sm:flex-col gap-6">
       <!-- Produk -->
       <div class="w-full">
         <nav class="text-xs text-gray-500 mb-6">
@@ -25,19 +25,34 @@
               @if ($product->category == 'buy-crypto')
               <livewire:product-instant.crypto-live-price :ticker="$product->code">
               @endif
-              <div class="px-2 py-1 bg-white rounded flex items-center gap-2 text-red-600 font-semibold text-xs">
+              <div class="px-2 py-1 bg-green-100 rounded flex items-center gap-2 text-green-800 font-semibold text-xs">
                 Stok ({{$product->stock == -1 ? 'Unlimited': $product->stock}})
               </div>
             </div>
           </div>
         </div>
-        @if ($product->category == 'buy-crypto')
-        <livewire:product-instant.crypto-input :product="$product">
+        {{-- @if ($product->category == 'buy-crypto')
+        <livewire:product-instant.crypto-input :product="$product" :informations="$informations">
         @elseif(in_array($product->category, ['Pulsa','Data']))
-        <livewire:product-instant.pulsadata-input :product="$product">
+        <livewire:product-instant.pulsadata-input :product="$product" :informations="$informations">
         @elseif(in_array($product->category, ['Games']))
-        <livewire:product-instant.game-input :product="$product">
-        @endif
+        <livewire:product-instant.game-input :product="$product" :informations="$informations">
+        @endif --}}
+        <div class="rounded space-y-4">
+          <div class="space-y-4">
+            @foreach (collect($informations)->filter(function($item) {return $item['value'] !== null;}) as $row)
+            <div>
+              <h2 class="font-semibold mb-2">{{$row['label']}}</h2>
+              <input type="text" value="{{$row['value']}}" disabled class="w-full p-0 border border-none bg-transparent outline-none ring-none rounded">
+            </div>
+            @endforeach
+          </div>
+          @include('components.product-instant-feature')
+        </div>
+        <div class="sm:hidden">
+          <!-- Informasi Pesanan -->
+          <livewire:product-instant.payment-info :product="$product" :informations="$informations">
+        </div>
         <hr class="my-4" />
         <div class="mb-4">
           <h2 class="font-semibold mb-2">✨ Ulasan</h2>
@@ -122,8 +137,10 @@
         </div>
       </div>
 
-      <!-- Informasi Pesanan -->
-      <livewire:product-instant.payment-info :product="$product">
+      <div class="max-sm:hidden">
+        <!-- Informasi Pesanan -->
+        <livewire:product-instant.payment-info :product="$product" :informations="$informations">
+      </div>
     </div>
   </div>
   <div class="mb-4">

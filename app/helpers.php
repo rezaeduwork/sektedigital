@@ -96,6 +96,10 @@ function tripay()
 {
   return (new \App\Services\Tripay);
 }
+function digiflazz()
+{
+  return (new \App\Services\Digiflazz);
+}
 function checkPayment($payment)
 {
   return tripay()->checkTransactionDetail($payment->data['reference'])['data']['data'];
@@ -109,4 +113,41 @@ function storeTransactionDetailQuery($status)
   return \App\Models\TransactionDetail::query()->whereHas('transaction', function ($query) use ($status) {
     $query->whereStore_id(auth()->user()->store->id)->whereStatus($status);
   });
+}
+function platformFee($selectedPayment, $productFee)
+{
+  $feeData = tripay()->calculateFee($selectedPayment, $productFee)['data'];
+  $feeMerchant = $feeData[0]['total_fee']['merchant'];
+  $platformFee = ceil($feeMerchant);
+  if ($selectedPayment === 'QRIS2' || $selectedPayment === 'QRIS') {
+    $platformFee = $platformFee + (($productFee * config('services.platform.fee')) / 100);
+  } else {
+    $platformFee = $platformFee + (($productFee * config('services.platform.fee')) / 100);
+  }
+  return $platformFee;
+}
+function getRandomGuestDetail()
+{
+  $randomUID = uniqid() . time();
+  $name = 'User ' . $randomUID;
+  $phone = '62895355094422';
+  $email = 'bitneetuser_' . $randomUID . '@gmail.com';
+  if (auth()->check()) {
+    $name = auth()->user()->name;
+    $email = auth()->user()->email;
+    $phone = auth()->user()->phone;
+  } else if (session('username')) {
+    $name = session('username');
+    $email = session('useremail');
+    $phone = session('userphone');
+  } else {
+    session()->put('username', $name);
+    session()->put('useremail', $email);
+    session()->put('userphone', $phone);
+  }
+  return [
+    'customer_name' => $name,
+    'customer_email' => $email,
+    'customer_phone' => $phone,
+  ];
 }

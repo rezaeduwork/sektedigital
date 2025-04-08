@@ -8,17 +8,17 @@ use Livewire\Attributes\Url;
 class GameInput extends Component
 {
   public $product;
-  #[Url]
-  public ?string $provider;
-  #[Url]
-  public ?string $account;
-  #[Url]
-  public ?string $productId;
+  public $informations = [];
   public $amount = 0;
-  public function mount($product)
+  public function mount($product, $informations)
   {
     $this->product = $product;
     $this->amount = $product->price;
+    $this->informations = $informations;
+  }
+  public function rendered()
+  {
+    $this->dispatch('fill-infomations', informations: $this->informations)->to(\App\Livewire\ProductInstant\PaymentInfo::class);
   }
   public function render()
   {

@@ -24,7 +24,8 @@ class ProductInstant extends Model
     'status',
     // comment('unset | active | inactive')
     'provider_status',
-    'image'
+    'image',
+    'type'
   ];
 
   // HELPER
@@ -160,7 +161,8 @@ class ProductInstant extends Model
             'image' => null,
             'brand' => $row['brand'],
             'provider_stock' => $row['unlimited_stock'] ? -1 : $row['stock'],
-            'provider_buyer_status' => $row['buyer_product_status'] ? 'active' : 'inactive'
+            'provider_buyer_status' => $row['buyer_product_status'] ? 'active' : 'inactive',
+            'type' => $row['type'],
           ]);
         } else {
           \App\Models\ProductInstant::whereId($exising->id)->update([
@@ -176,7 +178,8 @@ class ProductInstant extends Model
             'brand' => $row['brand'],
             'provider_stock' => $row['unlimited_stock'] ? -1 : $row['stock'],
             'status' => !$row['buyer_product_status'] ? 'inactive' : $exising->status,
-            'provider_buyer_status' => $row['buyer_product_status'] ? 'active' : 'inactive'
+            'provider_buyer_status' => $row['buyer_product_status'] ? 'active' : 'inactive',
+            'type' => $row['type'],
           ]);
         }
         // $insertedIds

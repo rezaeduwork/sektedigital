@@ -13,6 +13,11 @@ class PaymentDetail extends Component
   }
   public function render()
   {
-    return view('livewire.payment-detail');
+    if ($this->payment->transaction_type == 'basic') {
+      $list = $this->payment->transactions;
+    } else {
+      $list = $this->payment->singleTransaction()->get();
+    }
+    return view('livewire.payment-detail', compact('list'));
   }
 }

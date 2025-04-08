@@ -10,7 +10,6 @@ class WebhookController extends Controller
   {
     $callbackSignature = $request->server('HTTP_X_CALLBACK_SIGNATURE');
     $json = $request->getContent();
-
     $signatureformatted = hash_hmac('sha256', $json, tripay()->getSecretKey());
 
     if ($request->server('HTTP_X_CALLBACK_SIGNATURE') != $signatureformatted) {
@@ -42,7 +41,9 @@ class WebhookController extends Controller
 
     if ($data->is_closed_payment === 1) {
       $invoice = \App\Models\Payment::whereId($invoiceId)
-        ->where('status', '=', 'pending')
+        ->when(config('app.env') === 'production', function ($query) {
+          $query->where('status', '=', 'pending');
+        })
         ->first();
 
       if (! $invoice) {
@@ -59,18 +60,30 @@ class WebhookController extends Controller
           if ($checkTx['status'] === true) {
             $invoice->update(['status' => 'settlement', 'settlement_at' => now()]);
 
-            if ($invoice->singleTransaction) {
-            } else {
-              $invoice->transactions()->update(['status' => 'confirmed']);
-              foreach ($invoice->transactions as $tx) {
+            if ($invoice->transaction_type == 'basic') {
+              $invoice->transactions()->where('status', 'unprocessed')->update(['status' => 'confirmed']);
+              foreach ($invoice->transactions()->where('status', 'confirmed')->get() as $tx) {
                 transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
               }
-
-              \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id)->delay(now()->addDays(3));
-              // \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id);
+              // \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id)->delay(now()->addDays(3));
+            } else {
+              if ($invoice->singleTransaction->product->provider == 'digiflazz') {
+                $data = digiflazz()->createTransaction($invoice->singleTransaction);
+                if ($data['success'] === true) {
+                  $invoice->singleTransaction()->update(['status' => 'finished']);
+                } else {
+                  if ($data['data']['status'] == 'Pending') {
+                    $invoice->singleTransaction()->update(['status' => 'confirmed']);
+                  } else {
+                    $invoice->singleTransaction()->update(['status' => 'rejected']);
+                  }
+                }
+              }
             }
 
-            $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'settlement'));
+            if ($invoice->user) {
+              $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'settlement'));
+            }
           } else {
             return response()->json([
               'success' => false,
@@ -112,6 +125,31 @@ class WebhookController extends Controller
       }
 
       return response()->json(['success' => true]);
+    }
+  }
+  public function digiflazzNotification(Request $request)
+  {
+    $secret = digiflazz()->getSecretKey();
+    $post_data = file_get_contents('php://input');
+    $signature = hash_hmac('sha1', $post_data, $secret);
+
+    if ($request->header('X-Hub-Signature') == 'sha1=' . $signature && $request->header('x-digiflazz-event') == 'update') {
+      $data = json_decode($request->getContent(), true);
+      $tx = \App\Models\TransactionSingle::where('id', $data['data']['ref_id'])->when(config('app.env') === 'production', function ($query) {
+        $query->where('status', 'confirmed');
+      })->first();
+      if ($data['data']['status'] == 'Sukses') {
+        if ($tx) {
+          $tx->update(['status' => 'finished']);
+        }
+      } else {
+        if ($tx) {
+          $tx->update(['status' => 'rejected']);
+        }
+      }
+      return response()->json(['success' => true]);
+    } else {
+      return response()->json(['success' => false, 'message' => 'Invalid signature'], 401);
     }
   }
 }

@@ -32,7 +32,7 @@
   @livewireStyles
 </head>
 
-<body class="bg-violet-50">
+<body class="bg-[#fbfaff]">
   <livewire:components.navbar>
 
   <!-- Modal -->
@@ -135,7 +135,7 @@
   <livewire:components.popover-user>
   @endauth
 
-  <main class="{{isset($contentClasses) ? $contentClasses: 'mt-[3rem] lg:mt-[119px] max-w-[968px] mx-auto'}}">
+  <main class="{{isset($contentClasses) ? $contentClasses: 'mt-[47px] sm:mt-[119px] max-w-[968px] mx-auto'}}">
     {{$slot}}
   </main>
 

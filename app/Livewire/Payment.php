@@ -16,6 +16,12 @@ class Payment extends Component
       $this->paymentDetail = $detail;
     }
   }
+  public function paymentPool()
+  {
+    if ($this->payment->status == 'settlement') {
+      $this->redirect(url('payment/' . $this->payment->id . '/detail'));
+    }
+  }
   public function render()
   {
     return view('livewire.payment');

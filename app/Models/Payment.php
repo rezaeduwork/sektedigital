@@ -20,7 +20,9 @@ class Payment extends Model
     'fee_wrap_up',
     'fee_total',
     'proof_text',
-    'proof_file'
+    'proof_file',
+    // comment('basic | instant')
+    'transaction_type'
   ];
   public function user()
   {
@@ -43,6 +45,34 @@ class Payment extends Model
         break;
       case 'pending':
         $statusText = 'text-orange-600';
+        break;
+      case 'expired':
+        $statusText = 'text-red-600';
+        break;
+      case 'failed':
+        $statusText = 'text-red-600';
+        break;
+      default:
+        break;
+    }
+
+    return $statusText;
+  }
+  public function getStatusText()
+  {
+    $statusText = $this->status;
+    switch ($this->status) {
+      case 'settlement':
+        $statusText = 'Sudah Dibayar';
+        break;
+      case 'pending':
+        $statusText = 'Belum Dibayar';
+        break;
+      case 'expired':
+        $statusText = 'Kedaluarsa';
+        break;
+      case 'failed':
+        $statusText = 'Gagal';
         break;
 
       default:

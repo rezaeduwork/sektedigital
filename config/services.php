@@ -62,7 +62,8 @@ return [
 
   'digiflazz' => [
     'username' => env('DIGIFLAZZ_USERNAME', null),
-    'api_key' => env('DIGIFLAZZ_API_KEY', null)
+    'api_key' => env('DIGIFLAZZ_API_KEY', null),
+    'platform_key' => env('DIGIFLAZZ_PLATFORM_SECRET_KEY', null),
   ],
 
 ];

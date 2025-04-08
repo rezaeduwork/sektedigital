@@ -9,8 +9,8 @@
         <span class="font-medium">Informasi!</span> Pastikan provider dan nomor HP sesuai.
       </div>
     </div>
-    <div class="bg-white text-gray-700 rounded-md flex items-end gap-4">
-      <div class="flex items-start flex-col w-[500px]">
+    <div class="bg-white text-gray-700 rounded-md flex max-sm:flex-col items-end gap-4">
+      <div class="flex items-start flex-col w-full sm:w-[500px]">
         <label class="block mb-2 text-xs font-semibold text-gray-900 shrink-0">Provider</label>
         <select wire:model.live.debounce.400ms="provider" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Pilih Nominal" required>
           <option value="" readonly></option>
@@ -33,7 +33,7 @@
           @endforeach
         </select>
       </div>
-      <div class="flex flex-col">
+      <div class="flex flex-col w-full">
         <button type="button" class="bg-primary text-white font-semibold shrink-0 rounded-md px-6 py-2.5 @if(!$validated) cursor-default opacity-[0.5] @endif"
         @if($validated)
           @click="Livewire.navigate('{{url('i/'.$product->code)}}?provider={{$provider}}&phone={{$phone}}&productId={{$amount}}')"

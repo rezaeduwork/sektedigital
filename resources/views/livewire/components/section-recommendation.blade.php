@@ -2,18 +2,18 @@
   <div class="flex">
     <div class="w-full flex items-center justify-between">
       <h2 class="text-md lg:text-lg flex items-center">
-        <img src="{{url('assets/images/quality.png')}}" alt="" srcset="" class="w-[24px] h-[24px]" />
-        <div class="ms-3 font-black text-2xl">Rekomendasi</div>
+        <img src="{{url('assets/images/quality.png')}}" alt="" srcset="" class="size-[20px] sm:size-[24px]" />
+        <div class="ms-3 font-black sm:text-2xl">Rekomendasi</div>
       </h2>
       <a href="{{url('shop')}}"
-      class="btn inline-flex items-center gap-x-2 bg-gray-100 text-gray-800 border-gray-200 border disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300"
+      class="btn max-sm:text-xs inline-flex items-center gap-x-2 bg-gray-100 text-gray-800 border-gray-200 border disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-300"
       wire:navigate>
         Lihat Semua
       </a>
     </div>
   </div>
   <div class="swiper-container swiper">
-    <div class="py-5 grid md:grid-cols-3 gap-4 lg:grid-cols-4">
+    <div class="py-5 grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-4">
       @foreach($this->recommendationProduct as $row)
       <livewire:components.popular-card :product="$row" :key="$row->id">
       @endforeach
