@@ -151,3 +151,50 @@ function getRandomGuestDetail()
     'customer_phone' => $phone,
   ];
 }
+function getTransactionInstantInformations($category, $brand, $values = [])
+{
+  $informations = [];
+  if (in_array($category, ['Games'])) {
+    $informations = [
+      [
+        'label' => 'Account ID',
+        'name' => 'account_id',
+        'type' => 'number',
+        'value' => isset($values['account_id']) ? $values['account_id'] : null,
+      ],
+    ];
+    if (strtolower($brand) == 'mobile legends') {
+      $informations[] = [
+        'label' => 'Zone ID',
+        'name' => 'zone_id',
+        'type' => 'number',
+        'value' => isset($values['zone_id']) ? $values['zone_id'] : null,
+      ];
+    }
+    $informations[] = [
+      'label' => 'Email',
+      'name' => 'email',
+      'type' => 'text',
+      'required' => false,
+      'value' => isset($values['email']) ? $values['email'] : null,
+    ];
+    $informations[] = [
+      'label' => 'Nomor HP',
+      'name' => 'phone',
+      'type' => 'number',
+      'value' => isset($values['phone']) ? $values['phone'] : null,
+      'required' => false
+    ];
+  } else if (in_array($category, ['Pulsa', 'Data'])) {
+    $informations = [
+      [
+        'label' => 'Nomor HP',
+        'name' => 'phone',
+        'type' => 'number',
+        'value' => isset($values['phone']) ? $values['phone'] : null,
+      ],
+    ];
+  }
+
+  return $informations;
+}

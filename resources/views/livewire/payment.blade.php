@@ -1,5 +1,5 @@
-<div class="w-full flex items-center justify-center" wire:poll.5s="paymentPool">
-  <div class="bg-white rounded-2xl shadow-lg p-6 max-w-md w-full mb-[4rem] sm:mb-4">
+<div class="container flex items-center justify-center max-sm:mt-[4rem]" wire:poll.5s="paymentPool">
+  <div class="bg-white rounded-2xl shadow-lg p-6 sm:max-w-md w-full mb-[4rem] sm:mb-4">
     @if ($payment->status != 'settlement')
     <h1 class="text-xl font-bold text-center text-gray-800 mb-2">Selesaikan pembayaran dalam</h1>
     <div class="text-center text-orange-500 text-2xl font-bold mb-4"

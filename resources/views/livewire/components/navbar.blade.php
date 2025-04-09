@@ -119,7 +119,14 @@
         <div class="flex items-center justify-end space-x-5 mx-1">
           <div class="text-center">
             <div class="dropdown">
-              <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+              <a href="#" class="text-reset"
+                @auth
+                data-bs-toggle="dropdown"
+                @endauth
+                @guest
+                data-bs-toggle="modal" data-bs-target="#userModal"
+                @endguest
+                aria-expanded="false">
                 <div class="flex items-center">
                   <div class="relative inline-block m-auto">
                     <svg xmlns="../www.w3.org/2000/svg.html" width="24" height="24" viewBox="0 0 24 24"
@@ -151,7 +158,12 @@
           </div>
           <div class="text-center">
             <button type="button"
+            @auth
             @click="Livewire.navigate('{{url('chat')}}')"
+            @endauth
+            @guest
+            data-bs-toggle="modal" data-bs-target="#userModal"
+            @endguest role="button"
             {{-- wire:click="openChat"  --}}
             role="button" class="text-reset mt-1">
               <div class="text-center flex items-center">

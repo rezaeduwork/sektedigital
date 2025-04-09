@@ -73,6 +73,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="{{url('admin/transaction_instant')}}" class="nav-link" wire:navigate>
+                <i class="far fa-circle nav-icon invisible"></i>
+                <p>Transaction Instant</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="{{url('admin/withdrawal')}}" class="nav-link" wire:navigate>
                 <i class="far fa-circle nav-icon invisible"></i>
                 <p>Balances</p>

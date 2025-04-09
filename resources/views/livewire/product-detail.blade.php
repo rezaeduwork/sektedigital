@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container max-sm:mt-[4rem]">
   <livewire:components.product-detail.main-detail :product="$product">
   <livewire:components.product-detail.store-owner :product="$product">
   <livewire:components.product-detail.description :product="$product">

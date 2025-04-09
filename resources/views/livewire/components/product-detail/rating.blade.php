@@ -1,5 +1,5 @@
-<div class="p-6 bg-white shadow rounded space-y-6 mb-6">
-  <div class="font-bold text-2xl">Ulasan</div>
+<div class="p-3 sm:p-6 bg-white shadow rounded space-y-4 sm:space-y-6 mb-4 sm:mb-6">
+  <div class="font-bold text-lg sm:text-2xl">Ulasan</div>
   <div>
     <div class="flex flex-col gap-6">
       <div class="w-full">
@@ -79,11 +79,11 @@
           <div class="flex justify-between items-center mb-8">
             <div>
               <!-- heading -->
-              <h3 class="text-md font-semibold">Ulasan Pembeli</h3>
+              <h3 class="sm:text-2xl font-semibold">Ulasan Pembeli</h3>
             </div>
             <div>
               <select
-                class="text-base border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary pr-9 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full">
+                class="text-base border border-gray-300 text-gray-900 max-md:text-xs rounded-lg focus:ring-primary focus:border-primary pr-9 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full">
                 <option value="best" selected>Rating terbaik</option>
                 <option value="worst">Rating terburuk</option>
                 <option value="newest">Terbaru</option>

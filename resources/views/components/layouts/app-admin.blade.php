@@ -112,6 +112,14 @@
           icon: "success"
         });
       });
+      Livewire.on('alert-error', (event) => {
+        $('.modal').modal('hide')
+        Swal.fire({
+          title: "Gagal!",
+          text: event.message,
+          icon: "error"
+        });
+      });
       Livewire.on('reload', (event) => {
         $('.modal').modal('hide')
       });

@@ -69,7 +69,7 @@
             </div>
           </div>
           @endif
-          <div class="shrink-0 mt-6 flex items-center justify-start space-x-6">
+          <div class="shrink-0 mt-6 flex max-sm:flex-col items-center justify-center sm:justify-start sm:space-x-6">
             <a href="#"
               class="btn text-lg inline-flex items-center gap-x-2 px-4 py-2 justify-center disabled:opacity-50 text-black disabled:pointer-events-none font-semibold">
               <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-heart text-primary"
@@ -106,14 +106,25 @@
             </a>
           </div>
         </div>
+        <hr class="sm:hidden" />
         <div class="rounded-lg">
           <div class="lg:pl-10 mt-6 md:mt-0">
             <div class="flex flex-col gap-4">
               <div class="flex flex-col">
-                <a href="{{url('shop/'.$product->category->id)}}" wire:navigate class="block font-semibold text-gray-500">{{$product->category->name}}</a>
-                <h1 class="text-2xl pb-4 pt-2">{{$product->title}}</h1>
+                <div class="flex max-sm:items-center sm:items-start flex-col sm:space-y-2 max-sm:space-x-2 pb-4">
+                  <a href="{{url('shop/'.$product->category->id)}}" wire:navigate class="flex items-center space-x-2 justify-center font-semibold text-gray-500 max-sm:text-center text-sm bg-gray-100 p-2 rounded-lg">
+                    <img src="{{url('storage/'.$product->category->icon)}}" alt="{{$product->category->name}}" class="size-[16px]">
+                    <div>{{$product->category->name}}</div>
+                  </a>
+                  <h1 class="text-lg max-sm:text-center">{{$product->title}}</h1>
+                </div>
                 <div class="flex flex-col gap-4">
-                  <div class="flex items-center gap-2">
+                  <div class="text-2xl max-sm:text-center">
+                    <span class="text-red-600 font-semibold">Rp. {{number_format($product->price)}}</span>
+                    {{-- <span class="line-through text-gray-500">$35</span> --}}
+                    {{-- <span><small class="text-violet-600">26% Off</small></span> --}}
+                  </div>
+                  <div class="flex items-center max-sm:justify-center gap-2">
                     <!-- rating -->
                     <!-- rating -->
                     <small class="text-yellow-300 inline-flex items-center">
@@ -128,16 +139,11 @@
                     </small>
                     <a href="#" class="text-primary">({{$product->ratings()->count()}} reviews)</a>
                   </div>
-                  <div class="text-md">
-                    <span class="text-gray-900 font-semibold">Rp. {{number_format($product->price)}}</span>
-                    {{-- <span class="line-through text-gray-500">$35</span> --}}
-                    {{-- <span><small class="text-violet-600">26% Off</small></span> --}}
-                  </div>
                 </div>
               </div>
               <hr />
               <!-- hr -->
-              <div class="flex flex-col gap-6">
+              <div class="flex flex-col max-sm:items-center gap-6">
                 @if (!$inCart)
                 <div>
                   <!-- input -->
@@ -154,7 +160,7 @@
                   </div>
                 </div>
                 @endif
-                <div class="flex items-center justify-start gap-2 items-center">
+                <div class="w-full flex max-sm:flex-col items-center justify-start gap-2">
                   @if ($inCart)
                   <div class="grid w-full text-center">
                     Sudah di keranjang
@@ -167,7 +173,12 @@
                     <!-- button -->
                     <!-- btn -->
                     <button type="button"
+                      @guest
+                      data-bs-toggle="modal" data-bs-target="#userModal" href="#"
+                      @endguest
+                      @auth
                       @click="$wire.autoCart()"
+                      @endauth
                       class="btn gap-x-1 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary justify-center">
                       Order Langsung
                     </button>
@@ -192,14 +203,14 @@
               @endphp
               <div class="grid grid-cols-3">
                 @foreach ($stat as $row)
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center max-sm:justify-center space-x-2">
                   <div>{{$row[1]}}</div>
                   <div>{{$row[0]}}</div>
                 </div>
                 @endforeach
               </div>
               <hr />
-              <div class="flex items-center space-x-2">
+              <div class="flex items-center max-sm:justify-center space-x-2">
                 <div class="">
                   <div>Dipublish {{\Carbon\Carbon::parse($product->created_at)->diffForHumans()}}</div>
                 </div>

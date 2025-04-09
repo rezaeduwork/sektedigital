@@ -103,7 +103,7 @@ class PaymentInfo extends Component
         'status' => 'pending',
         'transaction_type' => 'instant',
         'amount' => $this->totalPayment,
-        'user_id' => auth()->id(),
+        'user_id' => auth()->id() ?: null,
       ]);
 
       $dataTx = $this->informations;

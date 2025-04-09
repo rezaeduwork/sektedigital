@@ -33,43 +33,13 @@ class ProductInstant extends Component
   }
   public function fillInformations()
   {
-    if (in_array($this->product->category, ['Games'])) {
-      $this->informations = [
-        [
-          'label' => 'Game',
-          'name' => 'provider',
-          'value' => $this->provider,
-        ],
-        [
-          'label' => 'Account ID',
-          'name' => 'account_id',
-          'value' => $this->account_id,
-        ],
-        [
-          'label' => 'Zone ID',
-          'name' => 'zone_id',
-          'value' => $this->zone_id,
-        ],
-        [
-          'label' => 'Email',
-          'name' => 'email',
-          'value' => $this->email,
-        ],
-      ];
-    } else if (in_array($this->product->category, ['Pulsa', 'Data'])) {
-      $this->informations = [
-        [
-          'label' => 'Provider',
-          'name' => 'provider',
-          'value' => $this->provider,
-        ],
-        [
-          'label' => 'Nomor HP',
-          'name' => 'phone',
-          'value' => $this->phone,
-        ],
-      ];
-    }
+    $this->informations = getTransactionInstantInformations($this->product->category, $this->provider, [
+      'provider' => $this->provider ?? null,
+      'account_id' => $this->account_id ?? null,
+      'zone_id' => $this->zone_id ?? null,
+      'email' => $this->email ?? null,
+      'phone' => $this->phone ?? null,
+    ]);
   }
   public function render()
   {

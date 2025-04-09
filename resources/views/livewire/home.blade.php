@@ -3,7 +3,7 @@
     <img src="{{ url('assets/images/banner/banner4.jpg') }}" alt="" srcset="" class="w-full object-cover h-full absolute top-0 left-0 z-[9]" style="clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%);" />
     <div class="relative z-[10] text-white max-w-[968px] mx-auto h-full">
       <div class="container h-full flex flex-col justify-center">
-        <h1 class="text-[32px] max-sm:text-center sm:text-[50px] font-bold text-white leading-[54px] mb-[20px]">Marketplace Produk Digital <br class="max-sm:hidden" />Terlengkap!</h1>
+        <h1 class="text-[32px] max-sm:text-center sm:text-[50px] font-bold text-white leading-[39px] sm:leading-[54px] mb-[20px]">Marketplace Produk Digital <br class="max-sm:hidden" />Terlengkap!</h1>
         <h6 class="text-[16px] max-sm:text-center sm:text-[24px] text-white sm:leading-[32px]">Platform yang menyediakan seluruh kebutuhan digital mu <br class="max-sm:hidden" />dengan harga bersaing!</h6>
         @if(!auth()->check())
         <div class="mt-[32px] flex items-center max-sm:justify-center max-sm:w-full space-x-2">

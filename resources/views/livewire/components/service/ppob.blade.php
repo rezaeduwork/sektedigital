@@ -26,7 +26,7 @@ x-data="{
       'image' => url('storage/smartphone.png'),
       'name' => 'Pulsa',
       'url' => url('pulsa'),
-      'open' => true,
+      'open' => \App\Models\ProductInstant::where('category', 'Pulsa')->where('status', 'active')->first() ? true : false
     ],
     [
       'image' => url('storage/smartphone.png'),

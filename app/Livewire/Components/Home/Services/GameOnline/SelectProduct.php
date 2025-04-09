@@ -18,37 +18,7 @@ class SelectProduct extends Component
   public function selectProduct($productId)
   {
     $this->product = \App\Models\ProductInstant::find($productId);
-    $this->informations = [
-      [
-        'label' => 'Player ID',
-        'name' => 'account_id',
-        'type' => 'number',
-        'value' => null,
-      ]
-    ];
-    if (strtolower($this->brand) == 'mobile legends') {
-      $this->informations = [
-        [
-          'label' => 'User ID',
-          'name' => 'account_id',
-          'type' => 'number',
-          'value' => null,
-        ],
-        [
-          'label' => 'Zone ID',
-          'name' => 'zone_id',
-          'type' => 'number',
-          'value' => null,
-        ],
-        [
-          'label' => 'Email',
-          'name' => 'email',
-          'type' => 'email',
-          'value' => null,
-          'required' => false
-        ]
-      ];
-    }
+    $this->informations = getTransactionInstantInformations($this->product->category, $this->brand);
   }
   public function fillAccount($index, $value)
   {

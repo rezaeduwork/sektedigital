@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductInstant extends Model
 {
-  use HasFactory;
+  use HasFactory, SoftDeletes;
   protected $fillable = [
     'code',
     'provider',
@@ -145,6 +146,9 @@ class ProductInstant extends Model
     if ($priceList['success']) {
       $insertedIds = [];
       foreach ($priceList['data'] as $row) {
+        if ($row['unlimited_stock'] === false && $row['stock'] === 0) {
+          continue;
+        }
         $exising = \App\Models\ProductInstant::whereCode($row['buyer_sku_code'])->first();
         if (!$exising) {
           $exising = \App\Models\ProductInstant::create([
@@ -182,9 +186,13 @@ class ProductInstant extends Model
             'type' => $row['type'],
           ]);
         }
-        // $insertedIds
+        $insertedIds[] = $exising->id;
       }
-      // \App\Models\ProductInstant::where('provider', 'digiflazz')->whereNotIn('id', $insertedIds)->delete();
+      if (sizeof($insertedIds) > 0) {
+        \App\Models\ProductInstant::where('provider', 'digiflazz')->whereNotIn('id', $insertedIds)->delete();
+      } else {
+        \App\Models\ProductInstant::where('provider', 'digiflazz')->delete();
+      }
     }
 
     return [

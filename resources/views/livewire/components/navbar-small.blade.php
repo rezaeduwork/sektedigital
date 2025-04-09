@@ -2,7 +2,14 @@
   <div class="flex items-center">
     <div class="w-1/4 icon-hover py-1.5 leading-[.85]">
       <div class="dropdown">
-        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+        <a href="#" class="text-reset"
+          @auth
+          data-bs-toggle="dropdown"
+          @endauth
+          @guest
+          data-bs-toggle="modal" data-bs-target="#userModal"
+          @endguest
+          aria-expanded="false">
           <div>
             <div class="relative inline-block m-auto mb-1">
               <svg xmlns="../www.w3.org/2000/svg.html" width="24" height="24" viewBox="0 0 24 24"
@@ -12,7 +19,7 @@
                 <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
                 <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
               </svg>
-              @if (auth()->user()->unreadNotifications()->count() > 0)
+              @if (auth()->user() && auth()->user()->unreadNotifications()->count() > 0)
               <span class="absolute -top-1 inline-block p-[5px] h-4 w-4 left-3 text-xs flex items-center justify-center bg-red-700 text-white font-semibold rounded-full">{{ auth()->user()->unreadNotifications->count() }}</span>
               @endif
             </div>
@@ -29,7 +36,14 @@
     </div>
     <div class="w-1/4 icon-hover py-1.5 leading-[.85]">
       <!-- Button -->
-      <button class="collapsed lg:hidden" type="button" @click="Livewire.navigate('{{url('chat')}}')">
+      <button class="collapsed lg:hidden" type="button"
+      @auth
+      @click="Livewire.navigate('{{url('chat')}}')"
+      @endauth
+      @guest
+      data-bs-toggle="modal" data-bs-target="#userModal"
+      @endguest
+      >
         <div class="relative inline-block m-auto mb-1">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="mx-auto" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -55,7 +69,14 @@
       </button>
     </div>
     <div class="w-1/4 icon-hover py-1.5 leading-[.85]">
-      <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" href="#offcanvasExample" role="button"
+      <a
+        @auth
+        href="{{ url('cart') }}" wire:navigate
+        @endauth
+        @guest
+        data-bs-toggle="modal" data-bs-target="#userModal" href="#"
+        @endguest role="button"
+        role="button"
         aria-controls="offcanvasRight" class="text-reset m-auto inline-block text-center">
         <svg xmlns="../www.w3.org/2000/svg.html" width="24" height="24" class="mx-auto mb-1" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
