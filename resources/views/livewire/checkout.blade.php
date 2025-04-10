@@ -1,34 +1,37 @@
 <div class="mb-6 bg-white shadow">
   <div class="px-4 py-6">
     <p class="text-xl font-medium">Informasi Pembeli</p>
-    <div class="flex items-center space-x-4 mt-4">
-      <div>
-        nama pembeli: <span class="font-semibold text-lg text-gray-900">{{auth()->user()->name}}</span>
+    <div class="flex max-sm:flex-col items-stretch sm:items-center space-y-2 sm:space-x-4 mt-4">
+      <div class="max-sm:flex items-center max-sm:justify-between">
+        <span>nama pembeli:</span> <span class="font-semibold text-lg text-gray-900">{{auth()->user()->name}}</span>
       </div>
-      <div>
-        email: <span class="font-semibold text-lg text-gray-900">{{auth()->user()->email}}</span>
+      <div class="max-sm:flex items-center max-sm:justify-between">
+        <span>email:</span> <span class="font-semibold text-lg text-gray-900">{{auth()->user()->email}}</span>
       </div>
-      <div>
-        nomor hp: <span class="font-semibold text-lg text-gray-900">{{auth()->user()->phone ?? '-'}}</span>
+      <div class="max-sm:flex items-center max-sm:justify-between">
+        <span>nomor hp:</span> <span class="font-semibold text-lg text-gray-900">{{auth()->user()->phone ?? '-'}}</span>
       </div>
-      <div>
-        tanggal: {{now()}}
+      <div class="max-sm:flex items-center max-sm:justify-between">
+        <span>tanggal:</span> {{now()}}
       </div>
     </div>
   </div>
   <hr />
-  <div class="grid lg:grid-cols-12 mt-6">
-    <div class="px-4 col-span-8">
+  <div class="grid grid-cols-12 mt-6 max-sm:space-y-6">
+    <div class="px-4 col-span-12 sm:col-span-8">
       <p class="text-xl font-medium">Ringkasan Transaksi</p>
       <div class="mt-6 space-y-3 rounded-lg bg-white">
         @foreach ($availableCarts as $row)
-        <div class="flex flex-col rounded-lg bg-white sm:flex-row sm:items-center">
-          <img class="m-2 size-12 rounded-md object-cover object-center"
-            src="{{productImage($row->product->images()->where('type', 'main')->first())}}"
+        <div class="flex flex-row rounded-lg bg-white sm:flex-row sm:items-center">
+          <img class="size-12 rounded-md object-cover object-center"
+            src="{{productImage($row->product->mainImage())}}"
             alt="" />
-          <div class="flex w-full flex-col px-4">
+          <div class="flex w-full flex-col px-4 space-y-2">
             <span class="font-semibold">{{$row->product->title}}</span>
-            <span class="float-right text-gray-400 text-xs">{{$row->product->category->name}}</span>
+            <span class="float-right text-gray-400 text-xs flex items-center space-x-1">
+              <img src="{{url('storage/'.$row->product->category->icon)}}" alt="{{$row->product->category->name}}" class="size-[16px]">
+              <div>{{$row->product->category->name}}</div>
+            </span>
           </div>
           <div class="ml-auto shrink-0 space-y-1">
             <div class="font-bold">Rp. {{number_format($row->product->price)}} x {{$row->quantity}}</div>
@@ -42,7 +45,7 @@
         @endforeach
       </div>
     </div>
-    <div class="px-4 col-span-4">
+    <div class="px-4 col-span-12 sm:col-span-4">
       <!-- CONTENT -->
       <h3 class="font-semibold">Silahkan Pilih Metode Pembayaran</h3>
       <hr class="my-2" />

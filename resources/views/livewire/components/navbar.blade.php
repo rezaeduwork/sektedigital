@@ -50,7 +50,8 @@
     <div class="flex w-full items-center justify-between py-1 sm:py-3 gap-4">
       <div class="flex items-center justify-center md:justify-start shrink-0">
         <a href="{{ url('/') }}">
-          <img src="{{ url('logo-full.png') }}" alt="" srcset="" class="h-[39px] w-auto" />
+          <img src="{{ url('logo-real.png') }}" alt="" srcset="" class="h-[39px] w-auto rounded-lg max-sm:hidden" />
+          <img src="{{ url('logo-only-square-real.png') }}" alt="" srcset="" class="h-[39px] w-auto rounded-lg sm:hidden" />
         </a>
       </div>
       <div class="flex items-center sm:space-x-4 w-full max-sm:flex-row-reverse">

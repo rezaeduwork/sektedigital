@@ -69,18 +69,18 @@
             </div>
           </div>
           @endif
-          <div class="shrink-0 mt-6 flex max-sm:flex-col items-center justify-center sm:justify-start sm:space-x-6">
+          <div class="shrink-0 mt-4 sm:mt-6 flex items-center justify-center sm:justify-start sm:space-x-6">
             <a href="#"
-              class="btn text-lg inline-flex items-center gap-x-2 px-4 py-2 justify-center disabled:opacity-50 text-black disabled:pointer-events-none font-semibold">
-              <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-heart text-primary"
-                width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+              class="btn text-xs sm:text-lg inline-flex items-center gap-x-2 px-4 py-0 sm:py-2 justify-center disabled:opacity-50 text-black disabled:pointer-events-none font-semibold">
+              <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler icon-tabler-heart text-primary size-[16px] sm:size-[20px]"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                 fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
               </svg>
               Simpan (12k)
             </a>
-            <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="btn text-lg flex items-center gap-x-2 px-4 py-2 justify-center disabled:opacity-50 disabled:pointer-events-none text-black font-semibold">
+            <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="btn text-xs sm:text-lg flex items-center gap-x-2 px-4 py-0 sm:py-2 justify-center disabled:opacity-50 disabled:pointer-events-none text-black font-semibold">
               <div>Bagikan : </div>
               <button>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
@@ -108,7 +108,7 @@
         </div>
         <hr class="sm:hidden" />
         <div class="rounded-lg">
-          <div class="lg:pl-10 mt-6 md:mt-0">
+          <div class="sm:pl-10 sm:mt-6 md:mt-0">
             <div class="flex flex-col gap-4">
               <div class="flex flex-col">
                 <div class="flex max-sm:items-center sm:items-start flex-col sm:space-y-2 max-sm:space-x-2 pb-4">
@@ -143,7 +143,7 @@
               </div>
               <hr />
               <!-- hr -->
-              <div class="flex flex-col max-sm:items-center gap-6">
+              <div class="flex flex-col max-sm:items-center gap-4 sm:gap-6">
                 @if (!$inCart)
                 <div>
                   <!-- input -->

@@ -1,8 +1,8 @@
-<div>
+<div class="">
   @php
   $availableCarts = auth()->user()->carts()->availableProduct()->get();
   @endphp
-  <div class="mt-4">
+  <div class="mt-[4rem] sm:mt-4">
     <div class="container">
       <div class="flex flex-wrap">
         <div class="w-full">
@@ -85,7 +85,7 @@
         <div class="w-full lg:w-1/3 md:w-full">
           <!-- card -->
           <div class="relative card min-w-0">
-            <div class="card-body flex flex-col gap-4">
+            <div class="card-body flex flex-col gap-4 max-sm:p-4">
               {{-- <div>
                 <div>
                   <p class="mt-1">

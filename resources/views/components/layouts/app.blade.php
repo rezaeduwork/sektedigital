@@ -7,7 +7,7 @@
   <title>{{config('app.name')}}</title>
   <link href="{{ url('/') }}/assets/libs/tiny-slider/dist/tiny-slider.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url('/') }}/assets/libs/swiper/swiper-bundle.min.css" />
-  <link rel="shortcut icon" type="image/x-icon" href="{{ url('/') }}/logo.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url('/') }}/logo-only-square-real.png" />
 
   <!-- Libs CSS -->
   <link rel="preconnect" href="{{url('/')}}/fonts.googleapis.com/index.html" />

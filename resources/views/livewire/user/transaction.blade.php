@@ -1,5 +1,5 @@
-<div class="flex mb-5 container">
-  <div class="flex shrink-0 w-[250px] py-2 px-4">
+<div class="flex max-sm:flex-col mb-5 container max-sm:mt-[4rem]">
+  <div class="flex shrink-0 w-full sm:w-[250px] py-2 sm:px-4">
     <livewire:components.profile-sidebar>
   </div>
   <div class="w-full bg-white shadow rounded">
@@ -25,7 +25,7 @@
         <div class="table-responsive-xl rounded bg-white">
           <div
             class="font-300 text-center text-black border-b border-gray-200 text-lg">
-            <ul class="block md:flex px-2 max-w-full overflow-x-auto">
+            <ul class="flex px-2 max-w-full overflow-x-auto">
               @foreach ($tabs as $tab)
               <li class="me-2 shrink-0">
                 <a href="#"
@@ -38,7 +38,7 @@
                   hover:text-primary
                   @endif
                   rounded-t-lg
-                  text-sm
+                  text-xs sm:text-sm
                   "
                   aria-current="page">{{$tab[0]}} ({{$tab[1] != 'unprocessed' ? queryListUserTransaction($tab[1])->count():$unpaidTxQuery->count() }})</a>
               </li>
