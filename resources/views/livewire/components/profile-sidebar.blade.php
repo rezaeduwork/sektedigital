@@ -94,12 +94,12 @@
   </div>
   <ul></ul>
   <hr class="max-sm:hidden" />
-  <ul class="max-sm:flex max-sm:max-w-full max-sm:overflow-x-auto max-sm:bg-white">
+  <ul class="max-sm:flex max-sm:items-start max-sm:max-w-full max-sm:overflow-x-auto max-sm:space-x-2">
     @php
     $menus = [
       [
         'icon' => '
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-md:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-sm:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
           </svg>
         ',
@@ -113,7 +113,7 @@
       ],
       [
         'icon' => '
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-md:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-sm:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
           </svg>
         ',
@@ -126,25 +126,27 @@
     @php
     $id = uniqid();
     @endphp
-    <li wire:key="menu-item-{{str_replace(' ','',$row['name'])}}" class="shrink-0 max-sm:relative">
+    <li wire:key="menu-item-{{str_replace(' ','',$row['name'])}}" class="shrink-0 max-sm:relative max-sm:bg-white max-sm:rounded-lg">
       @if (isset($row['sub']))
       <button type="button"
-        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group max-sm:space-x-2 max-sm:text-xs"
+        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group max-sm:text-xs"
         aria-controls="dropdown-{{$id}}" data-collapse-toggle="dropdown-{{$id}}">
         {!!$row['icon']!!}
-        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">{{$row['name']}}</span>
-        <svg class="size-2 sm:size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="m1 1 4 4 4-4" />
-        </svg>
+        <div class="max-sm:space-x-2 flex items-center w-full justify-between">
+          <span class="flex-1 sm:ms-3 text-left whitespace-nowrap">{{$row['name']}}</span>
+          <svg class="size-2 sm:size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m1 1 4 4 4-4" />
+          </svg>
+        </div>
       </button>
-      <ul id="dropdown-{{$id}}" class="py-2 space-y-2 hidden">
+      <ul id="dropdown-{{$id}}" class="pt-2 sm:py-2 sm:space-y-2 hidden">
         @foreach ($row['sub'] as $rowSub)
-        <li>
+        <li class="max-sm:border-t">
           <a href="{{$rowSub["url"]}}"
             wire:navigate
             class="
-            flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg ms-2 sm:pl-11 group hover:font-bold hover:text-primary max-sm:text-xs max-sm:bg-white max-sm:rounded-lg
+            block items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg sm:pl-11 group hover:font-bold hover:text-primary max-sm:text-xs max-sm:rounded-lg
             @if(request()->url() == $rowSub['url'])
             !font-bold !text-primary
             @endif
@@ -154,27 +156,19 @@
       </ul>
       @else
       <a href="{{$row["url"]}}" class="
-      flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:font-bold hover:text-primary max-sm:space-x-4 max-sm:text-xs
+      flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:font-bold hover:text-primary max-sm:text-xs
       @if(request()->url() == $row['url'])
       !font-bold !text-primary
       @endif
       " wire:navigate>
         {!!$row["icon"]!!}
-        <span class="ms-3">{{$row["name"]}}</span>
+        <span class="sm:ms-3">{{$row["name"]}}</span>
       </a>
       @endif
 
     </li>
     @endforeach
-    <li class="shrink-0">
-      <a href="#" @click="$wire.dispatch('change-page', {page: 'help'})" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group max-sm:text-xs">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-md:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
-        </svg>
-        <span class="ms-3">Pusat Bantuan</span>
-      </a>
-    </li>
-    <li class="shrink-0">
+    <li class="shrink-0 max-sm:bg-white max-sm:rounded-lg">
       <a
       href="{{url('user/store')}}"
       wire:navigate
@@ -182,7 +176,15 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-md:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
         </svg>
-        <span class="ms-3">Toko Saya</span>
+        <span class="sm:ms-3">Toko Saya</span>
+      </a>
+    </li>
+    <li class="shrink-0 max-sm:bg-white max-sm:rounded-lg">
+      <a href="#" @click="$wire.dispatch('change-page', {page: 'help'})" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group max-sm:text-xs">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-md:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+        </svg>
+        <span class="sm:ms-3">Pusat Bantuan</span>
       </a>
     </li>
   </ul>

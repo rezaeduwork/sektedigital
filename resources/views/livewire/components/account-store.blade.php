@@ -1,5 +1,5 @@
-<div class="flex mb-5 container">
-  <div class="flex shrink-0 w-[250px] py-2 px-4">
+<div class="flex max-sm:flex-col mb-5 container">
+  <div class="flex shrink-0 w-full sm:w-[250px] py-2 sm:px-4">
     <livewire:components.profile-sidebar>
   </div>
   <div class="w-full">
@@ -73,7 +73,7 @@
           kembali.
         </div>
       @else
-        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+        <div class="p-2 sm:p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
           role="alert">
           <span class="font-medium">Toko anda telah aktif!</span> silahkan masuk ke halaman toko untuk menambahkan
           produk. <a href="{{ url('store') }}" class="underline text-[#0000EE]">Masuk toko</a>

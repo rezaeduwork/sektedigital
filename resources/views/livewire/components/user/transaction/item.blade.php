@@ -1,13 +1,13 @@
-<div class="space-y-4 @if($tx->status != 'unprocessed') border-b pb-4 @endif">
+<div class="space-y-2 sm:space-y-4 @if($tx->status != 'unprocessed') border-b pb-2 sm:pb-4 @endif">
   @php
   $total = $tx->details()->count();
   @endphp
-  <div class="flex items-center justify-between">
-    <div class="flex items-center space-x-1">
+  <div class="flex items-center justify-between max-sm:flex-col max-sm:space-y-2">
+    <div class="flex items-center space-x-1 max-sm:w-full max-sm:justify-between">
       <span>NO. PESANAN #{{$tx->id}}</span>
       <span class="{{$tx->getStatusColor()}} font-semibold">{{$tx->getStatusText()}}</span>
     </div>
-    <div class="flex items-center space-x-2 {{$tx->getStatusColor()}} font-semibold">
+    <div class="flex items-center max-sm:justify-start max-sm:w-full space-x-2 {{$tx->getStatusColor()}} font-semibold">
       <div class="text-xs text-gray-600 flex items-center space-x-1">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3 mt-[2px]" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path>
@@ -16,6 +16,7 @@
       </div>
     </div>
   </div>
+  <hr class="sm:hidden" />
   @php
   $firstDetail = $tx->details()->orderBy('store_id')->first();
   @endphp
@@ -71,9 +72,9 @@
     @if ($log)
     <div class="flex items-center justify-end w-full space-x-5">
       <div class="flex items-center space-x-2 shrink-0">
-        <div class="text-red-600 text-lg">
+        <div class="text-red-600 text-sm sm:text-lg shrink-0">
           Batal Otomatis
-          <div class="block sm:inline"
+          <div class="inline"
           x-data="countdown('{{\Carbon\Carbon::parse($log->created_at)->addDays(3)->timestamp}}')"
           x-init="startCountdown()"
           x-text="timeLeft"></div>

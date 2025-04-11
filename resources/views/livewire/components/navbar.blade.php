@@ -47,7 +47,7 @@
     </div>
   </div>
   <div class="container max-w-[968px] mx-auto">
-    <div class="flex w-full items-center justify-between py-1 sm:py-3 gap-4">
+    <div class="flex w-full items-center justify-between py-1 sm:py-3 gap-2 sm:gap-4">
       <div class="flex items-center justify-center md:justify-start shrink-0">
         <a href="{{ url('/') }}">
           <img src="{{ url('logo-real.png') }}" alt="" srcset="" class="h-[39px] w-auto rounded-lg max-sm:hidden" />
@@ -56,7 +56,7 @@
       </div>
       <div class="flex items-center sm:space-x-4 w-full max-sm:flex-row-reverse">
         <div class="dropdown">
-          <button class="mr-0 btn !p-2 inline-flex items-center gap-x-2 text-gray-600 max-sm:ml-4" type="button"
+          <button class="mr-0 btn !p-2 inline-flex items-center gap-x-2 text-gray-600 max-sm:ml-2" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="font-medium max-sm:text-xs">Kategori</span>
           </button>
@@ -104,7 +104,7 @@
               <label for="searchProducts" class="invisible hidden">Search</label>
               <input
                 x-model="inputValue"
-                class="border border-gray-300 text-gray-900 rounded-l-lg !ring-none !outline-none focus:border-gray-300 shadow-primary block p-2 sm:p-2 sm:px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-xs sm:text-sm"
+                class="border border-gray-300 text-gray-900 rounded-l-lg !ring-none !outline-none focus:border-gray-300 shadow-primary block p-2 sm:p-2 sm:px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-xs placeholder:text-xs sm:placeholder:text-sm sm:text-sm"
                 :placeholder="text" id="searchProducts" @keyup.enter="Livewire.navigate('{{url('shop')}}?q='+inputValue)" />
               <button
                 class="rounded-none rounded-r-lg btn text-xs sm:text-sm font-normal inline-flex items-center gap-x-2 bg-primary text-white border-primary disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-primary hover:border-primary active:bg-primary active:border-primary focus:outline-none focus:ring-4 focus:ring-violet-100"
