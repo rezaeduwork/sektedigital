@@ -1,4 +1,4 @@
-<div class="space-y-2 sm:space-y-4 @if($tx->status != 'unprocessed') border-b pb-2 sm:pb-4 @endif">
+<div class="space-y-2 sm:space-y-4">
   @php
   $total = $tx->details()->count();
   @endphp
@@ -16,7 +16,7 @@
       </div>
     </div>
   </div>
-  <hr class="sm:hidden" />
+  <hr />
   @php
   $firstDetail = $tx->details()->orderBy('store_id')->first();
   @endphp
@@ -29,7 +29,7 @@
         {{$product->store->name}}
       </span>
       <div class="flex">
-        <a class="flex items-center space-x-1 text-xs" href="{{url('chat/new/store/'.$product->store->user->id)}}" wire:navigate>
+        <a class="flex items-center space-x-1 text-xs" href="{{url('chat/new/store/'.$product->store->user->id)}}?tx_id={{$tx->id}}" wire:navigate>
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3" viewBox="0 0 16 16">
             <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
             <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
@@ -64,8 +64,9 @@
     </button>
   @endif
 
+  <hr />
+
   @if ($tx->status == 'confirmed')
-    <hr />
     @php
     $log = $tx->logs()->where(['activity' => 'confirmed', 'by' => $tx->user_id])->first();
     @endphp

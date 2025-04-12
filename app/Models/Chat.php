@@ -13,6 +13,8 @@ class Chat extends Model
     'sender_id',
     'receiver_id',
     'reply_id',
+    // comment('chat | transaction | product')
+    'reply_type',
     'chat_session_id',
     // comment('text | file')
     'type',
@@ -21,5 +23,9 @@ class Chat extends Model
   public function chatSession()
   {
     return $this->belongsTo(\App\Models\ChatSession::class, 'chat_session_id');
+  }
+  public function transaction()
+  {
+    return $this->belongsTo(\App\Models\Transaction::class, 'reply_id');
   }
 }

@@ -132,8 +132,8 @@
 
   <div class="flex justify-between space-x-2 mb-10">
     @if ($payment->status == 'pending')
-    <a href="{{url('payment/'.$payment->id)}}" class="bg-gray-100 text-red-700 px-4 py-2 rounded-lg shadow w-full text-center" wire:navigate>Bayar Sekarang</a>
+    <a href="{{url('payment/'.$payment->id)}}" class="bg-red-600 text-white px-4 py-2 rounded-lg shadow w-full text-center" wire:navigate>Bayar Sekarang</a>
     @endif
-    <a href="{{url('/')}}" class="bg-primary text-white px-4 py-2 rounded-lg shadow hover:bg-gray-300 w-full text-center" wire:navigate>Belanja Lagi</a>
+    <a href="{{url('/')}}" class="bg-gray-100 text-black px-4 py-2 rounded-lg shadow hover:bg-gray-300 w-full text-center" wire:navigate>Belanja Lagi</a>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="flex flex-col h-[calc(100vh-150px-64px-75px)] overflow-hidden" wire:poll.4s>
+<div class="flex flex-col h-[calc(100vh-47px-37px-102px)] sm:h-[calc(100vh-150px-64px-66px)] overflow-hidden" wire:poll.4s>
   <div class="overflow-y-auto flex-1 p-4 pb-4 flex flex-col-reverse">
 
     <div class="flex flex-col">
@@ -18,7 +18,21 @@
         @else
         <!-- Outgoing Message -->
         <div class="flex justify-end mb-4 relative">
-          <div class="flex flex-col bg-gray-200 text-black rounded-tl-[8px] rounded-b-[8px] py-2 px-3 gap-1 border">
+          <div class="flex flex-col bg-gray-200 text-black rounded-tl-[8px] rounded-b-[8px] py-2 px-3 border">
+            @if ($row->reply_id && $row->reply_type == 'transaction')
+            @php
+            $firstDetail = $row->transaction->details()->first();
+            @endphp
+            <div class="flex items-center space-x-2 mb-2 bg-white p-2 rounded-lg">
+              <img src="{{productImage($firstDetail->product->mainImage())}}" alt="" srcset="" class="size-9 rounded-lg" />
+              <div>
+                <div class="text-xs font-semibold {{$row->transaction->getStatusColor()}}">{{$row->transaction->getStatusText()}}</div>
+                <div class="text-xs text-black">INV/{{$row->transaction->id}}</div>
+              </div>
+            </div>
+            @else
+
+            @endif
             <p class="mr-2">{{$row->text}}</p>
             <div class="text-xs self-end text-gray-600">{{\Carbon\Carbon::parse($row->created_at)->diffForHumans()}}</div>
           </div>
@@ -29,4 +43,23 @@
     </div>
 
   </div>
+  @if ($tx)
+  @php
+  $firstDetail = $tx->details()->first();
+  @endphp
+  <div class="py-2 px-4 border-t bg-white flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <img src="{{productImage($firstDetail->product->mainImage())}}" alt="" srcset="" class="size-9" />
+      <div>
+        <div class="text-xs font-semibold {{$tx->getStatusColor()}}">{{$tx->getStatusText()}}</div>
+        <div class="text-xs text-black">INV/{{$tx->id}}</div>
+      </div>
+    </div>
+    <button class="bg-gray-100 size-5 flex items-center justify-center" type="button" @click="Livewire.navigate('{{url()->current()}}')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-4" viewBox="0 0 16 16">
+        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+      </svg>
+    </button>
+  </div>
+  @endif
 </div>

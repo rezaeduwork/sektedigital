@@ -1,4 +1,4 @@
-<header class="shadow w-full fixed top-0 left-0 z-20 bg-white max-sm:h-[47px]" wire:poll.8s>
+<header class="max-sm:border-b sm:shadow w-full fixed top-0 left-0 z-20 bg-white max-sm:h-[47px]" wire:poll.8s>
   <div class="bg-primary text-white max-sm:hidden">
     <!-- navbar -->
     <div class="container max-w-[968px] mx-auto">
@@ -141,7 +141,7 @@
                     @auth
                     @if (auth()->user()->unreadNotifications()->count() > 0)
                     <span
-                      class="absolute -top-3 min-w-[20px] inline-block p-[5px] h-5 w-5 left-3 text-xs align-baseline leading-none bg-primary text-white font-semibold rounded-full">
+                      class="absolute -top-3 min-w-[20px] inline-block p-[5px] h-5 w-5 left-3 text-xs align-baseline leading-none bg-red-600 text-white font-semibold rounded-full">
                         {{ auth()->user()->unreadNotifications->count() }}
                     </span>
                     @endif
@@ -187,7 +187,7 @@
                   @endphp
                   @if ($chatCount > 0)
                   <span
-                    class="absolute text-center min-w-[20px] flex items-center justify-center -top-3 inline-block p-[5px] h-5 left-3 text-xs align-center bg-primary text-white font-semibold rounded-full">
+                    class="absolute text-center min-w-[20px] flex items-center justify-center -top-3 inline-block p-[5px] h-5 left-3 text-xs align-center bg-red-600 text-white font-semibold rounded-full">
                     {{$chatCount}}
                   </span>
                   @endif
@@ -217,10 +217,13 @@
                     <path d="M6 5l14 1l-1 7h-13" />
                   </svg>
                   @auth
-                    @if (auth()->user()->carts()->count() > 0)
+                    @php
+                    $cartCounts = auth()->user()->carts()->availableProduct()->count();
+                    @endphp
+                    @if ($cartCounts > 0)
                     <span
-                      class="absolute min-w-[20px] text-center flex items-center justify-center -top-3 inline-block p-[5px] h-5 left-3 text-xs align-center bg-primary text-white font-semibold rounded-full">
-                      {{ auth()->user()->carts()->count() }}
+                      class="absolute min-w-[20px] text-center flex items-center justify-center -top-3 inline-block p-[5px] h-5 left-3 text-xs align-center bg-red-600 text-white font-semibold rounded-full">
+                      {{ $cartCounts }}
                     </span>
                     @endif
                   @endauth

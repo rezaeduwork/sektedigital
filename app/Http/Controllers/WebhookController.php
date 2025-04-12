@@ -65,7 +65,6 @@ class WebhookController extends Controller
               foreach ($invoice->transactions()->where('status', 'confirmed')->get() as $tx) {
                 transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
               }
-              // \App\Jobs\TransactionConfirmedCancellation::dispatch($invoice->id)->delay(now()->addDays(3));
             } else {
               if ($invoice->singleTransaction->product->provider == 'digiflazz') {
                 $data = digiflazz()->createTransaction($invoice->singleTransaction);
@@ -95,23 +94,28 @@ class WebhookController extends Controller
 
         case 'EXPIRED':
           $invoice->update(['status' => 'expired']);
-          if ($invoice->singleTransaction) {
-          } else {
+          if ($invoice->transaction_type == 'basic') {
             $invoice->transactions()->update(['status' => 'expired']);
             foreach ($invoice->transactions as $tx) {
               transactionActivity($tx, $tx->user_id, 'expired', ('transaction expired'));
+            }
+          } else {
+            if ($invoice->singleTransaction->product->provider == 'digiflazz') {
+              $invoice->singleTransaction()->update(['status' => 'expired']);
             }
           }
           break;
 
           $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'expired'));
         case 'FAILED':
-          $invoice->update(['status' => 'rejected']);
-          if ($invoice->singleTransaction) {
-          } else {
+          if ($invoice->transaction_type == 'basic') {
             $invoice->transactions()->update(['status' => 'rejected']);
             foreach ($invoice->transactions as $tx) {
               transactionActivity($tx, $tx->user_id, 'rejected', ('transaction rejected'));
+            }
+          } else {
+            if ($invoice->singleTransaction->product->provider == 'digiflazz') {
+              $invoice->singleTransaction()->update(['status' => 'rejected']);
             }
           }
           break;

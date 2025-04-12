@@ -1,11 +1,11 @@
 <div class="w-full">
   <div class="mb-4 font-bold">Selesaikan Pesanan</div>
-  <textarea rows="2" wire:model.live="finishNote" class="resize-none w-full mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" placeholder="Tulis pesan penyelesaian"></textarea>
+  <textarea rows="2" wire:model.live="finishNote" class="resize-none w-full mb-4 block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300" placeholder="Tulis pesan penyelesaian"></textarea>
   @error('finishNote')
   <div class="mb-4 text-red-600 text-sm">*{{$message}}</div>
   @enderror
   <div class="mb-4">
-    <input type="file" wire:model.live="finishFile" class="resize-none w-full block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300" />
+    <input type="file" wire:model.live="finishFile" class="resize-none w-full block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300" />
     <div class="text-xs">Bukti bisa berupa gambar atau pdf</div>
   </div>
   @error('finishFile')

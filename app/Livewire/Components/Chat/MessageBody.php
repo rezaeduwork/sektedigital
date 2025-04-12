@@ -4,15 +4,22 @@ namespace App\Livewire\Components\Chat;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 
 class MessageBody extends Component
 {
   public $user;
   public $session;
+  #[Url]
+  public ?string $tx_id;
+  public $tx;
   public function mount($user, $session)
   {
     $this->user = $user;
     $this->session = $session;
+    if (isset($this->tx_id) && $this->tx_id !== null) {
+      $this->tx = auth()->user()->transactions()->whereId($this->tx_id)->first();
+    }
   }
   #[On('reload.{user.id}')]
   #[On('reload')]

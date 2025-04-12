@@ -1,9 +1,9 @@
-<div class="flex max-sm:flex-col mb-5 container max-sm:mt-[4rem]">
-  <div class="flex shrink-0 w-full sm:w-[250px] py-2 sm:px-4">
+<div class="flex max-sm:flex-col mb-5 container max-sm:mt-[4rem] sm:space-x-4">
+  <div class="flex shrink-0 w-full sm:w-[280px] py-2 sm:px-4 sm:bg-white sm:rounded-lg sm:shadow sm:px-4 sm:pb-4">
     <livewire:components.profile-sidebar>
   </div>
-  <div class="w-full bg-white shadow rounded">
-    <div>
+  <div class="w-full">
+    <div class="space-y-2 sm:space-y-4">
       @php
       $tabs = [
         ['Semua',null],
@@ -21,8 +21,8 @@
         });
       });
       @endphp
-      <div class="mb-4">
-        <div class="rounded bg-white max-sm:border-b">
+      <div class="">
+        <div class="rounded bg-white shadow max-sm:border-b rounded-lg sm:shadow">
           <div
             class="font-300 text-center text-black border-b border-gray-200 text-lg">
             <ul class="flex sm:px-2 max-w-full overflow-x-auto max-sm:sticky max-sm:top-[47px]">
@@ -66,13 +66,13 @@
           </div>
         </div>
       </div>
-      <div class="mb-2 px-2 space-y-2 sm:mb-4 sm:px-4 sm:space-y-4">
+      <div class="mb-2 space-y-2 sm:mb-4 sm:space-y-4">
         @if ($activeTab == 'unprocessed')
           @php
           $payments = $unpaidTxQuery->get();
           @endphp
           @forelse ($payments as $row)
-          <div class="space-y-4 border-b pb-4" wire:key="{{'payment-'.$row->id}}">
+          <div class="space-y-4 bg-white shadow rounded-lg border p-4" wire:key="{{'payment-'.$row->id}}">
             @if ($row->singleTransaction)
             @php
             $tx = $row->singleTransaction;
@@ -143,7 +143,9 @@
           @endforelse
         @else
           @forelse ($transactions as $row)
-          <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$row" :status="$activeTab">
+          <div class="space-y-4 bg-white shadow rounded-lg border p-4" wire:key="{{'tx-'.$row->id}}">
+            <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$row" :key="'tx-item-'.$row->id" :status="$activeTab">
+          </div>
           @empty
           <div class="text-center max-sm:text-xs">
             Belum ada transaksi.

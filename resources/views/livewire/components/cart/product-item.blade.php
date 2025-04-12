@@ -45,15 +45,15 @@
       </span>
     </div>
   </div>
-  <div class="flex items-center justify-end w-full space-x-5">
+  <div class="flex items-center justify-end w-full space-x-2 sm:space-x-5">
     <div class="relative z-0 w-full">
       <input type="text" id="floating_standard{{ $cart->id }}"
         wire:model.live.debounce.250ms="note"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
         placeholder=" " />
       <label for="floating_standard{{ $cart->id }}"
-        class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Catatan
-        untuk penjual (Optional)</label>
+        class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+        Catatan (Optional)</label>
     </div>
     <!-- input group -->
     <div class="">
@@ -73,7 +73,7 @@
           @input.debounce.250ms="
           $wire.changeQuantity({{ $cart->id }},parseInt($event.target.value))
         "
-          value="{{ $cart->quantity }}" class="quantity-field w-9 px-2 text-center h-7 border-0 bg-transparent">
+          value="{{ $cart->quantity }}" class="quantity-field w-9 h-7 px-2 text-center border-0 bg-transparent max-sm:text-xs max-sm:placeholder:text-xs">
         <button type="button"
           class="
         button-plus w-8 py-1 border-l cursor-pointer border-gray-300 flex items-center justify-center

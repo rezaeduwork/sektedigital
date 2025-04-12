@@ -206,7 +206,7 @@
         <div class="navbar-vertical">
           <div class="px-4 py-5">
             <a href="{{ url('store') }}" wire:navigate class="navbar-brand">
-              <img src="{{ url('/logo.png') }}" alt="" />
+              <img src="{{ url('/logo-real.png') }}" alt="" />
             </a>
           </div>
           <div class="navbar-vertical-content flex-grow-1" data-simplebar="">

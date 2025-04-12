@@ -16,7 +16,7 @@
     @endif
   </div>
   <div class="flex items-start flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-    <div class="shrink-0 w-full md:w-[250px] py-2 px-4 bg-white shadow rounded items-center">
+    <div class="shrink-0 w-full sm:w-[280px] py-2 px-4 bg-white shadow rounded items-center sm:py-4 sm:bg-white sm:rounded-lg sm:shadow sm:px-4 sm:pb-4">
       <div class="flex space-x-4 items-center">
         <img src="{{ url('assets/images/wallet.png') }}" alt="" srcset="" class="size-6 shrink-0">
         <div class="w-full">

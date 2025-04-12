@@ -63,7 +63,7 @@ class Transaction extends Model
     $statusText = $this->status;
     switch ($this->status) {
       case 'unprocessed':
-        $statusText = 'text-gray-600';
+        $statusText = 'text-yellow-600';
         break;
       case 'confirmed':
         $statusText = 'text-blue-600';
@@ -104,7 +104,7 @@ class Transaction extends Model
         $statusText = 'Belum Bayar';
         break;
       case 'confirmed':
-        $statusText = 'Menunggu Proses';
+        $statusText = 'Menunggu Diproses';
         break;
       case 'accepted':
         $statusText = 'Dikonfirmasi';

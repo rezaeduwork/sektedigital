@@ -2,9 +2,9 @@
   @php
   $total = $tx->storeDetails()->count();
   @endphp
-  <div class="flex items-center justify-between">
-    <div>
-      <div>NO. PESANAN #{{$tx->id}}</div>
+  <div class="flex max-sm:flex-col max-sm:space-y-2 sm:items-center justify-between">
+    <div class="max-sm:flex max-sm:justify-between max-sm:items-center sm:space-y-2">
+      <div class="font-bold">NO. PESANAN #{{$tx->id}}</div>
       <div class="text-xs text-gray-600 flex items-center space-x-1">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3 mt-[2px]" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
@@ -12,9 +12,13 @@
         <span>{{\Carbon\Carbon::parse($tx->created_at)->format('Y-m-d H:i')}}</span>
       </div>
     </div>
-    <div class="flex items-center space-x-2">
-      <div class="flex">
-        <button class="flex items-center space-x-1 text-xs">
+    <div class="max-sm:flex max-sm:justify-between justify-start max-sm:flex-row items-center">
+      <div class="flex items-center space-x-2">
+        <img src="{{profile($tx->user)}}" alt="" class="size-[28px] rounded-full" />
+        <span class="text-sm text-gray-700">{{$tx->customer_name}}</span>
+      </div>
+      <div class="flex items-center sm:mt-2">
+        <button class="flex items-center space-x-1 text-xs" @click="window.open('{{url('chat/new/store/'.$tx->user->id)}}?tx_id={{$tx->id}}')">
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3" viewBox="0 0 16 16">
             <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
             <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
@@ -22,10 +26,9 @@
           <span>Hubungi Pembeli</span>
         </button>
       </div>
-      <img src="{{profile($tx->user)}}" alt="" class="size-[28px] rounded-full" />
-      <span class="text-sm text-gray-700">{{$tx->customer_name}}</span>
     </div>
   </div>
+  <hr />
   @php
   $firstDetail = $tx->storeDetails()->orderBy('id')->first();
   @endphp
@@ -56,11 +59,11 @@
   @endif
   <div class="flex items-center justify-between">
     <div class="font-semibold text-sm">Total Harga</div>
-    <div class="font-bold text-black text-2xl">Rp{{number_format($tx->amount,0,',','.')}}</div>
+    <div class="font-bold text-black text-lg sm:text-2xl">Rp{{number_format($tx->amount,0,',','.')}}</div>
   </div>
 
-  <div class="flex items-center justify-between w-full space-x-5 bg-gray-50 rounded py-2">
-    <div class="flex items-center space-x-2 shrink-0 relative w-full">
+  <div class="flex items-center justify-between w-full space-x-5 bg-gray-50 rounded py-2 px-2">
+    <div class="flex items-center justify-end space-x-4 shrink-0 relative w-full">
       {{-- <button class="text-gray-600 px-5">Detail Transaksi</button> --}}
       @if ($status == 'confirmed')
         <button
@@ -69,7 +72,7 @@
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
         @click="confirmationProcess = true"
         >Proses Pesanan</button>
-        <div x-show="confirmationProcess" style="display: none;" class="absolute z-10 min-w-[180px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] left-0">
+        <div x-show="confirmationProcess" style="display: none;" class="absolute z-10 min-w-[180px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
           <div class="mb-2">Yakin ingin proses ?</div>
           <div class="flex items-center space-x-2">
             <button class="text-xs rounded p-2" @click="confirmationProcess = false">Batal</button>
@@ -106,7 +109,7 @@
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
         @click="confirmationRefundCancel = true"
       >Tolak Complain</button>
-      <div x-show="confirmationRefundCancel" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] left-0">
+      <div x-show="confirmationRefundCancel" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
         <div class="mb-2">Yakin ingin tolak complain ?</div>
         <div class="flex items-center space-x-2">
           <button class="text-xs rounded p-2" @click="confirmationRefundCancel = false">Batal</button>
@@ -119,7 +122,7 @@
         font-semibold px-5 py-2 shrink-0 rounded text-sm"
         @click="confirmationRefund = true"
       >Refund</button>
-      <div x-show="confirmationRefund" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] left-0">
+      <div x-show="confirmationRefund" style="display: none;" class="absolute z-10 min-w-[230px] overflow-auto rounded border border-slate-200 bg-white p-4 shadow-lg shadow-sm bottom-[120%] right-0">
         <div class="mb-2">Yakin ingin refund ?</div>
         <div class="flex items-center space-x-2">
           <button class="text-xs rounded p-2" @click="confirmationRefund = false">Batal</button>

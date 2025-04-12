@@ -1,4 +1,4 @@
-<div class="">
+<div class="max-sm:pb-[4rem]">
   @php
   $availableCarts = auth()->user()->carts()->availableProduct()->get();
   @endphp

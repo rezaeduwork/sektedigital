@@ -16,17 +16,24 @@
 
     <div class="border-t border-gray-200 my-6"></div>
 
-    <div class="my-6">
+    <div class="mt-6 mb-2">
         <div class="flex items-center justify-between">
-            <p class="text-gray-500">Total Tagihan</p>
-            <p class="text-gray-800 font-bold text-lg">Rp{{number_format($paymentDetail['amount'],0,',','.')}}</p>
+            <p class="text-black text-lg">Total Tagihan</p>
+            <p class="text-red-600 font-bold text-lg">Rp{{number_format($paymentDetail['amount'],0,',','.')}}</p>
         </div>
     </div>
 
-    <div class="border-t border-gray-200 my-6"></div>
+    {{-- <div class="border-t border-gray-200 my-6"></div> --}}
 
     @if (in_array($paymentDetail['payment_method'], ['QRIS2','QRIS']))
     <img src="{{$paymentDetail['qr_url']}}" alt="" srcset="" class="w-full h-auto mb-6">
+    @else
+      @if ($paymentDetail['pay_code'])
+      <div class="flex flex-col border py-4 items-center justify-between mb-6 bg-gray-50">
+        <div class="text-black text-lg">Kode Pembayaran</div>
+        <div class="text-black font-bold text-lg">{{$paymentDetail['pay_code']}}</div>
+      </div>
+      @endif
     @endif
 
     <div class="mb-6 space-y-4 border rounded p-4">

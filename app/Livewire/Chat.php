@@ -51,6 +51,9 @@ class Chat extends Component
     $this->session = \App\Models\ChatSession::where(function ($query) use ($id) {
       $query->where(['user_id' => auth()->id(), 'user_store_id' => $id])->orWhere(['user_store_id' => auth()->id(), 'user_id' => $id]);
     })->first();
+    if (!$this->session) {
+      return null;
+    }
     $this->isStore = auth()->id() == $this->session->user_id;
     return $this->session;
   }
