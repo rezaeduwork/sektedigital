@@ -2,10 +2,10 @@
   @php
   $store = auth()->user()->store;
   @endphp
-  <div class="table-responsive-xl mb-6 mb-lg-0 space-y-4">
-    <h1 class="text-2xl font-bold">Pengumuman</h1>
+  <div class="table-responsive-xl mb-2 sm:mb-6 mb-lg-0 space-y-4">
+    <h1 class="text-lg sm:text-2xl font-bold">Pengumuman</h1>
     <div class="row flex-nowrap pb-3 pb-lg-0">
-      <div class="col-12 mb-6">
+      <div class="col-12 mb-2 sm:mb-6">
         Belum ada pengumuman.
       </div>
     </div>
@@ -30,16 +30,16 @@
     ]
   ];
   @endphp
-  <div class="table-responsive-xl mb-6 mb-lg-0 space-y-4">
-    <h1 class="text-2xl font-bold">Aktifitas</h1>
-    <div class="row flex-nowrap pb-3 pb-lg-0">
+  <div class="table-responsive-xl mb-2 sm:mb-6 mb-lg-0 space-y-4">
+    <h1 class="text-lg sm:text-2xl font-bold">Aktifitas</h1>
+    <div class="grid grid-cols-2 sm:grid-cols-4 pb-3 pb-lg-0 gap-2 sm:gap-6">
       @foreach ($importantActivities as $row)
-      <div class="col-lg-3 col-12 mb-6">
+      <div class="mb-2 sm:mb-2 sm:mb-6">
         <div class="card h-100 card-lg shadow-none border">
           <div class="card-body p-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
               <div>
-                <h4 class="mb-0 fs-5">{{$row['title']}}</h4>
+                <h4 class="mb-0 fs-5 max-sm:!text-sm">{{$row['title']}}</h4>
               </div>
             </div>
             <div class="lh-1">
@@ -53,16 +53,16 @@
   </div>
 
   <!-- table -->
-  <div class="table-responsive-xl mb-6 mb-lg-0 space-y-4">
-    <h1 class="text-2xl font-bold">Performa Toko</h1>
-    <div class="row flex-nowrap pb-3 pb-lg-0">
-      <div class="col-lg-4 col-12 mb-6">
+  <div class="table-responsive-xl mb-2 sm:mb-6 mb-lg-0 space-y-4">
+    <h1 class="text-lg sm:text-2xl font-bold">Performa Toko</h1>
+    <div class="row sm:flex-nowrap pb-3 pb-lg-0">
+      <div class="col-lg-4 col-12 mb-2 sm:mb-6">
         <!-- card -->
         <div class="card h-100 card-lg shadow-none border">
           <!-- card body -->
           <div class="card-body p-6">
             <!-- heading -->
-            <div class="d-flex justify-content-between align-items-center mb-6">
+            <div class="d-flex justify-content-between align-items-center mb-2 sm:mb-6">
               <div>
                 <h4 class="mb-0 fs-5">Pendapatan Bulan Ini</h4>
               </div>
@@ -82,13 +82,13 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-12 mb-6">
+      <div class="col-lg-4 col-12 mb-2 sm:mb-6">
         <!-- card -->
         <div class="card h-100 card-lg shadow-none border">
           <!-- card body -->
           <div class="card-body p-6">
             <!-- heading -->
-            <div class="d-flex justify-content-between align-items-center mb-6">
+            <div class="d-flex justify-content-between align-items-center mb-2 sm:mb-6">
               <div>
                 <h4 class="mb-0 fs-5">Total Penjualan</h4>
               </div>
@@ -107,13 +107,13 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-12 mb-6">
+      <div class="col-lg-4 col-12 mb-2 sm:mb-6">
         <!-- card -->
         <div class="card h-100 card-lg shadow-none border">
           <!-- card body -->
           <div class="card-body p-6">
             <!-- heading -->
-            <div class="d-flex justify-content-between align-items-center mb-6">
+            <div class="d-flex justify-content-between align-items-center mb-2 sm:mb-6">
               <div>
                 <h4 class="mb-0 fs-5">Produk Dilihat</h4>
               </div>

@@ -18,7 +18,7 @@
         <span class="text-sm text-gray-700">{{$tx->customer_name}}</span>
       </div>
       <div class="flex items-center sm:mt-2">
-        <button class="flex items-center space-x-1 text-xs" @click="window.open('{{url('chat/new/store/'.$tx->user->id)}}?tx_id={{$tx->id}}')">
+        <button class="flex items-center space-x-1 text-xs" @click="window.open('{{url('chat/new/member/'.$tx->user->id)}}?tx_id={{$tx->id}}')">
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-3" viewBox="0 0 16 16">
             <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
             <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
@@ -63,7 +63,7 @@
   </div>
 
   <div class="flex items-center justify-between w-full space-x-5 bg-gray-50 rounded py-2 px-2">
-    <div class="flex items-center justify-end space-x-4 shrink-0 relative w-full">
+    <div class="flex items-center @if (in_array($status,['confirmed','processed'])) justify-end @else justify-start @endif space-x-4 shrink-0 relative w-full">
       {{-- <button class="text-gray-600 px-5">Detail Transaksi</button> --}}
       @if ($status == 'confirmed')
         <button
@@ -86,14 +86,14 @@
       @endif
 
       @if ($status == 'store_finished')
-      <div>
+      <div class="self-start">
         <div class="font-semibold mb-2">Menunggu Konfirmasi User</div>
         <div class="rounded bg-gray-100 p-4">
-          <div class="font-bold text-lg">Bukti Penyelesaian</div>
+          <div class="font-bold text-sm sm:text-lg">Bukti Penyelesaian</div>
           <div>{{$tx->proof_text}}</div>
           <a href="{{url('storage/transaction_proof/'.$tx->proof_file)}}" target="_blank" class="text-link flex items-center space-x-2">
-            <div>{{$tx->proof_file}}</div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+            <div class="break-all">{{$tx->proof_file}}</div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-box-arrow-up-right size-[16px] shrink-0" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
               <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
             </svg>

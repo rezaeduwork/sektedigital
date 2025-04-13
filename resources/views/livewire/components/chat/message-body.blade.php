@@ -4,39 +4,35 @@
     <div class="flex flex-col">
       @foreach ($list as $row)
         @if ($row->sender_id != auth()->id())
-        <!-- Incoming Message -->
-        <div class="flex mb-4 cursor-pointer">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-            <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-8 h-8 rounded-full">
-          </div>
-          <div class="flex flex-col bg-white py-2 px-3 gap-3 rounded-tr-[8px] rounded-b-[8px] relative">
-            <p class="text-black ml-2">{{$row->text}}</p>
-            <div class="text-xs self-start">{{\Carbon\Carbon::parse($row->created_at)->diffForHumans()}}</div>
-            <span class="absolute top-0 -left-[0.4rem] w-0 h-0 border-l-8 border-l-transparent border-b-8 border-b-white border-r-8 border-r-transparent rotate-180"></span>
-          </div>
-        </div>
-        @else
-        <!-- Outgoing Message -->
-        <div class="flex justify-end mb-4 relative">
-          <div class="flex flex-col bg-gray-200 text-black rounded-tl-[8px] rounded-b-[8px] py-2 px-3 border">
-            @if ($row->reply_id && $row->reply_type == 'transaction')
-            @php
-            $firstDetail = $row->transaction->details()->first();
-            @endphp
-            <div class="flex items-center space-x-2 mb-2 bg-white p-2 rounded-lg">
-              <img src="{{productImage($firstDetail->product->mainImage())}}" alt="" srcset="" class="size-9 rounded-lg" />
-              <div>
-                <div class="text-xs font-semibold {{$row->transaction->getStatusColor()}}">{{$row->transaction->getStatusText()}}</div>
-                <div class="text-xs text-black">INV/{{$row->transaction->id}}</div>
+          <div>
+            @if ($row->reply_id !== null)
+            <livewire:components.chat.reply :key="'reply-'.$row->id" :chat="$row" />
+            @endif
+            <!-- Incoming Message -->
+            <div class="flex mb-4 cursor-pointer">
+              <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
+                <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" alt="User Avatar" class="w-8 h-8 rounded-full">
+              </div>
+              <div class="flex flex-col bg-white py-2 px-3 gap-3 rounded-tr-[8px] rounded-b-[8px] relative">
+                <p class="text-black ml-2">{{$row->text}}</p>
+                <div class="text-xs self-start">{{\Carbon\Carbon::parse($row->created_at)->diffForHumans()}}</div>
+                <span class="absolute top-0 -left-[0.4rem] w-0 h-0 border-l-8 border-l-transparent border-b-8 border-b-white border-r-8 border-r-transparent rotate-180"></span>
               </div>
             </div>
-            @else
-
-            @endif
-            <p class="mr-2">{{$row->text}}</p>
-            <div class="text-xs self-end text-gray-600">{{\Carbon\Carbon::parse($row->created_at)->diffForHumans()}}</div>
           </div>
-          <span class="absolute top-[0px] -right-[0.4rem] w-0 h-0 border-l-8 border-l-transparent border-b-8 border-b-gray-200 border-r-8 border-r-transparent rotate-180"></span>
+        @else
+        <!-- Outgoing Message -->
+        <div class="flex flex-col items-end">
+          @if ($row->reply_id !== null)
+          <livewire:components.chat.reply :key="'reply-'.$row->id" :chat="$row" />
+          @endif
+          <div class="flex justify-end mb-4 relative">
+            <div class="flex flex-col bg-gray-200 text-black rounded-tl-[8px] rounded-b-[8px] py-2 px-3 border">
+              <p class="mr-2">{{$row->text}}</p>
+              <div class="text-xs self-end text-gray-600">{{\Carbon\Carbon::parse($row->created_at)->diffForHumans()}}</div>
+            </div>
+            <span class="absolute top-[0px] -right-[0.4rem] w-0 h-0 border-l-8 border-l-transparent border-b-8 border-b-gray-200 border-r-8 border-r-transparent rotate-180"></span>
+          </div>
         </div>
         @endif
       @endforeach

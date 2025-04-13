@@ -19,6 +19,9 @@ class MessageBody extends Component
     $this->session = $session;
     if (isset($this->tx_id) && $this->tx_id !== null) {
       $this->tx = auth()->user()->transactions()->whereId($this->tx_id)->first();
+      if (!$this->tx) {
+        $this->tx = $this->user->transactions()->whereId($this->tx_id)->first();
+      }
     }
   }
   #[On('reload.{user.id}')]

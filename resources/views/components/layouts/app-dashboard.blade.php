@@ -7,8 +7,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta content="Codescandy" name="author">
-  <title>Store Sekte</title>
-  <link rel="shortcut icon" type="image/x-icon" href="{{ url('/') }}/logo.png" />
+  <title>{{strtoupper(auth()->user()->store->name)}}</title>
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url('/') }}/logo-only-square-real.png" />
 
   <!-- Libs CSS -->
   <link href="{{ url('/asset-dashboard') }}/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -28,13 +28,13 @@
   <!-- main -->
   <div>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-glass border-b">
-      <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-glass border-b max-sm:!p-2 max-sm:!h-auto">
+      <div class="container-fluid max-sm:px-2">
         <div class="d-flex justify-content-between align-items-center w-100">
           <div class="d-flex align-items-center">
             <a class="text-inherit d-block d-xl-none me-4" data-bs-toggle="offcanvas" href="#offcanvasExample"
               role="button" aria-controls="offcanvasExample">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-[28px] sm:size-[32px]" fill="currentColor"
                 class="bi bi-text-indent-right" viewBox="0 0 16 16">
                 <path
                   d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm10.646 2.146a.5.5 0 0 1 .708.708L11.707 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2zM2 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
@@ -42,26 +42,31 @@
             </a>
             <form role="search">
               <label for="search" class="form-label visually-hidden">Search</label>
-              <input class="form-control border rounded-md" type="search" placeholder="Pencarian" aria-label="Search"
+              <input class="form-control border rounded-md max-sm:!text-xs max-sm:placeholder:!text-xs" type="search" placeholder="Pencarian" aria-label="Search"
                 id="search" />
             </form>
           </div>
-          <div>
-            <ul class="list-unstyled d-flex align-items-center mb-0 ms-5 ms-lg-0 space-x-3">
+          <div class="shrink-0">
+            <ul class="list-unstyled d-flex align-items-center mb-0 ms-2 sm:ms-5 ms-lg-0 space-x-2 sm:space-x-3">
               <li class="dropdown ms-4">
-                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100"
+                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100 !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px]"
                   href="{{ url('/') }}" target="_blank" role="button" aria-expanded="false">
-                  <i class="bi bi-globe fs-5"></i>
+                  <i class="bi bi-chat"></i>
+                  <span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
+                    2
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
                 </a>
               </li>
               <li class="dropdown-center">
-                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100" href="#"
+                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100 !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px]" href="#"
                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi bi-bell fs-5"></i>
                   <span
                     class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
                     2
-                    <span class="visually-hidden">unread messages</span>
+                    <span class="visually-hidden">Notification</span>
                   </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0 border-0">
@@ -162,11 +167,11 @@
                   </div>
                 </div>
               </li>
-              <li class="dropdown ms-4">
+              <li class="dropdown ms-2 sm:ms-4">
                 <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                   class="flex items-center space-x-3">
-                  <img src="{{ profile(auth()->user()) }}" alt="" class="avatar avatar-md rounded-circle" />
-                  <h5 class="">{{ auth()->user()->name }}</h5>
+                  <img src="{{ profile(auth()->user()) }}" alt="" class="avatar !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px] shrink-0 rounded-circle" />
+                  <h5 class="max-sm:hidden">{{ \Str::limit(auth()->user()->name, 6) }}</h5>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end p-0">

@@ -4,6 +4,12 @@
   @endphp
   <ul class="navbar-nav flex-column" id="sideNavbar{{$uniqKey}}">
     <li class="nav-item">
+      <a class="nav-link" href="{{url('/')}}" >
+        <div class="d-flex align-items-center">
+          <span class="nav-link-icon"><i class="bi bi-globe"></i></span>
+          <span class="nav-link-text">Marketplace</span>
+        </div>
+      </a>
       <a class="nav-link" href="#" data-bs-toggle="collapse"
         data-bs-target="#navStore" aria-expanded="true" aria-controls="navStore">
         <div class="d-flex align-items-center">
