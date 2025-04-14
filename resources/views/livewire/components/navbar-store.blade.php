@@ -43,7 +43,7 @@
       <div id="navCategoriesOrders" class="show !visible" data-bs-parent="#sideNavbar{{$uniqKey}}">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" href="{{url('/store/transaction/history')}}" wire:navigate>Riwayat Pesanan</a>
+            <a class="nav-link" href="{{url('/store/transaction/history')}}" wire:navigate>Daftar Pesanan</a>
           </li>
           <!-- Nav item -->
           <li class="nav-item">

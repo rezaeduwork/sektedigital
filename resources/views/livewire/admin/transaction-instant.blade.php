@@ -59,7 +59,7 @@
                 <tbody>
                 @foreach ($list as $row)
                 @php
-                $firstProduct = $row->product;
+                $firstProduct = $row->product()->withTrashed()->first();
                 @endphp
                 <tr wire:key="{{'table'.$row->id}}">
                   <td>#{{$row->id}}</td>
@@ -95,7 +95,7 @@
                       @endphp
                       @if ($phone)
                         @if (in_array($row->status, ['finished']))
-                        <a href="https://api.whatsapp.com/send?phone={{$phone}}&text=Halo%20{{$row->customer_name}},%20terima%20kasih%20sudah%20melakukan%20transaksi%20di%20{{config('app.name')}}.%20Silahkan%20cek%20status%20transaksi%20anda.%0AID:%20{{$row->id}}.%0AProduct:%20{{$firstProduct->title}}.%0AStatus:%20{{$row->getStatusText()}}.%0A" target="_blank" class="btn btn-xs btn-success">
+                        <a href="https://api.whatsapp.com/send?phone={{$phone}}&text=Halo%20{{$row->customer_name}},%20terima%20kasih%20sudah%20melakukan%20transaksi%20di%20{{config('app.name')}}.%20Silahkan%20cek%20status%20transaksi%20anda.%0AID:%20{{$row->id}}{{isset($firstProduct->title) ? '.%0AProduct:%20':''}}.%0AStatus:%20{{$row->getStatusText()}}.%0A" target="_blank" class="btn btn-xs btn-success">
                           <i class="fab fa-whatsapp"></i> WA
                         </a>
                         @elseif(in_array($row->payment->status, ['pending']) && \Carbon\Carbon::parse($row->payment->created_at)->addHours(1)->gt(\Carbon\Carbon::now()))

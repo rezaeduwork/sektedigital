@@ -169,6 +169,9 @@ class PaymentInfo extends Component
         throw new \Exception($tripay['data']);
       }
       $data = $tripay['data']['data'];
+      if (isset($data['expired_time'])) {
+        $payment->expired_at = \Carbon\Carbon::createFromTimestamp($data['expired_time']);
+      }
       $payment->data = $data;
 
       $payment->save();

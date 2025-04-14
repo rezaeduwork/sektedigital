@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
     'user.auth' => \App\Http\Middleware\AuthCustomMiddleware::class,
     'user.hasstore' => \App\Http\Middleware\UserHasStoreMiddleware::class,
     'user.admin' => \App\Http\Middleware\AuthAdminMiddleware::class,
+    'payment.expired' => \App\Http\Middleware\PaymentExpiredMiddleware::class
   ];
 }

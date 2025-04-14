@@ -123,6 +123,11 @@
             <livewire:components.user.transaction.item :key="uniqid().time()" :tx="$rowTx" :status="$activeTab">
             @endforeach
             @endif
+            @if ($row->status === 'pending' && \Carbon\Carbon::parse($row->expired_at)->lt(now()))
+            @php
+            expirePayment($row);
+            @endphp
+            @endif
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex items-center space-x-1" role="alert">
               <span class="block sm:inline">Bayar dalam</span>
               <div class="block sm:inline"

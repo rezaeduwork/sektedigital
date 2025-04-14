@@ -1,9 +1,9 @@
-<div class="mb-5 container">
+<div class="mb-5 container max-sm:mt-[3rem] max-sm:pb-[4rem]">
   @php
   $userBanks = auth()->user()->banks;
   @endphp
-  <div class="flex items-center justify-between">
-    <div class="text-3xl font-semibold w-full text-gray-700 mb-6">Detail Saldo</div>
+  <div class="flex items-center justify-between mb-4">
+    {{-- <div class="text-lg sm:text-3xl font-semibold w-full text-gray-700 mb-4 sm:mb-6">Detail Saldo</div> --}}
     @if ($page == 'bank')
     <button type="button" class="text-primary px-4 py-2 rounded shrink-0 bg-white border-2 border-primary flex items-center justify-center space-x-1" @click="$wire.set('page', '')">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -11,8 +11,6 @@
       </svg>
       <div>Kembali</div>
     </button>
-    @else
-    {{-- <button type="button" class="text-primary px-4 py-2 underline rounded-md shrink-0">Download Riwayat</button> --}}
     @endif
   </div>
   <div class="flex items-start flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">

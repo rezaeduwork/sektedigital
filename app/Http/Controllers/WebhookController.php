@@ -55,58 +55,12 @@ class WebhookController extends Controller
 
       switch ($status) {
         case 'PAID':
-          // DOUBLE CHECK TX
-          $checkTx = tripay()->checkTransactionDetail($invoice->data['reference']);
-          if ($checkTx['status'] === true) {
-            $invoice->update(['status' => 'settlement', 'settlement_at' => now()]);
-
-            if ($invoice->transaction_type == 'basic') {
-              $invoice->transactions()->where('status', 'unprocessed')->update(['status' => 'confirmed']);
-              foreach ($invoice->transactions()->where('status', 'confirmed')->get() as $tx) {
-                transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
-              }
-            } else {
-              if ($invoice->singleTransaction->product->provider == 'digiflazz') {
-                $data = digiflazz()->createTransaction($invoice->singleTransaction);
-                if ($data['success'] === true) {
-                  $invoice->singleTransaction()->update(['status' => 'finished']);
-                } else {
-                  if ($data['data']['status'] == 'Pending') {
-                    $invoice->singleTransaction()->update(['status' => 'confirmed']);
-                  } else {
-                    $invoice->singleTransaction()->update(['status' => 'rejected']);
-                  }
-                }
-              }
-            }
-
-            if ($invoice->user) {
-              $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'settlement'));
-            }
-          } else {
-            return response()->json([
-              'success' => false,
-              'message' => $checkTx['data'],
-            ]);
-          }
-
+          successPayment($invoice);
           break;
 
         case 'EXPIRED':
-          $invoice->update(['status' => 'expired']);
-          if ($invoice->transaction_type == 'basic') {
-            $invoice->transactions()->update(['status' => 'expired']);
-            foreach ($invoice->transactions as $tx) {
-              transactionActivity($tx, $tx->user_id, 'expired', ('transaction expired'));
-            }
-          } else {
-            if ($invoice->singleTransaction->product->provider == 'digiflazz') {
-              $invoice->singleTransaction()->update(['status' => 'expired']);
-            }
-          }
+          expirePayment($invoice);
           break;
-
-          $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'expired'));
         case 'FAILED':
           if ($invoice->transaction_type == 'basic') {
             $invoice->transactions()->update(['status' => 'rejected']);
@@ -118,9 +72,8 @@ class WebhookController extends Controller
               $invoice->singleTransaction()->update(['status' => 'rejected']);
             }
           }
-          break;
-
           $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'rejected'));
+          break;
         default:
           return response()->json([
             'success' => false,

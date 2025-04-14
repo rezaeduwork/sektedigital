@@ -11,6 +11,7 @@ class SelectProduct extends Component
   public $informations = [];
   public $account = null;
   public $canSubmit = false;
+  public $searchProduct;
   public function mount($brand)
   {
     $this->brand = $brand;
@@ -59,7 +60,11 @@ class SelectProduct extends Component
   }
   public function render()
   {
-    $list = \App\Models\ProductInstant::where('category', 'Games')->where('brand', $this->brand)->orderByRaw('type desc,price asc')->get();
+    $list = \App\Models\ProductInstant::where('category', 'Games')->where('brand', $this->brand)->where('status', 'active')->orderByRaw('type desc,price asc');
+    if ($this->searchProduct) {
+      $list->where('title', 'like', '%' . $this->searchProduct . '%');
+    }
+    $list = $list->get();
     return view('livewire.components.home.services.game-online.select-product', compact('list'));
   }
 }

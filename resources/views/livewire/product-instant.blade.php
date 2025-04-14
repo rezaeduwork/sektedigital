@@ -4,7 +4,7 @@
       <!-- Produk -->
       <div class="w-full">
         <nav class="text-xs text-gray-500 mb-6">
-          <a href="#" class="text-blue-500">Beranda</a> > <span>{{$product->title}}</span>
+          <a href="{{url('/')}}" class="text-blue-500" wire:navigate>Home</a> > <span>{{$product->title}}</span>
         </nav>
         <div class="flex items-start gap-4 mb-6">
           @if ($product->image)
@@ -14,11 +14,11 @@
           @endif
           <div class="space-y-2">
             <h1 class="font-bold flex items-center">
-              <span class="text-xl">
+              <span class="sm:text-xl">
                 {{$product->title}}
               </span>
             </h1>
-            <p class="text-gray-500 flex gap-2 text-sm">
+            <p class="text-gray-500 flex gap-2 text-xs sm:text-sm">
               {{$product->highlight}}
             </p>
             <div class="flex pt-2">

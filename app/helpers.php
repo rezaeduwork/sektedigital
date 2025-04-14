@@ -198,3 +198,71 @@ function getTransactionInstantInformations($category, $brand, $values = [])
 
   return $informations;
 }
+function successPayment($invoice)
+{
+  if ($invoice->status !== 'pending') {
+    return [
+      'success' => true
+    ];
+  }
+  // DOUBLE CHECK TX
+  $checkTx = tripay()->checkTransactionDetail($invoice->data['reference']);
+  if ($checkTx['status'] === true) {
+    $invoice->update(['status' => 'settlement', 'settlement_at' => now()]);
+
+    if ($invoice->transaction_type == 'basic') {
+      $invoice->transactions()->where('status', 'unprocessed')->update(['status' => 'confirmed']);
+      foreach ($invoice->transactions()->where('status', 'confirmed')->get() as $tx) {
+        transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
+      }
+    } else {
+      if ($invoice->singleTransaction->product->provider == 'digiflazz') {
+        $data = digiflazz()->createTransaction($invoice->singleTransaction);
+        if ($data['success'] === true) {
+          $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'finished']);
+        } else {
+          if ($data['data']['status'] == 'Pending') {
+            $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'confirmed']);
+          } else {
+            $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'rejected']);
+          }
+        }
+      }
+    }
+
+    if ($invoice->user) {
+      $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'settlement'));
+    }
+  } else {
+    return response()->json([
+      'success' => false,
+      'message' => $checkTx['data'],
+    ]);
+  }
+  return response()->json([
+    'success' => true
+  ]);
+}
+function expirePayment($invoice)
+{
+  if ($invoice->status !== 'pending') {
+    return [
+      'success' => true
+    ];
+  }
+  $invoice->update(['status' => 'expired']);
+  if ($invoice->transaction_type == 'basic') {
+    $invoice->transactions()->where('status', 'unprocessed')->update(['status' => 'expired']);
+    foreach ($invoice->transactions as $tx) {
+      transactionActivity($tx, $tx->user_id, 'expired', ('transaction expired'));
+    }
+  } else {
+    if ($invoice->singleTransaction->product->provider == 'digiflazz') {
+      $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'expired']);
+    }
+  }
+  $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'expired'));
+  return [
+    'success' => true
+  ];
+}

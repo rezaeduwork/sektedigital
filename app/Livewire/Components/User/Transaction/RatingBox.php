@@ -28,12 +28,14 @@ class RatingBox extends Component
         'rating' => $this->rating,
         'feedback' => $this->feedback,
         'transaction_id' => $this->detailTx->transaction_id,
-        'user_id' => auth()->id()
+        'user_id' => auth()->id(),
+        'store_id' => $this->detailTx->transaction->store_id
       ]);
     } else {
       $existingRating->update([
         'rating' => $this->rating,
         'feedback' => $this->feedback,
+        'store_id' => $this->detailTx->transaction->store_id
       ]);
     }
 

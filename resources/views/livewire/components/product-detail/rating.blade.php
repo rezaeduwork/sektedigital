@@ -1,9 +1,9 @@
-<div class="p-3 sm:p-6 bg-white shadow rounded space-y-4 sm:space-y-6 mb-4 sm:mb-6">
+<div class="p-3 sm:p-6 bg-white shadow rounded space-y-2 sm:space-y-4 sm:space-y-6 mb-4 sm:mb-6">
   <div class="font-bold text-lg sm:text-2xl">Ulasan</div>
   <div>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2 sm:gap-6">
       <div class="w-full">
-        <div class="flex flex-col gap-6 mb-6">
+        <div class="flex flex-col gap-2 sm:gap-6 gap-2 sm:mb-6">
           <div class="flex flex-col gap-2">
             <div class="lg:flex items-center gap-6">
               <!-- rating -->
@@ -76,7 +76,7 @@
 
       <div class="w-full">
         <div>
-          <div class="flex justify-between items-center mb-8">
+          <div class="flex justify-between items-center mb-3 sm:mb-8">
             <div>
               <!-- heading -->
               <h3 class="sm:text-2xl font-semibold">Ulasan Pembeli</h3>
@@ -91,12 +91,12 @@
             </div>
           </div>
           @foreach ($productRatingsList as $row)
-          <div class="flex border-b gap-5 mb-6 pb-6">
+          <div class="flex border-b gap-2 sm:gap-5 mb-2 pb-2 sm:mb-6 sm:pb-6">
             <!-- img -->
             <!-- img -->
             <img src="{{profile($row->user)}}" alt=""
-              class="rounded-full h-12 w-12" />
-            <div class="flex flex-col gap-4">
+              class="rounded-full size-8 sm:size-12 shrink-0" />
+            <div class="flex flex-col gap-2 sm:gap-4">
               <div class="flex flex-col gap-1">
                 <h4 class="text-base">{{$row->user->name}}</h4>
                 <!-- select option -->

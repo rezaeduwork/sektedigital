@@ -1,6 +1,6 @@
 <div>
   <div class="mt-4 p-4 bg-gray-100 rounded-lg border border-gray-200">
-    <div class="font-semibold text-lg mb-3">Bantu toko dengan memberikan rating 😊</div>
+    <div class="font-semibold sm:text-lg mb-3">Bantu toko dengan memberikan rating 😊</div>
     <div class="flex flex-rating items-center gap-2 mb-2">
         <div class="flex" onmouseout="resetStars({{$rating}})">
           @for ($i = 1; $i <= 5; $i++)
@@ -19,11 +19,12 @@
     <textarea
     rows="2"
     wire:model.live="feedback"
-    class="resize-none w-full mb-4 block p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
+    class="resize-none w-full mb-4 block p-2.5 text-xs placeholder:text-xs sm:text-sm sm:placeholder:text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
     placeholder="Tulis feedback"></textarea>
 
     <button
     class="
+    max-sm:text-xs max-sm:w-full
     @if ($rating > 0)
     bg-green-600 hover:bg-green-700
     @else

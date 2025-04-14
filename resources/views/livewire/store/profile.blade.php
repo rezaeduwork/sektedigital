@@ -1,5 +1,5 @@
 <section class="container">
-  <h1 class="text-2xl font-bold mb-5">Profil Toko</h1>
+  <h1 class="text-lg sm:text-2xl font-bold mb-5">Profil Toko</h1>
   <div class="table-responsive-xl p-6 mb-6 mb-lg-0 space-y-4  bg-white rounded border">
     <div class="mb-5">
       <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50" role="alert">

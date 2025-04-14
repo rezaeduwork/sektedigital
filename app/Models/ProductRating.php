@@ -13,8 +13,13 @@ class ProductRating extends Model
     'feedback',
     'product_id',
     'transaction_id',
-    'user_id'
+    'user_id',
+    'store_id'
   ];
+  public function store()
+  {
+    return $this->belongsTo(\App\Models\Store::class);
+  }
   public function product()
   {
     return $this->belongsTo(\App\Models\Product::class);

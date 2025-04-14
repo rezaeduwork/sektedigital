@@ -56,6 +56,7 @@ Route::middleware('user.auth')->group(function () {
     });
     Route::prefix('transaction')->group(function () {
       Route::get('history', \App\Livewire\Store\Transaction\History::class);
+      Route::get('rating', \App\Livewire\Store\Transaction\Rating::class);
     });
   });
 });
@@ -75,5 +76,7 @@ Route::middleware('user.admin')->prefix('admin')->group(function () {
 Route::get('s/{id}', \App\Livewire\StoreDetail::class);
 Route::get('i/{code}', \App\Livewire\ProductInstant::class);
 Route::get('/{slug}', \App\Livewire\ProductDetail::class);
-Route::get('/payment/{id}/detail', \App\Livewire\PaymentDetail::class);
-Route::get('/payment/{id}', \App\Livewire\Payment::class);
+Route::middleware('payment.expired')->prefix('payment')->group(function () {
+  Route::get('/{id}/detail', \App\Livewire\PaymentDetail::class);
+  Route::get('/{id}', \App\Livewire\Payment::class);
+});

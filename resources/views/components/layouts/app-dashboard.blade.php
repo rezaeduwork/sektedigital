@@ -48,17 +48,6 @@
           </div>
           <div class="shrink-0">
             <ul class="list-unstyled d-flex align-items-center mb-0 ms-2 sm:ms-5 ms-lg-0 space-x-2 sm:space-x-3">
-              <li class="dropdown ms-4">
-                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100 !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px]"
-                  href="{{ url('/') }}" target="_blank" role="button" aria-expanded="false">
-                  <i class="bi bi-chat"></i>
-                  <span
-                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
-                    2
-                    <span class="visually-hidden">unread messages</span>
-                  </span>
-                </a>
-              </li>
               <li class="dropdown-center">
                 <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100 !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px]" href="#"
                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -114,52 +103,6 @@
                           </div>
                         </a>
                       </li>
-                      <li class="list-group-item px-5 py-4 list-group-item-action">
-                        <a href="#!" class="text-muted">
-                          <div class="d-flex">
-                            <img src="{{ profile(auth()->user()) }}" alt=""
-                              class="avatar avatar-md rounded-circle" />
-                            <div class="ms-4">
-                              <p class="mb-1">
-                                <span class="text-dark">Jitu Chauhan</span>
-                                answered to your pending order list with notes
-                              </p>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                  fill="currentColor" class="bi bi-clock text-muted" viewBox="0 0 16 16">
-                                  <path
-                                    d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                </svg>
-                                <small class="ms-2">2 days ago</small>
-                              </span>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                      <li class="list-group-item px-5 py-4 list-group-item-action">
-                        <a href="#!" class="text-muted">
-                          <div class="d-flex">
-                            <img src="{{ url('/asset-dashboard') }}/images/avatar/avatar-2.jpg" alt=""
-                              class="avatar avatar-md rounded-circle" />
-                            <div class="ms-4">
-                              <p class="mb-1">
-                                <span class="text-dark">You have new messages</span>
-                                2 unread messages
-                              </p>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                  fill="currentColor" class="bi bi-clock text-muted" viewBox="0 0 16 16">
-                                  <path
-                                    d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                </svg>
-                                <small class="ms-2">3 days ago</small>
-                              </span>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
                     </ul>
                   </div>
                   <div class="border-top px-5 py-4 text-center">
@@ -167,8 +110,21 @@
                   </div>
                 </div>
               </li>
-              <li class="dropdown ms-2 sm:ms-4">
-                <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+              <li class="dropdown">
+                <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100 !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px]"
+                  href="{{ url('/') }}" target="_blank" role="button" aria-expanded="false">
+                  <i class="bi bi-chat"></i>
+                  <span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
+                    2
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
+                </a>
+              </li>
+              <li class="dropdown">
+                <a href="#" role="button"
+                  {{-- data-bs-toggle="dropdown"  --}}
+                  aria-expanded="false"
                   class="flex items-center space-x-3">
                   <img src="{{ profile(auth()->user()) }}" alt="" class="avatar !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px] shrink-0 rounded-circle" />
                   <h5 class="max-sm:hidden">{{ \Str::limit(auth()->user()->name, 6) }}</h5>

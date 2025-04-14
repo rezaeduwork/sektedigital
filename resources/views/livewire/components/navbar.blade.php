@@ -49,7 +49,7 @@
   <div class="container max-w-[968px] mx-auto">
     <div class="flex w-full items-center justify-between py-1 sm:py-3 gap-2 sm:gap-4">
       <div class="flex items-center justify-center md:justify-start shrink-0">
-        <a href="{{ url('/') }}">
+        <a href="{{ url('/') }}" wire:navigate>
           <img src="{{ url('logo-real.png') }}" alt="" srcset="" class="h-[39px] w-auto rounded-lg max-sm:hidden" />
           <img src="{{ url('logo-only-square-real.png') }}" alt="" srcset="" class="h-[39px] w-auto rounded-lg sm:hidden" />
         </a>

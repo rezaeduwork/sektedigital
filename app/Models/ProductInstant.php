@@ -146,6 +146,9 @@ class ProductInstant extends Model
     if ($priceList['success']) {
       $insertedIds = [];
       foreach ($priceList['data'] as $row) {
+        // if ($row['product_name'] == 'Free Fire 15 Diamond') {
+        //   # code...
+        // }
         if ($row['unlimited_stock'] === false && $row['stock'] === 0) {
           continue;
         }

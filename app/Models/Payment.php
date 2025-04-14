@@ -22,7 +22,8 @@ class Payment extends Model
     'proof_text',
     'proof_file',
     // comment('basic | instant')
-    'transaction_type'
+    'transaction_type',
+    'expired_at'
   ];
   public function user()
   {
