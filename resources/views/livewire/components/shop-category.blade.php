@@ -24,16 +24,16 @@
     <div class="text-[56px] font-bold">{{$category->name}}</div>
   </div>
   @endif
-  <div class="border-gray-200 dark:border-gray-700 w-full text-center flex items-center justify-center sticky"
+  <div class="border-gray-200 dark:border-gray-700 w-full text-center flex max-sm:flex-col items-center justify-center sticky"
     x-ref="tab" @scroll.window="checkSticky()">
-    <ul class="grid grid-cols-2 w-full lg:w-auto lg:flex lg:flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-      <li class="me-2">
+    <ul class="flex w-full lg:w-auto -mb-px text-xs sm:text-sm font-medium text-center text-gray-500" style="overflow-x:auto;">
+      <li class="shrink-0">
         <a href="{{url('shop')}}" class="inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg group" wire:navigate>
           Semua
         </a>
       </li>
-      @foreach (\App\Models\CategoryProduct::take(5)->get() as $row)
-      <li class="me-2">
+      @foreach (\App\Models\CategoryProduct::get() as $key => $row)
+      <li class="shrink-0 @if($key > 4) sm:hidden @endif" wire:key="category-{{$key}}">
         <a href="{{url('shop/'.$row->id)}}" class="
         inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg group
         hover:text-primary hover:border-primary
@@ -47,15 +47,15 @@
       </li>
       @endforeach
     </ul>
-    <div>
+    <div class="max-sm:shrink-0 max-sm:w-full max-sm:hidden">
       @php
       $totalCategory = \App\Models\CategoryProduct::query()->count();
       @endphp
       @if ($totalCategory > $show)
       <button type="button" id="dropdownCategory" data-dropdown-toggle="dropdown" class="
-      inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg group cursor-pointer text-primary
+      flex sm:inline-flex items-center justify-center max-sm:px-1 sm:p-4 border-b-2 border-transparent rounded-t-lg group cursor-pointer text-primary max-sm:shrink-0 max-sm:w-full
       ">
-        <div class="bg-primary text-white rounded-md flex items-center px-2 py-1">
+        <div class="bg-primary text-white rounded-md flex items-center px-1 px-2 py-1 max-sm:text-xs">
           <div class="rounded p-1 px-2">+{{$totalCategory - $show}} Kategori</div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 mt-[3px]">
             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />

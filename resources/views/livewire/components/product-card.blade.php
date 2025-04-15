@@ -1,6 +1,6 @@
-<div class="relative rounded-lg break-words border bg-white border-gray-200 shadow outline-none shadow-none rounded-t-xl cursor-pointer" @click="Livewire.navigate('{{url($product->slug)}}')">
-  <div class="flex flex-col h-full rounded-t-xl">
-    <div class="text-center relative flex justify-center rounded-t-xl">
+<div class="relative rounded-lg break-words border bg-white border-gray-200 shadow outline-none shadow-none rounded-t-lg cursor-pointer" @click="Livewire.navigate('{{url($product->slug)}}')">
+  <div class="flex flex-col h-full rounded-t-lg">
+    <div class="text-center relative flex justify-center rounded-t-lg">
       {{-- <div class="absolute top-0 left-0">
         <span
           class="inline-block p-1 text-center font-semibold text-sm align-baseline leading-none rounded bg-violet-600 text-white">Sale</span>
@@ -8,24 +8,40 @@
       @php
       $mainImage = $product->mainImage();
       @endphp
-      <a href="#!" class="rounded-t-xl"><img src="{{url('storage/'.$mainImage->name)}}" alt="{{$product->title}}"
-          class="w-full h-auto rounded-t-xl"></a>
+      <a href="#!" class="rounded-t-lg"><img src="{{url('storage/'.$mainImage->name)}}" alt="{{$product->title}}"
+          class="w-full h-auto rounded-t-lg"></a>
     </div>
-    <div class="flex-grow flex flex-col gap-3 p-4">
-      <div>
+    <div class="flex-grow flex flex-col gap-1 sm:gap-3 p-2 sm:p-4">
+      <div class="h-full">
         <a href="#!" class="text-decoration-none text-gray-500"><small>{{$product->category->name ?? ''}}</small></a>
         <div class="h-full flex flex-col gap-2">
-          <h3 class="truncate text-lg"><a href="#" class="hover:text-primary font-bold">{{\Str::limit($product->title,100,'...')}}</a></h3>
-          <div class="flex-grow text-sm">
+          <h3 class="truncate sm:text-lg"><a href="#" class="hover:text-primary sm:font-bold">{{\Str::limit($product->title,100,'...')}}</a></h3>
+          <div class="flex-grow text-xs sm:text-sm">
             {{\Str::limit($product->highlight,50,'...')}}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between items-center">
+          <div>
+            <span class="text-red-600 font-semibold sm:text-lg w-full">Rp{{number_format($product->price,0,',','.')}}</span>
+            {{-- <span class="line-through text-gray-500">$24</span> --}}
           </div>
           @if ($product->transactionDetails()->count() > 0)
             @php
             $total_rating = $product->ratings()->count();
             $total_rating_star = $total_rating > 0 ? $product->ratings()->avg('rating') : 0;
             @endphp
-            <div class="flex items-center justify-between w-full">
-              <div class="text-yellow-500 flex items-center gap-2 mt-3">
+            <div class="flex items-center justify-between shrink-0 space-x-1 sm:space-x-2">
+              <div class="text-yellow-500 flex items-center gap-1 sm:gap-2">
+                @php
+                $ordered = $product->transactionDetails()->whereHas('transaction', function($query) {
+                  $query->whereNotIn('status', ['unprocessed','cancelled','inspection','rejected']);
+                })->count();
+                @endphp
+                <span class="text-black small">{{$ordered}} Terjual</span>
+              </div>
+              <div class="text-yellow-500 flex items-center">
                 <!-- rating -->
                 <div class="flex items-center">
                   <svg xmlns="../www.w3.org/2000/svg.html" class="icon icon-tabler
@@ -45,34 +61,8 @@
                 </div>
                 <span class="text-gray-500 small">{{round($total_rating_star,1)}}</span>
               </div>
-              <div class="text-yellow-500 flex items-center gap-2 mt-3">
-                @php
-                $ordered = $product->transactionDetails()->whereHas('transaction', function($query) {
-                  $query->whereNotIn('status', ['unprocessed','cancelled','inspection','rejected']);
-                })->count();
-                @endphp
-                <span class="text-gray-500 small">{{$ordered}} Terjual</span>
-              </div>
             </div>
           @endif
-        </div>
-      </div>
-      <div class="flex justify-between items-center">
-        <div>
-          <span class="text-red-600 font-semibold text-lg">Rp{{number_format($product->price,0,',','.')}}</span>
-          {{-- <span class="line-through text-gray-500">$24</span> --}}
-        </div>
-        <div>
-          <button type="button"
-            class="btn inline-flex items-center gap-x-2 btn-sm">
-            <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="text-primary size-4" viewBox="0 0 16 16">
-              <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0"/>
-            </svg>
-          </button>
-          {{-- <button type="button"
-            class="btn inline-flex items-center gap-x-2 btn-sm border border-primary text-primary">
-            Beli Langsung
-          </button> --}}
         </div>
       </div>
     </div>

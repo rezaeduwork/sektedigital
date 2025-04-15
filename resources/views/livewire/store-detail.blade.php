@@ -1,62 +1,75 @@
-<div class="w-full mx-auto px-4 pb-4">
+<div class="w-full mx-auto max-sm:p-2 sm:px-4 max-sm:mb-[4rem] sm:pb-4">
   <div class="flex flex-col items-center gap-2">
     <!-- Profile Card -->
-    <div class="bg-primary p-4 w-full shrink-0 flex items-center rounded">
+    <div class="bg-primary p-2 sm:p-4 w-full shrink-0 flex items-center rounded-lg max-sm:rounded-b-none">
       <div class="w-full space-y-2">
-        <div class="flex items-center gap-4 w-full">
-          <div class="flex-shrink-0">
-            <img class="w-16 h-16 rounded-full" src="{{storeProfile($store)}}" />
+        <div class="flex items-center gap-2 sm:gap-4 w-full">
+          <div class="flex items-center gap-2 sm:gap-4 w-full">
+            <div class="flex-shrink-0">
+              <img class="size-12 sm:size-16 rounded-full" src="{{storeProfile($store)}}" />
+            </div>
+            <div class="flex-1">
+              <h1 class="text-white text-sm sm:text-xl font-bold">{{$store->name}}</h1>
+              <p class="text-gray-400 text-xs sm:text-sm">Aktif 9 menit lalu</p>
+            </div>
           </div>
-          <div class="flex-1">
-            <h1 class="text-white text-xl font-bold">{{$store->name}}</h1>
-            <p class="text-gray-400 text-sm">Aktif 9 menit lalu</p>
+          <div class="flex items-center gap-1 sm:hidden text-xs">
+            <button class="bg-white/10 text-white p-2 sm:px-6 sm:py-2 rounded hover:bg-white/20 w-full">
+                Ikuti
+            </button>
+            <button class="bg-white/10 text-white p-2 sm:px-6 sm:py-2 rounded hover:bg-white/20 w-full" @click="Livewire.navigate('{{url('chat/new/store/'.$store->user->id)}}')">
+                Chat
+            </button>
           </div>
-
         </div>
         <!-- Stats Grid -->
-        <div class="flex gap-2 w-full">
-          <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 w-full">
+          <div class="flex items-center max-sm:justify-center gap-2 shrink-0">
             <span class="text-white">Produk:</span>
             <span class="text-red-500 font-semibold">108</span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center max-sm:justify-center gap-2 shrink-0">
             <span class="text-white">Pengikut:</span>
             <span class="text-red-500 font-semibold">477</span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center max-sm:justify-center gap-2 shrink-0 max-sm:hidden">
             <span class="text-white">Penilaian:</span>
             <span class="text-red-500 font-semibold">4.7</span>
             <span class="text-white">(414 Penilaian)</span>
           </div>
         </div>
       </div>
-      <div class="flex flex-col w-[200px] gap-2">
+      <div class="flex flex-col w-[200px] gap-2 max-sm:hidden">
         <button class="bg-white/10 text-white px-6 py-2 rounded hover:bg-white/20 w-full">
             Ikuti
         </button>
-        <button class="bg-white/10 text-white px-6 py-2 rounded hover:bg-white/20 w-full">
+        <button class="bg-white/10 text-white px-6 py-2 rounded hover:bg-white/20 w-full" @click="Livewire.navigate('{{url('chat/new/store/'.$store->user->id)}}')">
             Chat
         </button>
       </div>
     </div>
   </div>
-
+  <div class="flex items-center max-sm:justify-center gap-2 py-1 shrink-0 sm:hidden bg-gray-100 rounded-b-lg mb-2">
+    <span class="">Penilaian:</span>
+    <span class="text-red-500 font-semibold">4.7</span>
+    <span class="">(414 Penilaian)</span>
+  </div>
   <!-- Navigation -->
   <nav class="border-b border-gray-200">
     <div class="flex items-center justify-between space-x-4">
-      <div class="flex gap-8 overflow-x-auto">
-        <div class="@if(!$filterCategory) border-b-4 border-primary @endif py-4 shrink-0" @click="$wire.set('filterCategory', '')">
+      <div class="flex gap-4 sm:gap-8 overflow-x-auto">
+        <div class="@if(!$filterCategory) border-b-4 border-primary @endif py-1 sm:py-4 shrink-0" @click="$wire.set('filterCategory', '')">
           <a href="#" class="text-primary">Semua Produk</a>
         </div>
         @foreach ($categories as $rowCategory)
-        <div class="py-4 shrink-0 @if($filterCategory == $rowCategory->id) border-b-4 border-primary @endif" @click="$wire.set('filterCategory', {{$rowCategory->id}})">
+        <div class="py-1 sm:py-4 shrink-0 @if($filterCategory == $rowCategory->id) border-b-4 border-primary @endif" @click="$wire.set('filterCategory', {{$rowCategory->id}})">
           <a href="#" class="text-primary">{{$rowCategory->name}}</a>
         </div>
         @endforeach
       </div>
       <!-- icon -->
-      <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 py-4">
-        <div class="flex gap-3">
+      <div class="flex flex-col md:flex-row justify-between md:items-center sm:gap-3 sm:py-4 shrink-0">
+        <div class="flex sm:gap-3">
           <div>
             <!-- select option -->
             <select
@@ -73,7 +86,7 @@
     </div>
   </nav>
 
-  <div class="grid lg:grid-cols-3 md:grid-cols-3 gap-4 mt-4">
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 mt-2 sm:mt-4">
     @foreach ($list as $row)
     <livewire:components.product-card :key="$row->id" :product="$row" />
     @endforeach
