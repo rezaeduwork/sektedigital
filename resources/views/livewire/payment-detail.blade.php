@@ -1,6 +1,6 @@
 <div class="container py-4 max-sm:pb-[4rem]" @if($payment->status == 'pending' || ($payment->status == 'settlement' && $payment->transaction_type == 'instant' && in_array($payment->singleTransaction->status,['unprocessed','confirmed']))) wire:poll.5s @endif>
   <!-- Title -->
-  <h1 class="text-2xl font-semibold text-gray-800 mb-4">Detail Transaksi</h1>
+  <h1 class="text-lg sm:text-2xl font-semibold text-gray-800 mb-4">Detail Transaksi</h1>
 
   <!-- Order Information -->
   <div class="bg-white rounded-lg shadow p-4 mb-6">

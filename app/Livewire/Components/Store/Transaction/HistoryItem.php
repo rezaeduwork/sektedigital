@@ -44,10 +44,21 @@ class HistoryItem extends Component
       return;
     }
     $this->tx->status = 'processed';
+    $delivered_at = \Carbon\Carbon::now();
+    foreach ($this->tx->details as $row) {
+      if ($row->delivered_duration_type == 'm') {
+        $delivered_at->addMinutes($row->delivered_duration);
+      } else if ($row->delivered_duration_type == 'h') {
+        $delivered_at->addHours($row->delivered_duration);
+      } else {
+        $delivered_at->addDays($row->delivered_duration);
+      }
+    }
+    $this->tx->delivered_at = $delivered_at;
     $this->tx->save();
     transactionActivity($this->tx, auth()->id(), 'processed', ('processing by seller'));
     $this->tx->user->notify(new \App\Notifications\TransactionNotification($this->tx, 'Transaksi proses', 'Pesananmu diproses seller, silahkan ditunggu 🙏'));
-    $this->dispatch('alert-success', message: 'Berhasil Proses Pesanan!');
+    $this->dispatch('alert-success', message: 'Berhasil Proses Pesanan! Silahkan selesaikan dalam waktu yang ditentukan ☺️');
     $this->dispatch('close-confirmation');
     $this->reloadParent();
   }

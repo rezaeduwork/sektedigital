@@ -21,10 +21,19 @@ class Create extends Component
   public $additional_photo = [];
   #[Validate('required|min:20|max:1000', onUpdate: false)]
   public $description;
-  #[Validate('required|numeric|max:1000000000', onUpdate: false)]
+  #[Validate('required|numeric|min:1|max:1000000000', onUpdate: false)]
   public $price;
   #[Validate('required|numeric|max:1000000000', onUpdate: false)]
   public $stock;
+  #[Validate('required|numeric|max:60', onUpdate: false)]
+  public $delivered_duration;
+  #[Validate('required|string|max:1', onUpdate: false)]
+  public $delivered_duration_type;
+  public function mount()
+  {
+    $this->delivered_duration = 3;
+    $this->delivered_duration_type = 'd';
+  }
   public function store()
   {
     $this->validate();
@@ -38,7 +47,9 @@ class Create extends Component
       'slug' => $slug,
       'stock' => $this->stock,
       'store_id' => auth()->user()->store->id,
-      'category_product_id' => $this->category_id
+      'category_product_id' => $this->category_id,
+      'delivered_duration' => $this->delivered_duration,
+      'delivered_duration_type' => $this->delivered_duration_type,
     ]);
     $path = $this->main_photo->store(path: 'public');
     $product->images()->create([

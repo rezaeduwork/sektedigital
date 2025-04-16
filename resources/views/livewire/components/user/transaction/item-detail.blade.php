@@ -5,7 +5,7 @@
   <div class="flex items-stretch sm:items-center justify-between space-x-5">
     <div class="w-full">
       <div class="flex flex-row gap-2 sm:gap-5">
-        <img src="{{ productImage($product->mainImage()) }}" alt="Ecommerce" class="w-16 h-16 rounded">
+        <img src="{{ productImage($product->mainImage()) }}" alt="Ecommerce" class="size-12 sm:size-16 rounded">
         <div class="flex flex-col gap-2">
           <div class="space-y-2">
             <!-- title -->

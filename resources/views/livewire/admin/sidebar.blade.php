@@ -87,6 +87,14 @@
           </ul>
         </li>
         <li class="nav-item">
+          <a href="{{url('blog_admin')}}" class="nav-link" target="_blank">
+            <i class="nav-icon fas fa-external-link-alt"></i>
+            <p>
+              Blog
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="{{url('logout')}}" class="nav-link">
             <i class="nav-icon fas fa-door-open"></i>
             <p>

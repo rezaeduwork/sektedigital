@@ -47,15 +47,15 @@
           </div>
           @if (!$activeTab)
             @if ($unpaidTxQuery->first())
-            <div class="px-4 pt-4">
-              <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 flex items-center justify-between w-full space-x-2" role="alert">
-                <div class="">Ada {{$unpaidTxQuery->count()}} pembayaran pending nih!</div>
-                <button class="font-semibold" @click="$wire.set('activeTab', 'unprocessed')">Bayar Sekarang</button>
+            <div class="pt-2 px-2 sm:px-4 sm:pt-4">
+              <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-2 sm:p-4 flex items-center justify-between w-full space-x-2" role="alert">
+                <div class="max-sm:text-sm">Ada {{$unpaidTxQuery->count()}} pembayaran pending nih!</div>
+                <button class="font-semibold max-sm:shrink-0 max-sm:text-xs bg-orange-300 p-2 rounded-lg" @click="$wire.set('activeTab', 'unprocessed')">Bayar Sekarang</button>
               </div>
             </div>
             @endif
           @endif
-          <div class="p-4 grid grid-cols-12">
+          <div class="p-2 sm:p-4 grid grid-cols-12">
             <div class="col-span-6">
               <input type="text"
               id="name"
@@ -95,15 +95,15 @@
               </div>
               <div class="flex items-center justify-between space-x-5">
                 <div class="w-full">
-                  <div class="flex flex-row gap-5">
-                    <img src="{{ productInstantImage($product) }}" alt="Ecommerce" class="w-16 h-16 rounded shrink-0">
+                  <div class="flex flex-row gap-2 sm:gap-5">
+                    <img src="{{ productInstantImage($product) }}" alt="Ecommerce" class="size-12 sm:size-16 rounded shrink-0">
                     <div class="flex flex-col gap-2">
-                      <div class="space-y-2">
+                      <div class="sm:space-y-2">
                         <!-- title -->
                         <a href="#" class="text-inherit">
-                          <a class="font-black text-lg text-link" href="{{url($product->slug)}}" wire:navigate>{{ $product->title }}</a>
+                          <a class="font-black sm:text-lg text-link" href="{{url($product->slug)}}" wire:navigate>{{ $product->title }}</a>
                         </a>
-                        <span class="text-gray-500 text-sm flex items-center space-x-1">
+                        <span class="text-gray-500 text-xs sm:text-sm flex items-center space-x-1">
                           {{-- <img src="{{ categoryImage($product->category) }}" alt="" srcset="" class="size-4"> --}}
                           <span>{{ $product->category }}</span>
                         </span>
@@ -112,7 +112,7 @@
                   </div>
                 </div>
                 <!-- price -->
-                <div class="text-right shrink-0 space-y-4 text-2xl font-bold text-primary">
+                <div class="text-right shrink-0 space-y-2 sm:space-y-4 sm:text-2xl font-bold text-primary">
                   <div>Rp{{number_format($row->amount,0,',','.')}}</div>
                   {{-- <span class="text-xs font-medium me-2 px-2.5 py-0.5 rounded">{{$detail->quantity}} x Rp{{number_format($detail->price,0,',','.')}}</span> --}}
                 </div>
@@ -128,7 +128,7 @@
             expirePayment($row);
             @endphp
             @endif
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex items-center space-x-1" role="alert">
+            <div class="bg-red-100 border border-red-400 text-red-700 p-2 sm:px-4 sm:py-3 rounded relative flex items-center space-x-1" role="alert">
               <span class="block sm:inline">Bayar dalam</span>
               <div class="block sm:inline"
               x-data="countdown('{{checkPayment($row)['expired_time']}}')"
@@ -137,7 +137,7 @@
             </div>
             <div class="flex items-center justify-end w-full space-x-5">
               <div class="flex items-center space-x-4 shrink-0">
-                <a class="bg-primary text-white font-semibold px-5 py-2 shrink-0 rounded" href="{{url('payment/'.$row->id)}}" wire:navigate>Bayar Sekarang</a>
+                <a class="bg-primary text-white font-semibold max-sm:p-2 max-sm:text-xs sm:px-5 sm:py-2 shrink-0 rounded" href="{{url('payment/'.$row->id)}}" wire:navigate>Bayar Sekarang</a>
               </div>
             </div>
           </div>

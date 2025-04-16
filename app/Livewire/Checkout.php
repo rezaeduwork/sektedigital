@@ -76,6 +76,9 @@ class Checkout extends Component
           return $cart->product->price * $cart->quantity;
         });
 
+        $delivered_duration = $row->product->delivered_duration;
+        $delivered_duration_type = $row->product->delivered_duration_type;
+
         // CREATE STORE TX
         $tx = \App\Models\Transaction::create([
           'status' => 'unprocessed',
@@ -97,7 +100,9 @@ class Checkout extends Component
             'subtotal' => $row->product->price * $row->quantity,
             'note' => $row->note,
             'status' => $tx->status,
-            'store_id' => $row->product->store_id
+            'store_id' => $row->product->store_id,
+            'delivered_duration' => $delivered_duration,
+            'delivered_duration_type' => $delivered_duration_type,
           ]);
         }
         transactionActivity($tx, auth()->id(), 'unprocessed', (auth()->user()->name . ' created transaction'));

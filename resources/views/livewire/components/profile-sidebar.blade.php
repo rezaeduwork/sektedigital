@@ -179,13 +179,13 @@
         <span class="sm:ms-3">Toko Saya</span>
       </a>
     </li>
-    <li class="shrink-0 max-sm:bg-white max-sm:rounded-lg">
+    {{-- <li class="shrink-0 max-sm:bg-white max-sm:rounded-lg">
       <a href="#" @click="$wire.dispatch('change-page', {page: 'help'})" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group max-sm:text-xs">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 max-md:hidden sm:size-5 text-gray-500 transition duration-75 group-hover:text-primary">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
         </svg>
         <span class="sm:ms-3">Pusat Bantuan</span>
       </a>
-    </li>
+    </li> --}}
   </ul>
 </div>

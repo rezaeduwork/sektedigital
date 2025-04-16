@@ -63,7 +63,13 @@
       </span>
     </button>
   @endif
-
+  @if ($tx->status == 'processed')
+  <div>
+    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+      Estimasi Selesai <span class="font-bold">{{\Carbon\Carbon::parse($tx->delivered_at)->translatedFormat('l, d F Y H:i')}}</span></b>
+    </div>
+  </div>
+  @endif
   <hr />
 
   @if ($tx->status == 'confirmed')

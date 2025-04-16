@@ -8,8 +8,19 @@
     <div class="rounded-t-lg relative">
       <div class="text-center p-0">
         <!-- img -->
-        <span class="flex justify-center rounded-t-lg sm:h-[150px]"><img class="rounded-t-lg w-full h-full"
-            src="{{ productImage($product->images()->whereType('main')->first()) }}" alt="Sekte Digital Product" /></span>
+        <span class="flex justify-center rounded-t-lg sm:h-[150px] relative">
+          <img class="rounded-t-lg w-full h-full" src="{{ productImage($product->images()->whereType('main')->first()) }}" alt="Sekte Digital Product" />
+          @if ($product->delivered_duration_type == 'm' && $product->delivered_duration < 16)
+          <div class="absolute top-0 left-0">
+            <div class="relative bg-orange-400 text-white text-xs p-2 rounded-br-lg rounded-tl-lg flex items-center space-x-1 items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
+                <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/>
+              </svg>
+              <div>Proses Cepat</div>
+            </div>
+          </div>
+          @endif
+        </span>
         <!-- text -->
       </div>
       {{-- <span class="inline-block px-2 py-1 text-sm align-baseline leading-none rounded-full bg-primary text-white font-semibold w-auto absolute top-[1rem] right-[1rem]">-45%</span> --}}

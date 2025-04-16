@@ -4,12 +4,19 @@
     <div class="container max-w-[968px] mx-auto">
       <div class="flex justify-between items-center py-2">
         <div class="flex">
-          <div class="selectBox">
-            <a class="selectValue text-reset text-xs lg:text-sm" href="javascript:void(0)" aria-expanded="false">Tentang Sekte Digital</a>
+          <div class="selectBox" x-data="{ openAbout: false }">
+            <button class="selectValue text-reset text-xs lg:text-sm" @click="openAbout=true" aria-expanded="false">Tentang Bitneet</button>
+            @include('components.modals.about')
           </div>
           <div class="ms-6">
             <div class="selectBox">
-              <a class="selectValue text-reset text-xs lg:text-sm" href="javascript:void(0)" aria-expanded="false">Mulai Berjualan</a>
+              <a class="selectValue text-reset text-xs lg:text-sm"
+              @if(auth()->check())
+              href="{{url('profile/shop')}}" wire:navigate
+              @else
+              data-bs-toggle="modal" href="#userModal"
+              @endif
+              aria-expanded="false">Mulai Berjualan</a>
             </div>
           </div>
           {{-- <div class="ms-6">
@@ -26,7 +33,6 @@
 
         <div class="md:flex items-center justify-end">
           <div class="flex items-center space-x-4">
-            <a class="selectValue text-reset text-xs lg:text-sm" href="javascript:void(0)" aria-expanded="false">Tentang</a>
             <div class="text-xs lg:text-sm">Ikuti Di</div>
             <div class="text-reset flex items-center space-x-2">
               <a href="https://www.instagram.com/bitneet" target="_blank">

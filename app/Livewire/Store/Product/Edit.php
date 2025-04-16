@@ -26,10 +26,15 @@ class Edit extends Component
   public $price;
   #[Validate('required|numeric|max:1000000000', onUpdate: false)]
   public $stock;
-  public function update() {
+  #[Validate('required|numeric|min:1|max:60', onUpdate: false)]
+  public $delivered_duration;
+  #[Validate('required|string|max:1|in:m,h,d', onUpdate: false)]
+  public $delivered_duration_type;
+  public function update()
+  {
     $this->validate();
     $category = \App\Models\CategoryProduct::find($this->category_id);
-    $slug = \Str::slug($this->title, '-').'-'.auth()->id().uniqid();
+    $slug = \Str::slug($this->title, '-') . '-' . auth()->id() . uniqid();
     $this->product->update([
       'title' => $this->title,
       'highlight' => $this->highlight,
@@ -38,13 +43,15 @@ class Edit extends Component
       'slug' => $slug,
       'stock' => $this->stock,
       'store_id' => auth()->user()->store->id,
-      'category_product_id' => $this->category_id
+      'category_product_id' => $this->category_id,
+      'delivered_duration' => $this->delivered_duration,
+      'delivered_duration_type' => $this->delivered_duration_type
     ]);
     if ($this->main_photo) {
       $existingImage = $product->images()->whereType('main')->first();
       $path = $this->main_photo->store(path: 'public');
       $product->images()->create([
-        'name' => str_replace('public/','',$path),
+        'name' => str_replace('public/', '', $path),
         'type' => 'main'
       ]);
       if (\Storage::disk('public')->exists($existingImage->name)) {
@@ -57,7 +64,7 @@ class Edit extends Component
       foreach ($this->additional_photo as $row) {
         $path = $row->store(path: 'public');
         $product->images()->create([
-          'name' => str_replace('public/','',$path),
+          'name' => str_replace('public/', '', $path),
           'type' => 'additional'
         ]);
       }
@@ -71,7 +78,8 @@ class Edit extends Component
     $this->dispatch('alert-success', message: 'Berhasil mengubah produk!');
     $this->redirect('/store/product', navigate: true);
   }
-  public function mount($slug) {
+  public function mount($slug)
+  {
     $this->product = \App\Models\Product::whereSlug($slug)->firstOrFail();
     $this->category_id = $this->product->category_product_id;
     $this->title = $this->product->title;
@@ -79,6 +87,8 @@ class Edit extends Component
     $this->description = $this->product->description;
     $this->price = $this->product->price;
     $this->stock = $this->product->stock;
+    $this->delivered_duration = $this->product->delivered_duration;
+    $this->delivered_duration_type = $this->product->delivered_duration_type;
   }
   public function render()
   {

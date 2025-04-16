@@ -61,7 +61,13 @@
     <div class="font-semibold text-sm">Total Harga</div>
     <div class="font-bold text-black text-lg sm:text-2xl">Rp{{number_format($tx->amount,0,',','.')}}</div>
   </div>
-
+  @if ($tx->status == 'processed')
+  <div>
+    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+      Wajib Selesai Sebelum {{\Carbon\Carbon::parse($tx->delivered_at)->translatedFormat('l, d F Y H:i')}}</b>
+    </div>
+  </div>
+  @endif
   <div class="flex items-center justify-between w-full space-x-5 bg-gray-50 rounded py-2 px-2">
     <div class="flex items-center @if (in_array($status,['confirmed','processed'])) justify-end @else justify-start @endif space-x-4 shrink-0 relative w-full">
       {{-- <button class="text-gray-600 px-5">Detail Transaksi</button> --}}

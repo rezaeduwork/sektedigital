@@ -185,6 +185,29 @@
       @enderror
     </div>
     <div class="mb-5">
+      <label for="delivered_duration"
+      class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Durasi Penyelesaian</label>
+      <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        Sesuaikan durasi penyelesaian dengan benar, <b class="font-bold">Batal otomatis jika tidak ada penyelesaian dari penjual dalam waktu yang ditentukan.</b>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input id="delivered_duration" wire:model.live.debounce.250ms="delivered_duration"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
+        placeholder="">
+        <select id="delivered_duration_type" wire:model.live.debounce.250s="delivered_duration_type" class="w-[100px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block p-2.5">
+          <option value="m">Menit</option>
+          <option value="h">Jam</option>
+          <option value="d">Hari</option>
+        </select>
+      </div>
+      @error('delivered_duration')
+        <small class="!text-primary block">{{ $message }}</small>
+      @enderror
+      @error('delivered_duration_type')
+        <small class="!text-primary block">{{ $message }}</small>
+      @enderror
+    </div>
+    <div class="mb-5">
       <label for="stock"
         class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Stok</label>
       <input id="stock" wire:model.live.debounce.250ms="stock" min="0" max="1000000000"

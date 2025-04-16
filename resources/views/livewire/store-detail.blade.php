@@ -14,11 +14,16 @@
             </div>
           </div>
           <div class="flex items-center gap-1 sm:hidden text-xs">
-            <button class="bg-white/10 text-white p-2 sm:px-6 sm:py-2 rounded hover:bg-white/20 w-full">
+            {{-- <button class="bg-white/20 text-white p-2 sm:px-6 sm:py-2 rounded-lg hover:bg-white/50 w-full">
                 Ikuti
-            </button>
-            <button class="bg-white/10 text-white p-2 sm:px-6 sm:py-2 rounded hover:bg-white/20 w-full" @click="Livewire.navigate('{{url('chat/new/store/'.$store->user->id)}}')">
-                Chat
+            </button> --}}
+            <button class="bg-white/20 text-white p-2 sm:px-6 sm:py-2 flex items-center space-x-1 rounded-lg hover:bg-white/50 w-full" @click="Livewire.navigate('{{url('chat/new/store/'.$store->user->id)}}')">
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-hipchat" style="transform">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M17.802 17.292s.077 -.055 .2 -.149c1.843 -1.425 3 -3.49 3 -5.789c0 -4.286 -4.03 -7.764 -9 -7.764c-4.97 0 -9 3.478 -9 7.764c0 4.288 4.03 7.646 9 7.646c.424 0 1.12 -.028 2.088 -.084c1.262 .82 3.104 1.493 4.716 1.493c.499 0 .734 -.41 .414 -.828c-.486 -.596 -1.156 -1.551 -1.416 -2.29z"></path>
+                <path d="M7.5 13.5c2.5 2.5 6.5 2.5 9 0"></path>
+              </svg>
+              <div>Chat</div>
             </button>
           </div>
         </div>
@@ -40,11 +45,16 @@
         </div>
       </div>
       <div class="flex flex-col w-[200px] gap-2 max-sm:hidden">
-        <button class="bg-white/10 text-white px-6 py-2 rounded hover:bg-white/20 w-full">
+        {{-- <button class="bg-white/20 text-white px-6 py-2 rounded-lg hover:bg-white/50 w-full">
             Ikuti
-        </button>
-        <button class="bg-white/10 text-white px-6 py-2 rounded hover:bg-white/20 w-full" @click="Livewire.navigate('{{url('chat/new/store/'.$store->user->id)}}')">
-            Chat
+        </button> --}}
+        <button class="bg-white/20 text-white px-6 py-2 flex items-center space-x-1 justify-center rounded-lg hover:bg-white/50 w-full" @click="Livewire.navigate('{{url('chat/new/store/'.$store->user->id)}}')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-hipchat" style="transform">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M17.802 17.292s.077 -.055 .2 -.149c1.843 -1.425 3 -3.49 3 -5.789c0 -4.286 -4.03 -7.764 -9 -7.764c-4.97 0 -9 3.478 -9 7.764c0 4.288 4.03 7.646 9 7.646c.424 0 1.12 -.028 2.088 -.084c1.262 .82 3.104 1.493 4.716 1.493c.499 0 .734 -.41 .414 -.828c-.486 -.596 -1.156 -1.551 -1.416 -2.29z"></path>
+            <path d="M7.5 13.5c2.5 2.5 6.5 2.5 9 0"></path>
+          </svg>
+          <div>Chat</div>
         </button>
       </div>
     </div>

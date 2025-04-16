@@ -17,7 +17,9 @@ class TransactionDetail extends Model
     'note',
     // comment('unprocessed | confirmed | accepted | processed | store_finished | finished | rejected | cancelled | inspection | complain')
     'status',
-    'store_id'
+    'store_id',
+    'delivered_duration',
+    'delivered_duration_type'
   ];
   public function product()
   {

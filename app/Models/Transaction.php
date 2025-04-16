@@ -19,7 +19,8 @@ class Transaction extends Model
     'payment_id',
     'store_id',
     'proof_text',
-    'proof_file'
+    'proof_file',
+    'delivered_at'
   ];
   public function user()
   {

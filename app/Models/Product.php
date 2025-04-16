@@ -19,7 +19,9 @@ class Product extends Model
     'slug',
     'stock',
     // active | inactive
-    'status'
+    'status',
+    'delivered_duration',
+    'delivered_duration_type'
   ];
   public function category()
   {
