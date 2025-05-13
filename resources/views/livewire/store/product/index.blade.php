@@ -4,7 +4,7 @@
       <div>Dagangan Saya</div>
     </h1>
     <a href="{{ url('/store/product/create') }}" wire:navigate
-      class="py-3 px-6 text-base font-normal w-full md:w-auto flex items-center justify-center space-x-2 text-white bg-primary rounded">
+      class="py-2 sm:py-3 px-2 sm:px-6 text-base font-normal w-full md:w-auto flex items-center justify-center space-x-2 text-white bg-primary rounded max-sm:text-xs">
       <span>
         Buat Dagangan Baru
       </span>
@@ -19,13 +19,13 @@
     @endphp
     <div
       class="font-300 text-center text-black border-b border-gray-200 text-lg">
-      <ul class="block md:flex px-2">
+      <ul class="flex px-2">
         @foreach ($tabs as $row)
         <li class="me-2 shrink-0">
           <a href="#"
             @click="$wire.set('tab', '{{$row}}')"
             class="
-            inline-block p-4
+            inline-block p-2 sm:p-4 max-sm:text-xs
             @if($tab == $row)
             text-primary border-primary border-b-4
             @else
@@ -38,15 +38,15 @@
         @endforeach
       </ul>
     </div>
-    <div class="p-0 grid grid-cols-3 gap-2 mb-5">
+    <div class="p-0 grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2 sm:mb-5">
       <div class="">
         <input type="text" id="name" wire:model.live.debounce.250ms="name"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm placeholder:text-xs sm:placeholder:text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
           placeholder="Cari Nama Produk" />
       </div>
       <div class=" relative">
         <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom"
-          class="flex items-center justify-between bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
+          class="flex items-center justify-between bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm placeholder:text-xs sm:placeholder:text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5"
           type="button">
           <div>
             {{ $category_id ? \App\Models\CategoryProduct::find($category_id)->name ?? 'Kategori tidak ada' : 'Cari Kategori' }}
@@ -71,13 +71,13 @@
                 </svg>
               </div>
               <input type="text" @input.debounce.250ms="searchCategory = $event.target.value;"
-                class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                class="block w-full p-2 ps-10 text-xs placeholder:text-xs sm:placeholder:text-sm sm:text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Pencarian">
             </div>
           </div>
-          <ul class="px-3 pb-3 overflow-y-auto text-sm text-gray-700" aria-labelledby="dropdownSearchButton">
+          <ul class="px-2 pb-2 sm:px-3 sm:pb-3 max-sm:text-xs overflow-y-auto text-sm text-gray-700 flex flex-wrap gap-2" aria-labelledby="dropdownSearchButton">
             @foreach (\App\Models\CategoryProduct::all() as $row)
-              <li class="inline-block p-2 bg-gray-50 cursor-pointer"
+              <li class="p-2 bg-gray-50 cursor-pointer hover:bg-gray-300 hover:text-black hover:shadow"
                 x-show="!searchCategory || ('{{ $row->name }}').toLowerCase().includes(searchCategory.toLowerCase())"
                 @click="$wire.set('category_id', {{ $row->id }})">
                 {{ $row->name }}
@@ -87,8 +87,8 @@
         </div>
       </div>
       <div class="">
-        <select
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5">
+        <select wire:model.live="sort"
+          class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-xs text-xs sm:text-sm sm:placeholder:text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-2.5">
           <option value="">Urutkan</option>
           <option value="newest">Terbaru</option>
           <option value="oldest">Terlama</option>
@@ -101,33 +101,33 @@
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-100">
           <tr>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-2 sm:px-6 py-2 sm:py-4">
               Nama
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-2 sm:px-6 py-2 sm:py-4">
               Kategori
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-2 sm:px-6 py-2 sm:py-4">
               Stok
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-2 sm:px-6 py-2 sm:py-4">
               Harga
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-2 sm:px-6 py-2 sm:py-4">
               Status
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" class="px-2 sm:px-6 py-2 sm:py-4">
               #
             </th>
           </tr>
         </thead>
         <tbody>
           @forelse ($list as $row)
-            <tr class="odd:bg-white even:bg-gray-50 border-b">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900">
+            <tr class="odd:bg-white even:bg-gray-50 border-b text-xs">
+              <th scope="row" class="px-2 sm:px-6 py-2 sm:py-4 font-medium text-gray-900">
                 <div class="max-w-[300px]">{{ $row->title }}</div>
               </th>
-              <td class="px-6 py-4">
+              <td class="px-2 sm:px-6 py-2 sm:py-4">
                 <div class="flex items-center space-x-2 ">
                   @if ($row->category)
                     <img src="{{ url('storage/' . $row->category->icon) }}" alt="" srcset=""
@@ -136,13 +136,13 @@
                   @endif
                 </div>
               </td>
-              <td class="px-6 py-4">
+              <td class="px-2 sm:px-6 py-2 sm:py-4">
                 {{ $row->stock }}
               </td>
-              <td class="px-6 py-4">
+              <td class="px-2 sm:px-6 py-2 sm:py-4">
                 Rp. {{ number_format($row->price) }}
               </td>
-              <td class="px-6 py-4 relative">
+              <td class="px-2 sm:px-6 py-2 sm:py-4 relative">
                 {{-- <button type="button" id="dropdownDefaultButton{{$row->id}}" class="flex items-center space-x-1" data-dropdown-toggle="dropdown">
                   @if ($row->status == 'active')
                   <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded">Aktif</span>
@@ -155,17 +155,17 @@
                 </button> --}}
                 <livewire:components.store.edit-status :key="uniqid().$row->id" :product="$row">
               </td>
-              <td class="px-6 py-4 flex items-center space-x-2">
+              <td class="px-2 sm:px-6 py-2 sm:py-4 flex items-center space-x-2">
                 <a href="{{url('store/product/edit/'.$row->slug)}}" class="p-2 rounded bg-blue-600 text-white shrink-0" wire:navigate>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-4">
+                    stroke="currentColor" class="size-3 sm:size-4">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                   </svg>
                 </a>
                 <button type="button" class="p-2 rounded bg-primary text-white shrink-0" data-modal-target="modal-delete-{{$row->id}}" data-modal-toggle="modal-delete-{{$row->id}}">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-4">
+                    stroke="currentColor" class="size-3 sm:size-4">
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                   </svg>

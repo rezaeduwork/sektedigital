@@ -1,5 +1,5 @@
 <div class="space-y-4">
-  <div class="space-y-4 bg-white rounded-lg p-2 sm:p-4 @if($brand) hidden @endif">
+  <div class="space-y-4 bg-white rounded-lg p-2 sm:p-4 border @if($brand) hidden @endif">
     {{-- <div class="font-semibold text-black text-lg">Pilih Game</div> --}}
     <div class="">
       <input type="text" name="" id="" class="border border-gray-300 text-gray-900 rounded-lg !ring-none !outline-none focus:border-gray-300 shadow-primary block max-sm:p-2 max-sm:text-xs max-sm:placeholder:text-xs sm:p-2 sm:px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-sm"

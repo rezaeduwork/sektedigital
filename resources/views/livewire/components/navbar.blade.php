@@ -12,7 +12,7 @@
             <div class="selectBox">
               <a class="selectValue text-reset text-xs lg:text-sm"
               @if(auth()->check())
-              href="{{url('profile/shop')}}" wire:navigate
+              href="{{url('user/store')}}" wire:navigate
               @else
               data-bs-toggle="modal" href="#userModal"
               @endif

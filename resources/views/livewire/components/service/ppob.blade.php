@@ -1,4 +1,4 @@
-<div class="background-image ppob-bg sm:bg-gradient-to-b sm:from-violet-900 sm:to-violet-700 text-white sm:p-4 space-y-0 sm:space-y-2 rounded-lg"
+<div class="background-image ppob-bg sm:bg-gradient-to-b sm:from-violet-900 sm:to-violet-700 text-white space-y-0 sm:space-y-2 rounded-xl"
 x-data="{
   checkScroll() {
     this.showLeft = this.$refs.tabscontainer.scrollLeft > 0;
@@ -69,9 +69,9 @@ x-data="{
   });
   @endphp
   <div class="relative">
-    <div class="flex items-center space-x-2 w-full overflow-x-auto overflow-y-hidden max-w-full hidden-scroll max-sm:p-2 sm:pb-2" x-ref="tabscontainer" @scroll="checkScroll()">
+    <div class="flex items-center space-x-2 w-full overflow-x-auto overflow-y-hidden max-w-full hidden-scroll max-sm:p-2 sm:px-2 sm:pb-2" x-ref="tabscontainer" @scroll="checkScroll()">
       @foreach ($list as $row)
-      <div class="border-2 border-white py-2 px-4 rounded-md bg-violet-900 text-white hover:bg-white hover:text-primary relative cursor-pointer shadow shrink-0
+      <div class="border-2 border-white py-2 px-4 rounded-lg bg-violet-900 text-white hover:bg-white hover:text-primary relative cursor-pointer shadow shrink-0
       @if($row["name"] == $activeTab)
       !bg-white !text-primary
       @endif

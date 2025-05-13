@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   @php
   $tabs = [
     ['Perlu Proses','confirmed'],

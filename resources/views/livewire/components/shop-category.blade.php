@@ -55,7 +55,7 @@
       <button type="button" id="dropdownCategory" data-dropdown-toggle="dropdown" class="
       flex sm:inline-flex items-center justify-center max-sm:px-1 sm:p-4 border-b-2 border-transparent rounded-t-lg group cursor-pointer text-primary max-sm:shrink-0 max-sm:w-full
       ">
-        <div class="bg-primary text-white rounded-md flex items-center px-1 px-2 py-1 max-sm:text-xs">
+        <div class="bg-gray-100 text-primary rounded-md flex items-center px-1 px-2 py-1 max-sm:text-xs">
           <div class="rounded p-1 px-2">+{{$totalCategory - $show}} Kategori</div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 mt-[3px]">
             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />

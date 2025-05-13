@@ -12,8 +12,8 @@
           <img class="rounded-t-lg w-full h-full" src="{{ productImage($product->images()->whereType('main')->first()) }}" alt="Sekte Digital Product" />
           @if ($product->delivered_duration_type == 'm' && $product->delivered_duration < 16)
           <div class="absolute top-0 left-0">
-            <div class="relative bg-orange-400 text-white text-xs p-2 rounded-br-lg rounded-tl-lg flex items-center space-x-1 items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
+            <div class="relative bg-orange-400 text-white text-[10px] sm:text-xs p-2 rounded-br-lg rounded-tl-lg flex items-center space-x-1 items-center font-thin">
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-3 sm:size-4" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
                 <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/>
               </svg>
               <div>Proses Cepat</div>
@@ -32,7 +32,7 @@
           {{$product->category->name}}
         </div>
       </div>
-      <h2 class="mb-2 text-base h-full leading-[20px]">
+      <h2 class="mb-0 text-base h-full leading-[20px]">
         <span href="#" class="text-inherit group-hover:text-primary group-hover:font-bold h-full block break-all max-sm:text-sm text-left">{{ \Str::limit($product->title, 30, '...') }}</span>
       </h2>
       <div class="flex items-center @if ($total_rating_star > 0) justify-between @endif w-full">
@@ -63,7 +63,7 @@
           $query->whereNotIn('status', ['unprocessed','cancelled','inspection','rejected']);
         })->count();
         @endphp
-        @if ($ordered > 0 || mt_rand(1,2) === 1)
+        @if ($ordered > 0)
         <div class="text-yellow-500 flex items-center gap-2 mt-3">
           <span class="text-gray-500 small max-sm:text-xs">{{$ordered}} Terjual</span>
         </div>

@@ -36,14 +36,14 @@
           </template>
           <template x-if="true">
             <div class="flex items-center space-x-2 overflow-x-auto overflow-y-hidden max-w-full">
-              @foreach (config('product') as $row)
+              @foreach (\App\Models\ProductInstant::whereCategory('buy_crypto')->get()->toArray() as $row)
                 @if($row['status'] == 'active')
                 <button onclick="Livewire.navigate('{{url('i/'.$row['code'])}}')" class="border rounded-full bg-white px-3 py-1 text-xs text-black flex items-center space-x-1 shrink-0">
                   <img src="{{url($row['image'])}}" alt="" srcset="" class="size-4 shrink-0">
                   <div class="max-sm:text-xs">{{$row['title']}}</div>
                 </button>
                 @else
-                <button class="border rounded-full bg-white opacity-50 px-3 py-1 text-xs text-black flex items-center space-x-1 cursor-default shrink-0">
+                <button class="border rounded-full bg-white opacity-50 px-3 py-1 text-xs text-black flex items-center space-x-1 cursor-default shrink-0" title="Stok Habis">
                   <img src="{{url($row['image'])}}" alt="" srcset="" class="size-4 shrink-0">
                   <div class="max-sm:text-xs">{{$row['title']}}</div>
                 </button>

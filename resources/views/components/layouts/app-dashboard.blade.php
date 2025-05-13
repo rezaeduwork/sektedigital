@@ -192,7 +192,7 @@
       </nav>
 
       <!-- main wrapper -->
-      <main class="main-content-wrapper">
+      <main class="main-content-wrapper sm:!py-[100px]">
         {{ $slot }}
       </main>
     </div>

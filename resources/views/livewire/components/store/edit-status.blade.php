@@ -7,7 +7,7 @@
     bg-yellow-300
     @endif
     "></div>
-    <select wire:model.live="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 !ring-0 !outline-0">
+    <select wire:model.live="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg block w-[80px] sm:w-full p-2 sm:p-2.5 !ring-0 !outline-0">
       <option value="" readonly></option>
       <option value="active">Aktif</option>
       <option value="inactive">Tidak Aktif</option>

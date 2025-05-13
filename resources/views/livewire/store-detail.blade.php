@@ -8,9 +8,16 @@
             <div class="flex-shrink-0">
               <img class="size-12 sm:size-16 rounded-full" src="{{storeProfile($store)}}" />
             </div>
-            <div class="flex-1">
+            <div class="flex-1 space-y-1">
               <h1 class="text-white text-sm sm:text-xl font-bold">{{$store->name}}</h1>
-              <p class="text-gray-400 text-xs sm:text-sm">Aktif 9 menit lalu</p>
+              @if ($store->user->isOnline())
+              <div class="inline-flex items-center gap-2 bg-white text-black px-2 py-1 text-xs rounded-lg">
+                <div class="size-2 bg-green-600 shrink-0 rounded-full"></div>
+                <div>Online</div>
+              </div>
+              @else
+              <p class="text-white text-xs sm:text-sm">Aktif {{\Carbon\Carbon::parse($store->user->last_online_at)->diffForHumans()}}</p>
+              @endif
             </div>
           </div>
           <div class="flex items-center gap-1 sm:hidden text-xs">

@@ -22,12 +22,22 @@
           </svg>
         </button>
         @if ($user)
-        <div class="flex items-center space-x-2">
-          <img src="{{$isStore ? storeProfile($user->store): profile($user)}}" alt="" srcset="" class="size-[24px] rounded-full">
-          <h1 class="font-semibold">{{$isStore ? $user->store->name: $user->name}}</h1>
-        </div>
+          <div class="flex items-center space-x-2">
+            <img src="{{$isStore ? storeProfile($user->store): profile($user)}}" alt="" srcset="" class="size-[36px] rounded-full shrink-0">
+            <div>
+              <h1 class="font-semibold mb-0 leading-[19px]">{{$isStore ? $user->store->name: $user->name}}</h1>
+              @if ($user->isOnline())
+              <div class="inline-flex items-center gap-1 text-black text-xs rounded-lg">
+                <div class="size-2 bg-green-600 shrink-0 rounded-full"></div>
+                <div>Online</div>
+              </div>
+              @else
+              <p class="text-white text-xs sm:text-sm">Aktif {{\Carbon\Carbon::parse($user->last_online_at)->diffForHumans()}}</p>
+              @endif
+            </div>
+          </div>
         @else
-        <h1 class="font-semibold">Jendela Pesan</h1>
+          <h1 class="font-semibold">Jendela Pesan</h1>
         @endif
       </div>
       <button class="flex items-center justify-center rounded bg-primary text-white px-3 py-1 sm:px-4 sm:py-2 space-x-1" @click="Livewire.navigate('{{url('/')}}')">

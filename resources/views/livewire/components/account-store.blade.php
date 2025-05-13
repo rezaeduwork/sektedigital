@@ -1,5 +1,5 @@
 <div class="flex max-sm:flex-col mb-5 container">
-  <div class="flex shrink-0 w-full sm:w-[250px] py-2 sm:px-4">
+  <div class="flex shrink-0 w-full sm:w-[250px] py-2 sm:px-4 sm:border sm:bg-white sm:rounded-lg">
     <livewire:components.profile-sidebar>
   </div>
   <div class="w-full">

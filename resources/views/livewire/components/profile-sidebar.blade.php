@@ -47,18 +47,18 @@
         <li>Format gambar: .JPEG, .PNG</li>
       </ul>
     </div>
-    <div class="justify-between p-2 space-x-2 shadow border rounded flex items-center bg-violet-600 text-white">
-      <div class="shrink-0">Rank</div>
-      <div class="flex items-center justify-between w-full">
+    <div class="justify-between p-2 space-x-2 shadow border rounded flex items-center bg-violet-600 text-white hidden">
+      <div class="shrink-0 flex-grow">Rank</div>
+      <div class="flex items-center justify-between">
         <div class="flex items-center shrink-0">
           <img src="{{url('assets/images/rank/common.png')}}" alt="" srcset="" class="size-4 shrink-0 -mt-1">
           <div class="ms-1 font-semibold">Common</div>
         </div>
-        <button type="button" class="">
+        {{-- <button type="button" class="">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
           </svg>
-        </button>
+        </button> --}}
       </div>
     </div>
     <ul>

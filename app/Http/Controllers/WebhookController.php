@@ -109,4 +109,99 @@ class WebhookController extends Controller
       return response()->json(['success' => false, 'message' => 'Invalid signature'], 401);
     }
   }
+
+  /**
+   * Handle WhatsApp webhook notifications from the gateway.
+   *
+   * @param Request $request
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function whatsappWebhook(Request $request)
+  {
+    // Validate request
+    $token = $request->bearerToken();
+    $expectedToken = env('WEBHOOK_AUTH_TOKEN', 'simple_api_token_123');
+
+    if ($token !== $expectedToken) {
+      return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+    }
+
+    // Get the payload data
+    $data = $request->input('data', []);
+    $type = $request->input('type');
+    $formattedConnectionId = $request->input('connectionId');
+
+    if (empty($formattedConnectionId)) {
+      return response()->json(['success' => false, 'message' => 'Connection ID is required']);
+    }
+
+    // Extract the pure ID from the formatted connection ID (CID_{id})
+    $connectionId = $formattedConnectionId;
+    if (strpos($formattedConnectionId, 'CID_') === 0) {
+      $connectionId = substr($formattedConnectionId, 4); // Remove 'CID_' prefix
+    }
+
+    // Find the store WhatsApp record using the extracted ID
+    $storeWhatsapp = \App\Models\StoreWhatsapp::find($connectionId);
+
+    if (!$storeWhatsapp) {
+      return response()->json(['success' => false, 'message' => 'Unknown connection ID']);
+    }
+
+    // Handle different event types
+    switch ($type) {
+      case 'qr_code':
+        // Update the QR code in the database
+        $storeWhatsapp->update([
+          'status' => 'connecting',
+          'qr_code' => $data['qr'] ?? null,
+        ]);
+        break;
+
+      case 'connection_update':
+        // Handle connection status updates
+        if (isset($data['status'])) {
+          $status = $data['status'];
+
+          if ($status === 'connected') {
+            $storeWhatsapp->update([
+              'status' => 'connected',
+              'qr_code' => null,
+              'last_connected_at' => now(),
+              'phone_number' => $data['user']['id'] ?? $storeWhatsapp->phone_number,
+            ]);
+          } elseif ($status === 'disconnected') {
+            $storeWhatsapp->update([
+              'status' => 'disconnected',
+              'qr_code' => null,
+            ]);
+          }
+        }
+        break;
+
+      case 'connection_error':
+        // We don't store errors in the database, frontend will handle displaying errors
+        // This is just for logging purposes
+        \Log::error('WhatsApp connection error for ' . $formattedConnectionId . ' (ID: ' . $connectionId . '): ' .
+          ($data['error']['message'] ?? 'Unknown error'));
+        break;
+
+      case 'retry_attempt':
+        // We don't need to store this info, but we can log it
+        if (isset($data['status']) && $data['status'] === 'failed' && isset($data['maxRetriesReached'])) {
+          \Log::error('WhatsApp connection max retry attempts reached for ' . $formattedConnectionId . ' (ID: ' . $connectionId . ')');
+        }
+        break;
+
+      case 'message':
+        // Handle incoming messages (can be implemented later)
+        break;
+
+      default:
+        // Unknown event type
+        return response()->json(['success' => false, 'message' => 'Unknown event type']);
+    }
+
+    return response()->json(['success' => true]);
+  }
 }

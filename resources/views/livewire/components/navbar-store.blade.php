@@ -74,25 +74,22 @@
       </div>
     </li>
 
-    {{-- <li class="nav-item">
+    <li class="nav-item">
       <a class="nav-link" href="#" data-bs-toggle="collapse"
         data-bs-target="#navMoney" aria-expanded="true" aria-controls="navMoney">
         <div class="d-flex align-items-center">
-          <span class="nav-link-icon"><i class="bi bi-credit-card"></i></span>
-          <span class="nav-link-text">Keuangan</span>
+          <span class="nav-link-icon"><i class="bi bi-bezier2"></i></span>
+          <span class="nav-link-text">Integrasi</span>
         </div>
       </a>
       <div id="navMoney" class="show !visible" data-bs-parent="#sideNavbar{{$uniqKey}}">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" href="{{url('/finance')}}" wire:navigate>Saldo</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="{{url('/finance/ref')}}" wire:navigate>Rekening</a>
+            <a class="nav-link" href="{{url('/store/whatsapp')}}" wire:navigate>Whatsapp</a>
           </li>
         </ul>
       </div>
-    </li> --}}
+    </li>
   </ul>
 
 </div>

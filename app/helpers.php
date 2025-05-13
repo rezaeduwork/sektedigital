@@ -194,6 +194,15 @@ function getTransactionInstantInformations($category, $brand, $values = [])
         'value' => isset($values['phone']) ? $values['phone'] : null,
       ],
     ];
+  } else if (in_array($category, ['buy_crypto'])) {
+    $informations = [
+      [
+        'label' => 'Alamat',
+        'name' => 'address',
+        'type' => 'text',
+        'value' => null,
+      ],
+    ];
   }
 
   return $informations;

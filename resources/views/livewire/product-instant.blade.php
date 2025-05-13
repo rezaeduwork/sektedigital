@@ -1,5 +1,5 @@
 <div class="container max-sm:!mb-[350px] max-sm:!mt-[4rem]">
-  <div class="mx-auto bg-white rounded-lg p-4 mb-4">
+  <div class="mx-auto bg-white rounded-lg p-4 mb-4 border">
     <div class="flex max-sm:flex-col gap-6">
       <!-- Produk -->
       <div class="w-full">
@@ -21,11 +21,11 @@
             <p class="text-gray-500 flex gap-2 text-xs sm:text-sm">
               {{$product->highlight}}
             </p>
-            <div class="flex pt-2">
-              @if ($product->category == 'buy-crypto')
+            <div class="flex pt-2 gap-2">
+              @if ($product->category == 'buy_crypto')
               <livewire:product-instant.crypto-live-price :ticker="$product->code">
               @endif
-              <div class="px-2 py-1 bg-green-100 rounded flex items-center gap-2 text-green-800 font-semibold text-xs">
+              <div class="px-2 py-1 bg-violet-100 text-primary rounded flex items-center gap-2 font-semibold text-xs">
                 Stok ({{$product->stock == -1 ? 'Unlimited': $product->stock}})
               </div>
             </div>

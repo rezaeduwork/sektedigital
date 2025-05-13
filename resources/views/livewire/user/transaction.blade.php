@@ -1,9 +1,9 @@
 <div class="flex max-sm:flex-col mb-5 container max-sm:mt-[4rem] sm:space-x-4">
-  <div class="flex shrink-0 w-full sm:w-[280px] py-2 sm:px-4 sm:bg-white sm:rounded-lg sm:shadow sm:px-4 sm:pb-4">
+  <div class="flex sm:shrink-0 max-sm:w-full sm:w-[280px] py-2 sm:px-4 sm:bg-white sm:rounded-lg sm:shadow sm:px-4 sm:pb-4 sm:border sm:bg-white sm:rounded-lg">
     <livewire:components.profile-sidebar>
   </div>
-  <div class="w-full">
-    <div class="space-y-2 sm:space-y-4">
+  <div class="flex-grow">
+    <div class="space-y-2 sm:space-y-4 w-full">
       @php
       $tabs = [
         ['Semua',null],
@@ -21,48 +21,47 @@
         });
       });
       @endphp
-      <div class="">
-        <div class="rounded bg-white shadow max-sm:border-b rounded-lg sm:shadow">
-          <div
-            class="font-300 text-center text-black border-b border-gray-200 text-lg">
-            <ul class="flex sm:px-2 max-w-full overflow-x-auto max-sm:sticky max-sm:top-[47px]">
-              @foreach ($tabs as $tab)
-              <li class="me-2 shrink-0">
+      <div class="rounded bg-white shadow max-sm:border-b rounded-lg sm:shadow w-full flex flex-col">
+        <!-- Tab Navigation -->
+        <div class="font-300 text-center text-black border-b border-gray-200 text-lg">
+            <div class="flex overflow-x-auto max-sm:sticky max-sm:top-[47px]">
+            @foreach ($tabs as $tab)
+              <div class="shrink-0">
                 <a href="#"
-                  @click="$wire.set('activeTab', '{{$tab[1]}}')"
-                  class="
-                  inline-block p-2 sm:p-4
+                @click="$wire.set('activeTab', '{{$tab[1]}}')"
+                class="
+                  inline-block px-2 py-1 sm:px-3 sm:py-3
                   @if($activeTab == $tab[1])
-                  text-primary border-primary border-b-2
+                    text-primary border-primary border-b-2
                   @else
-                  hover:text-primary
+                    hover:text-primary
                   @endif
-                  rounded-t-lg
                   text-xs sm:text-sm
-                  "
-                  aria-current="page">{{$tab[0]}} ({{$tab[1] != 'unprocessed' ? queryListUserTransaction($tab[1])->count():$unpaidTxQuery->count() }})</a>
-              </li>
-              @endforeach
-            </ul>
-          </div>
-          @if (!$activeTab)
-            @if ($unpaidTxQuery->first())
-            <div class="pt-2 px-2 sm:px-4 sm:pt-4">
-              <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-2 sm:p-4 flex items-center justify-between w-full space-x-2" role="alert">
-                <div class="max-sm:text-sm">Ada {{$unpaidTxQuery->count()}} pembayaran pending nih!</div>
-                <button class="font-semibold max-sm:shrink-0 max-sm:text-xs bg-orange-300 p-2 rounded-lg" @click="$wire.set('activeTab', 'unprocessed')">Bayar Sekarang</button>
+                "
+                aria-current="page">
+                  {{$tab[0]}} ({{$tab[1] != 'unprocessed' ? queryListUserTransaction($tab[1])->count() : $unpaidTxQuery->count() }})
+                </a>
               </div>
+            @endforeach
+          </div>
+        </div>
+        @if (!$activeTab)
+          @if ($unpaidTxQuery->first())
+          <div class="pt-2 px-2 sm:px-4 sm:pt-4">
+            <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-2 sm:p-4 flex items-center justify-between w-full space-x-2" role="alert">
+              <div class="max-sm:text-sm">Ada {{$unpaidTxQuery->count()}} pembayaran pending nih!</div>
+              <button class="font-semibold max-sm:shrink-0 max-sm:text-xs bg-orange-300 p-2 rounded-lg" @click="$wire.set('activeTab', 'unprocessed')">Bayar Sekarang</button>
             </div>
-            @endif
+          </div>
           @endif
-          <div class="p-2 sm:p-4 grid grid-cols-12">
-            <div class="col-span-6">
-              <input type="text"
-              id="name"
-              wire:model.live.debounce.250ms="name"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-xs placeholder:text-xs sm:placeholder:text-sm sm:text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-1.5 sm:p-2.5"
-              placeholder="Cari No. Pesanan / Nama Produk" />
-            </div>
+        @endif
+        <div class="p-2 sm:p-4 grid grid-cols-12">
+          <div class="col-span-6">
+            <input type="text"
+            id="name"
+            wire:model.live.debounce.250ms="name"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs placeholder:text-xs sm:placeholder:text-sm sm:text-sm rounded-lg focus:ring-violet-300 focus:border-violet-300 block w-full p-1.5 sm:p-2.5"
+            placeholder="Cari No. Pesanan / Nama Produk" />
           </div>
         </div>
       </div>

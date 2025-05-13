@@ -9,17 +9,17 @@ class ProductInstant extends Component
 {
   public $product;
   #[Url]
-  public ?string $provider;
+  public ?string $provider = null;
   #[Url]
-  public ?string $account_id;
+  public ?string $account_id = null;
   #[Url]
-  public ?string $zone_id;
+  public ?string $zone_id = null;
   #[Url]
-  public ?string $productId;
+  public ?string $productId = null;
   #[Url]
-  public ?string $email;
+  public ?string $email = null;
   #[Url]
-  public ?string $phone;
+  public ?string $phone = null;
   public $informations = [];
   public function mount($code)
   {

@@ -27,7 +27,8 @@ class User extends Authenticatable
     'gender',
     'birthdate',
     'address',
-    'balance'
+    'balance',
+    'last_online_at'
   ];
 
   /**
@@ -80,6 +81,10 @@ class User extends Authenticatable
   }
 
   // HELPER
+  public function isOnline()
+  {
+    return \Carbon\Carbon::parse($this->last_online_at)->lt(now()->addMinutes(1));
+  }
   public function reloadBalance()
   {
     $this->balance = $this->balances()->whereIn('type', ['fund', 'store_fund', 'withdraw'])->whereIn('status', ['pending', 'success'])->sum('amount');

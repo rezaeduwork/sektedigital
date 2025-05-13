@@ -58,6 +58,9 @@ Route::middleware('user.auth')->group(function () {
       Route::get('history', \App\Livewire\Store\Transaction\History::class);
       Route::get('rating', \App\Livewire\Store\Transaction\Rating::class);
     });
+    Route::get('whatsapp', \App\Livewire\Store\Whatsapp::class);
+    Route::get('whatsapp/bot/commands', \App\Livewire\Store\WhatsappBotCommands::class);
+    Route::get('whatsapp/bot/documentation', \App\Livewire\Store\WhatsappBotDoc::class);
   });
 });
 
