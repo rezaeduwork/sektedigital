@@ -57,6 +57,12 @@ Route::middleware('user.auth')->group(function () {
     Route::prefix('transaction')->group(function () {
       Route::get('history', \App\Livewire\Store\Transaction\History::class);
       Route::get('rating', \App\Livewire\Store\Transaction\Rating::class);
+      Route::get('ppob', \App\Livewire\Store\Ppob\TransactionList::class)->name('store.ppob.transactions');
+    });
+    Route::prefix('ppob')->group(function () {
+      Route::get('/', \App\Livewire\Store\Ppob\ManageProducts::class)->name('store.ppob.manage');
+      Route::get('/add', \App\Livewire\Store\Ppob\AddProduct::class)->name('store.ppob.add');
+      Route::get('/create-transaction/{productId}', \App\Livewire\Store\Ppob\CreateTransaction::class)->name('store.ppob.create-transaction');
     });
     Route::get('whatsapp', \App\Livewire\Store\Whatsapp::class);
     Route::get('whatsapp/bot/commands', \App\Livewire\Store\WhatsappBotCommands::class);

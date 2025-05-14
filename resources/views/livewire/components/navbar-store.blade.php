@@ -49,6 +49,10 @@
           <li class="nav-item">
             <a class="nav-link " href="{{url('/store/transaction/rating')}}" wire:navigate>Ulasan Pembeli</a>
           </li>
+          <!-- PPOB Transactions -->
+          <li class="nav-item">
+            <a class="nav-link " href="{{url('/store/transaction/ppob')}}" wire:navigate>Daftar Pesanan PPOB</a>
+          </li>
         </ul>
       </div>
     </li>
@@ -69,6 +73,27 @@
           <!-- Nav item -->
           <li class="nav-item">
             <a class="nav-link " href="{{url('/store/product/create')}}" wire:navigate>Buat Dagangan Baru</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+    <!-- PPOB Menu -->
+    <li class="nav-item">
+      <a class="nav-link" href="#" data-bs-toggle="collapse"
+        data-bs-target="#navPPOB" aria-expanded="true" aria-controls="navPPOB">
+        <div class="d-flex align-items-center">
+          <span class="nav-link-icon"><i class="bi bi-phone"></i></span>
+          <span class="nav-link-text">PPOB</span>
+        </div>
+      </a>
+      <div id="navPPOB" class="show !visible" data-bs-parent="#sideNavbar{{$uniqKey}}">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('/store/ppob')}}" wire:navigate>Kelola Produk</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('/store/ppob/add')}}" wire:navigate>Tambah Produk</a>
           </li>
         </ul>
       </div>

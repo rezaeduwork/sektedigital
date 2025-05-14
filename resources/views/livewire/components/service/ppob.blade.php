@@ -71,7 +71,7 @@ x-data="{
   <div class="relative">
     <div class="flex items-center space-x-2 w-full overflow-x-auto overflow-y-hidden max-w-full hidden-scroll max-sm:p-2 sm:px-2 sm:pb-2" x-ref="tabscontainer" @scroll="checkScroll()">
       @foreach ($list as $row)
-      <div class="border-2 border-white py-2 px-4 rounded-lg bg-violet-900 text-white hover:bg-white hover:text-primary relative cursor-pointer shadow shrink-0
+      <div class="border-2 border-white py-2 px-4 rounded-lg bg-violet-900 text-white hover:bg-white hover:text-primary relative cursor-pointer border shrink-0
       @if($row["name"] == $activeTab)
       !bg-white !text-primary
       @endif
@@ -102,7 +102,7 @@ x-data="{
     </div>
     <!-- Left Scroll Button -->
     <button
-      class="absolute top-1/2 left-0 z-[2] rounded-full text-primary bg-white size-8 flex items-center justify-center shadow ring-2 ring-violet-800"
+      class="absolute top-1/2 left-0 z-[2] rounded-full text-primary bg-white size-8 flex items-center justify-center border ring-2 ring-violet-800"
       @click="$refs.tabscontainer.scrollLeft -= 150; checkScroll();"
       x-show="showLeft"
       style="transform: translate(-32%, -61%);">
@@ -111,7 +111,7 @@ x-data="{
       </svg>
     </button>
     <button
-    class="absolute top-1/2 right-0 z-[2] rounded-full text-primary bg-white size-8 flex items-center justify-center shadow ring-2 ring-violet-800"
+    class="absolute top-1/2 right-0 z-[2] rounded-full text-primary bg-white size-8 flex items-center justify-center border ring-2 ring-violet-800"
     @click="$refs.tabscontainer.scrollLeft += 150; checkScroll();"
     x-show="showRight"
     style="transform: translate(0%,-62%);">

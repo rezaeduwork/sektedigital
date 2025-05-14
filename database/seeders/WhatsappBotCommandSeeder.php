@@ -78,18 +78,6 @@ class WhatsappBotCommandSeeder extends Seeder
         'display_order' => 5,
         'parameters' => null
       ],
-      [
-        'command' => 'contact',
-        'description' => 'Contact information',
-        'response_template' => "📞 *Contact {{store_name}}* 📞\n\n" .
-          "For any inquiries or assistance, please contact us:\n\n" .
-          "Email: [Store email will be inserted here]\n" .
-          "Phone: [Store phone will be inserted here]\n\n" .
-          "We're happy to help!",
-        'is_active' => true,
-        'display_order' => 6,
-        'parameters' => null
-      ],
     ];
 
     // Insert default commands for this store

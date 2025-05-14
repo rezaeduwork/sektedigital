@@ -48,4 +48,20 @@ class Store extends Model
   {
     return $this->hasMany(TransactionWhatsapp::class);
   }
+
+  /**
+   * Get store PPOB products
+   */
+  public function storeProductInstants()
+  {
+    return $this->hasMany(StoreProductInstant::class);
+  }
+
+  /**
+   * Get store PPOB transactions
+   */
+  public function storeTransactionInstants()
+  {
+    return $this->hasMany(StoreTransactionInstant::class);
+  }
 }

@@ -102,7 +102,7 @@ function digiflazz()
 }
 function checkPayment($payment)
 {
-  return tripay()->checkTransactionDetail($payment->data['reference'])['data']['data'];
+  return tripay()->checkTransactionDetail(isset($payment->data['reference']) ? $payment->data['reference'] : $payment->token)['data']['data'];
 }
 function storeTransactionQuery($status)
 {
@@ -224,8 +224,58 @@ function successPayment($invoice)
       foreach ($invoice->transactions()->where('status', 'confirmed')->get() as $tx) {
         transactionActivity($tx, $tx->user_id, 'confirmed', ('transaction confirmed'));
       }
-    } else {
-      if ($invoice->singleTransaction->product->provider == 'digiflazz') {
+    } else if ($invoice->transaction_type == 'instant') {
+      // Handle PPOB product payment
+      $paymentData = json_decode($invoice->data, true);
+
+      // Check if this is a PPOB product stock purchase
+      if (isset($paymentData['merchant_ref']) && strpos($paymentData['merchant_ref'], 'PPOB-STOCK-') === 0) {
+        $store = \App\Models\Store::where('user_id', $invoice->user_id)->first();
+        $productId = $paymentData['product_id'] ?? null;
+        $quantity = $paymentData['quantity'] ?? 1;
+        $sellingPrice = $paymentData['selling_price'] ?? null;
+
+        if ($store && $productId && $sellingPrice) {
+          $product = \App\Models\ProductInstant::find($productId);
+
+          if ($product) {
+            // Check if product already exists for this store
+            $existingProduct = \App\Models\StoreProductInstant::where('store_id', $store->id)
+              ->where('product_instant_id', $product->id)
+              ->first();
+
+            if ($existingProduct) {
+              // Update existing product
+              $existingProduct->update([
+                'selling_price' => $sellingPrice,
+                'stock' => $existingProduct->stock + $quantity,
+              ]);
+            } else {
+              // Create new product
+              \App\Models\StoreProductInstant::create([
+                'store_id' => $store->id,
+                'product_instant_id' => $product->id,
+                'code' => $product->code,
+                'provider' => $product->provider,
+                'brand' => $product->brand,
+                'category' => $product->category,
+                'title' => $product->title,
+                'highlight' => $product->highlight,
+                'description' => $product->description,
+                'price' => $product->price,
+                'selling_price' => $sellingPrice,
+                'slug' => $product->slug,
+                'stock' => $quantity,
+                'provider_stock' => $product->provider_stock,
+                'status' => 'active',
+                'provider_status' => $product->provider_status,
+                'image' => $product->image,
+                'type' => $product->type,
+              ]);
+            }
+          }
+        }
+      } else if ($invoice->singleTransaction && $invoice->singleTransaction->product->provider == 'digiflazz') {
         $data = digiflazz()->createTransaction($invoice->singleTransaction);
         if ($data['success'] === true) {
           $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'finished']);

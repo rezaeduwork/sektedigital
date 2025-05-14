@@ -72,12 +72,17 @@
             </div>
             <!-- project number -->
             <div class="lh-1">
-              <h1 class="mb-2 fw-bold fs-2">Rp{{number_format(storeTransactionQuery('finished')->whereBetween('created_at', [now()->startOfMonth(), now()])->sum('amount'), 0,',', '.')}}</h1>
-              <span>
-                dari
-                <span class="text-dark me-1">Rp{{number_format(storeTransactionQuery('finished')->sum('amount'),0,',','.')}}</span>
-                total
-              </span>
+              <h1 class="mb-2 fw-bold fs-2">Rp{{ number_format($totalMonthRevenue, 0, ',', '.') }}</h1>
+              <div class="d-flex flex-column mt-3">
+                <div class="d-flex justify-content-between">
+                  <span class="text-sm text-gray-600">Produk:</span>
+                  <span class="text-sm font-medium">Rp{{ number_format($currentMonthRevenue, 0, ',', '.') }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-sm text-gray-600">PPOB:</span>
+                  <span class="text-sm font-medium">Rp{{ number_format($currentMonthPPOBRevenue, 0, ',', '.') }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -98,11 +103,17 @@
             </div>
             <!-- project number -->
             <div class="lh-1">
-              <h1 class="mb-2 fw-bold fs-2">{{number_format(storeTransactionDetailQuery('finished')->count())}}</h1>
-              <span>
-                <span class="text-dark me-1">{{storeTransactionDetailQuery('finished')->where('created_at', '>=', now()->subDay())->count()}}</span>
-                baru
-              </span>
+              <h1 class="mb-2 fw-bold fs-2">{{ number_format($totalSalesCount) }}</h1>
+              <div class="d-flex flex-column mt-3">
+                <div class="d-flex justify-content-between">
+                  <span class="text-sm text-gray-600">Produk:</span>
+                  <span class="text-sm font-medium">{{ number_format($regularSalesCount) }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-sm text-gray-600">PPOB:</span>
+                  <span class="text-sm font-medium">{{ number_format($ppobSalesCount) }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

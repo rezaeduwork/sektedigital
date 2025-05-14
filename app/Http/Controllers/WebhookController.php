@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Payment;
+use App\Models\ProductInstant;
+use App\Models\StoreProductInstant;
+use App\Models\Store;
+use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
@@ -40,7 +45,7 @@ class WebhookController extends Controller
     $status = strtoupper((string) $data->status);
 
     if ($data->is_closed_payment === 1) {
-      $invoice = \App\Models\Payment::whereId($invoiceId)
+      $invoice = Payment::whereId($invoiceId)
         ->when(config('app.env') === 'production', function ($query) {
           $query->where('status', '=', 'pending');
         })
@@ -55,35 +60,225 @@ class WebhookController extends Controller
 
       switch ($status) {
         case 'PAID':
-          successPayment($invoice);
-          break;
+          $result = $this->processSuccessfulPayment($invoice);
+          return response()->json(['success' => $result['success'], 'message' => $result['message'] ?? null]);
 
         case 'EXPIRED':
-          expirePayment($invoice);
-          break;
+          $this->processExpiredPayment($invoice);
+          return response()->json(['success' => true]);
+
         case 'FAILED':
-          if ($invoice->transaction_type == 'basic') {
-            $invoice->transactions()->update(['status' => 'rejected']);
-            foreach ($invoice->transactions as $tx) {
-              transactionActivity($tx, $tx->user_id, 'rejected', ('transaction rejected'));
-            }
-          } else {
-            if ($invoice->singleTransaction->product->provider == 'digiflazz') {
-              $invoice->singleTransaction()->update(['status' => 'rejected']);
-            }
-          }
-          $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'rejected'));
-          break;
+          $this->processFailedPayment($invoice);
+          return response()->json(['success' => true]);
+
         default:
           return response()->json([
             'success' => false,
             'message' => 'Unrecognized payment status',
           ]);
       }
+    }
 
-      return response()->json(['success' => true]);
+    return response()->json(['success' => false, 'message' => 'Not a closed payment']);
+  }
+
+  /**
+   * Process a successful payment
+   *
+   * @param \App\Models\Payment $invoice
+   * @return array
+   */
+  protected function processSuccessfulPayment($invoice)
+  {
+    if ($invoice->status !== 'pending') {
+      return [
+        'success' => true,
+        'message' => 'Payment already processed'
+      ];
+    }
+
+    // Update payment status
+    $invoice->update([
+      'status' => 'settlement',
+      'settlement_at' => now()
+    ]);
+
+    try {
+      if ($invoice->transaction_type == 'basic') {
+        // Handle regular transactions
+        $invoice->transactions()->where('status', 'unprocessed')->update(['status' => 'confirmed']);
+        foreach ($invoice->transactions()->where('status', 'confirmed')->get() as $tx) {
+          transactionActivity($tx, $tx->user_id, 'confirmed', 'transaction confirmed');
+        }
+      } else if ($invoice->transaction_type == 'instant') {
+        // Handle PPOB product payment
+        $paymentData = json_decode($invoice->data, true);
+
+        // Check if this is a PPOB stock purchase
+        if (
+          isset($paymentData['transaction_data']['data']['merchant_ref']) &&
+          strpos($paymentData['transaction_data']['data']['merchant_ref'], 'PPOB-STOCK-') === 0
+        ) {
+
+          $this->processPpobStockPurchase($invoice, $paymentData);
+        } else if ($invoice->singleTransaction && $invoice->singleTransaction->product->provider == 'digiflazz') {
+          // Handle regular instant transactions
+          $data = digiflazz()->createTransaction($invoice->singleTransaction);
+          if ($data['success'] === true) {
+            $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'finished']);
+          } else {
+            $status = isset($data['data']['status']) ? $data['data']['status'] : null;
+            if ($status == 'Pending') {
+              $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'confirmed']);
+            } else {
+              $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'rejected']);
+            }
+          }
+        }
+      }
+
+      // Send notification
+      if ($invoice->user) {
+        $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'settlement'));
+      }
+
+      return ['success' => true];
+    } catch (\Exception $e) {
+      Log::error('Payment processing error: ' . $e->getMessage());
+      return [
+        'success' => false,
+        'message' => 'Error processing payment: ' . $e->getMessage()
+      ];
     }
   }
+
+  /**
+   * Process an expired payment
+   *
+   * @param \App\Models\Payment $invoice
+   */
+  protected function processExpiredPayment($invoice)
+  {
+    if ($invoice->status !== 'pending') {
+      return;
+    }
+
+    $invoice->update(['status' => 'expired']);
+
+    if ($invoice->transaction_type == 'basic') {
+      $invoice->transactions()->where('status', 'unprocessed')->update(['status' => 'expired']);
+      foreach ($invoice->transactions as $tx) {
+        transactionActivity($tx, $tx->user_id, 'expired', 'transaction expired');
+      }
+    } else {
+      if ($invoice->singleTransaction && $invoice->singleTransaction->product->provider == 'digiflazz') {
+        $invoice->singleTransaction()->where('status', 'unprocessed')->update(['status' => 'expired']);
+      }
+    }
+
+    if ($invoice->user) {
+      $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'expired'));
+    }
+  }
+
+  /**
+   * Process a failed payment
+   *
+   * @param \App\Models\Payment $invoice
+   */
+  protected function processFailedPayment($invoice)
+  {
+    $invoice->update(['status' => 'failed']);
+
+    if ($invoice->transaction_type == 'basic') {
+      $invoice->transactions()->update(['status' => 'rejected']);
+      foreach ($invoice->transactions as $tx) {
+        transactionActivity($tx, $tx->user_id, 'rejected', 'transaction rejected');
+      }
+    } else {
+      if ($invoice->singleTransaction && $invoice->singleTransaction->product->provider == 'digiflazz') {
+        $invoice->singleTransaction()->update(['status' => 'rejected']);
+      }
+    }
+
+    if ($invoice->user) {
+      $invoice->user->notify(new \App\Notifications\PaymentConfirmed($invoice, 'rejected'));
+    }
+  }
+
+  /**
+   * Process PPOB stock purchase
+   *
+   * @param \App\Models\Payment $invoice
+   * @param array $paymentData
+   */
+  protected function processPpobStockPurchase($invoice, $paymentData)
+  {
+    $store = Store::where('user_id', $invoice->user_id)->first();
+    if (!$store) {
+      Log::error('PPOB stock purchase failed - store not found for user ID: ' . $invoice->user_id);
+      return false;
+    }
+
+    $productId = $paymentData['product_id'] ?? null;
+    $quantity = $paymentData['quantity'] ?? 1;
+    $sellingPrice = $paymentData['selling_price'] ?? null;
+
+    if (!$productId || !$sellingPrice) {
+      Log::error('PPOB stock purchase failed - missing product data: ' . json_encode($paymentData));
+      return false;
+    }
+
+    $product = ProductInstant::find($productId);
+    if (!$product) {
+      Log::error('PPOB stock purchase failed - product not found: ' . $productId);
+      return false;
+    }
+
+    try {
+      // Check if product already exists for this store
+      $existingProduct = StoreProductInstant::where('store_id', $store->id)
+        ->where('product_instant_id', $product->id)
+        ->first();
+
+      if ($existingProduct) {
+        // Update existing product
+        $existingProduct->update([
+          'selling_price' => $sellingPrice,
+          'stock' => $existingProduct->stock + $quantity,
+        ]);
+        Log::info('PPOB stock updated for store #' . $store->id . ', product #' . $product->id);
+      } else {
+        // Create new product
+        StoreProductInstant::create([
+          'store_id' => $store->id,
+          'product_instant_id' => $product->id,
+          'code' => $product->code,
+          'provider' => $product->provider,
+          'brand' => $product->brand,
+          'category' => $product->category,
+          'title' => $product->title,
+          'highlight' => $product->highlight,
+          'description' => $product->description,
+          'price' => $product->price,
+          'selling_price' => $sellingPrice,
+          'slug' => $product->slug,
+          'stock' => $quantity,
+          'provider_stock' => $product->provider_stock,
+          'status' => 'active',
+          'provider_status' => $product->provider_status,
+          'image' => $product->image,
+          'type' => $product->type,
+        ]);
+        Log::info('New PPOB stock created for store #' . $store->id . ', product #' . $product->id);
+      }
+      return true;
+    } catch (\Exception $e) {
+      Log::error('PPOB stock purchase processing error: ' . $e->getMessage());
+      return false;
+    }
+  }
+
   public function digiflazzNotification(Request $request)
   {
     $secret = digiflazz()->getSecretKey();
@@ -99,15 +294,11 @@ class WebhookController extends Controller
         if ($tx) {
           $tx->update(['status' => 'finished']);
         }
-      } else {
-        if ($tx) {
-          $tx->update(['status' => 'rejected']);
-        }
       }
       return response()->json(['success' => true]);
-    } else {
-      return response()->json(['success' => false, 'message' => 'Invalid signature'], 401);
     }
+
+    return response()->json(['success' => false, 'message' => 'Unauthorized']);
   }
 
   /**

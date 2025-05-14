@@ -31,6 +31,14 @@ class ProductInstant extends Model
 
   // HELPER
   // HELPER
+
+  /**
+   * Get store products associated with this product
+   */
+  public function storeProducts()
+  {
+    return $this->hasMany(StoreProductInstant::class);
+  }
   public static function getCategoryHightlight($category, $brand = null)
   {
     switch ($category) {

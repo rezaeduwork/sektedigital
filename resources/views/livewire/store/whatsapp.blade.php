@@ -52,7 +52,7 @@
     @if($status == 'connected')
       <div class="flex space-x-2">
         <a href="{{ url('store/whatsapp/bot/commands') }}" class="inline-block text-white bg-primary hover:bg-primary/90 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5">
-          Manage Bot Commands
+          Bot Commands
         </a>
         <a href="{{ url('store/whatsapp/bot/documentation') }}" class="inline-block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">
           Bot Documentation
