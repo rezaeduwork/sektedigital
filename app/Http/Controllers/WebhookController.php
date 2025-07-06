@@ -41,12 +41,12 @@ class WebhookController extends Controller
     }
 
     $invoiceId = $data->merchant_ref;
+    $invoiceId = str_replace('DEPOSIT-', '', $invoiceId);
     $tripayReference = $data->reference;
     $status = strtoupper((string) $data->status);
-
     if ($data->is_closed_payment === 1) {
       $invoice = Payment::whereId($invoiceId)
-        ->when(config('app.env') === 'production', function ($query) {
+        ->when(true, function ($query) {
           $query->where('status', '=', 'pending');
         })
         ->first();
@@ -90,13 +90,6 @@ class WebhookController extends Controller
    */
   protected function processSuccessfulPayment($invoice)
   {
-    if ($invoice->status !== 'pending') {
-      return [
-        'success' => true,
-        'message' => 'Payment already processed'
-      ];
-    }
-
     // Update payment status
     $invoice->update([
       'status' => 'settlement',
@@ -104,12 +97,19 @@ class WebhookController extends Controller
     ]);
 
     try {
-      if ($invoice->transaction_type == 'basic') {
+      if ($invoice->transaction_type == 'deposit') {
+        // Handle deposit transactions
+        $this->processDepositPayment($invoice);
+      } else if ($invoice->transaction_type == 'basic') {
         // Handle regular transactions
         $invoice->transactions()->where('status', 'unprocessed')->update(['status' => 'confirmed']);
         foreach ($invoice->transactions()->where('status', 'confirmed')->get() as $tx) {
           transactionActivity($tx, $tx->user_id, 'confirmed', 'transaction confirmed');
         }
+      } else if ($invoice->transaction_type == 'seller_ppob') {
+        // Handle PPOB stock purchase for sellers
+        $paymentData = $invoice->data;
+        $this->processPpobStockPurchase($invoice, $paymentData);
       } else if ($invoice->transaction_type == 'instant') {
         // Handle PPOB product payment
         $paymentData = json_decode($invoice->data, true);
@@ -234,7 +234,6 @@ class WebhookController extends Controller
       Log::error('PPOB stock purchase failed - product not found: ' . $productId);
       return false;
     }
-
     try {
       // Check if product already exists for this store
       $existingProduct = StoreProductInstant::where('store_id', $store->id)
@@ -250,7 +249,7 @@ class WebhookController extends Controller
         Log::info('PPOB stock updated for store #' . $store->id . ', product #' . $product->id);
       } else {
         // Create new product
-        StoreProductInstant::create([
+        $storePPOBProduct = StoreProductInstant::create([
           'store_id' => $store->id,
           'product_instant_id' => $product->id,
           'code' => $product->code,
@@ -264,9 +263,7 @@ class WebhookController extends Controller
           'selling_price' => $sellingPrice,
           'slug' => $product->slug,
           'stock' => $quantity,
-          'provider_stock' => $product->provider_stock,
           'status' => 'active',
-          'provider_status' => $product->provider_status,
           'image' => $product->image,
           'type' => $product->type,
         ]);
@@ -394,5 +391,40 @@ class WebhookController extends Controller
     }
 
     return response()->json(['success' => true]);
+  }
+
+  /**
+   * Process a deposit payment
+   *
+   * @param \App\Models\Payment $payment
+   * @return bool
+   */
+  protected function processDepositPayment($payment)
+  {
+    if (!$payment->user) {
+      Log::error('Deposit payment failed - user not found for payment ID: ' . $payment->id);
+      return false;
+    }
+
+    try {
+      // Create a UserBalance record for the deposit
+      $payment->user->balances()->create([
+        'uid' => $payment->user->id . uniqid(),
+        'type' => 'store_fund',
+        'amount' => $payment->amount,
+        'description' => 'Deposit saldo pada ' . now()->translatedFormat('l, d F Y H:i'),
+        'status' => 'success',
+        'name' => 'Deposit Saldo'
+      ]);
+
+      // Reload user balance
+      $payment->user->reloadBalance();
+
+      Log::info('Deposit processed successfully for user #' . $payment->user->id . ', amount: ' . $payment->amount);
+      return true;
+    } catch (\Exception $e) {
+      Log::error('Deposit processing error: ' . $e->getMessage());
+      return false;
+    }
   }
 }

@@ -106,6 +106,7 @@ class ProductInstant extends Model
   }
   public static function reloadCrypto()
   {
+    return;
     foreach (config('product') as $row) {
       $existing = \App\Models\ProductInstant::whereCode($row['code'])->first();
       \App\Models\Currency::reloadRate('bnbidr');

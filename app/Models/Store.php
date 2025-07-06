@@ -49,6 +49,11 @@ class Store extends Model
     return $this->hasMany(TransactionWhatsapp::class);
   }
 
+  public function whatsappSettings()
+  {
+    return $this->hasOne(StoreWhatsappSetting::class);
+  }
+
   /**
    * Get store PPOB products
    */

@@ -23,10 +23,6 @@ class StoreProductInstant extends Model
     'price',
     'selling_price',
     'slug',
-    'stock',
-    'provider_stock',
-    'status',
-    'provider_status',
     'image',
     'type'
   ];
@@ -55,11 +51,5 @@ class StoreProductInstant extends Model
     return $this->hasMany(StoreTransactionInstant::class);
   }
 
-  /**
-   * Get status options
-   */
-  public static function getStatusses()
-  {
-    return ['active', 'inactive'];
-  }
+  // All products are active by default now
 }

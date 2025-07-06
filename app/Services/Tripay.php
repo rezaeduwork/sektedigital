@@ -150,13 +150,15 @@ class Tripay
       } else {
         return [
           'status' => false,
-          'data' => 'Tripay Transaction Creation Error: ' . $response->body()
+          'data' => $response->body(),
+          'message' => 'Tripay Transaction Error: ' . $response->body()
         ];
       }
     } catch (\Exception $e) {
       return [
         'status' => false,
-        'data' => 'Tripay Transaction Creation Error: ' . $e->getMessage()
+        'data' => [],
+        'message' => 'Tripay Transaction Error: ' . $response->body()
       ];
     }
   }

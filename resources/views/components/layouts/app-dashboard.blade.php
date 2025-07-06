@@ -48,6 +48,18 @@
           </div>
           <div class="shrink-0">
             <ul class="list-unstyled d-flex align-items-center mb-0 ms-2 sm:ms-5 ms-lg-0 space-x-2 sm:space-x-3">
+              <!-- Saldo Info -->
+              <li class="d-flex align-items-center pr-2">
+                <div class="d-none d-lg-block max-sm:!text-xs me-2">
+                  <div class="text-end flex items-center space-x-2">
+                    <p class="mb-0 text-muted">Saldo</p>
+                    <h5 class="mb-0">Rp {{ number_format(auth()->user()->balance) }}</h5>
+                  </div>
+                </div>
+                <a href="{{ url('user/wallet') }}" class="btn btn-primary btn-sm max-sm:!text-xs max-sm:!py-1 max-sm:!px-2">
+                  <i class="bi bi-plus-lg me-1"></i>Top Up
+                </a>
+              </li>
               <li class="dropdown-center">
                 <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100 !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px]" href="#"
                   role="button" data-bs-toggle="dropdown" aria-expanded="false">

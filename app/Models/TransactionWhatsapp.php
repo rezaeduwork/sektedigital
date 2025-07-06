@@ -21,6 +21,7 @@ class TransactionWhatsapp extends Model
     'status',
     'payment_status',
     'payment_method',
+    'payment_id',
     'total',
     'notes',
     'shipping_address',

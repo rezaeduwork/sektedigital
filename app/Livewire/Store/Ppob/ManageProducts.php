@@ -19,6 +19,8 @@ class ManageProducts extends Component
   public $sortDirection = 'asc';
   public $selectedProductId;
   public $confirmingProductDeletion = false;
+  public $showInsufficientFundsModal = false;
+  public $selectedProduct = null;
 
   protected $listeners = ['refreshProducts' => '$refresh'];
 
@@ -82,9 +84,28 @@ class ManageProducts extends Component
     $this->confirmingProductDeletion = false;
   }
 
+  public function checkBalanceAndProceed($productId)
+  {
+    $user = Auth::user();
+    $product = StoreProductInstant::find($productId);
+
+    if ($product && $user->balance < $product->selling_price) {
+      $this->selectedProduct = $product;
+      $this->showInsufficientFundsModal = true;
+    } else {
+      return redirect()->route('store.ppob.create-transaction', $productId);
+    }
+  }
+
+  public function closeInsufficientFundsModal()
+  {
+    $this->showInsufficientFundsModal = false;
+  }
+
   public function render()
   {
-    $store = Auth::user()->store;
+    $user = Auth::user();
+    $store = $user->store;
     $query = StoreProductInstant::where('store_id', $store->id);
 
     if (!empty($this->search)) {
@@ -128,7 +149,8 @@ class ManageProducts extends Component
     return view('livewire.store.ppob.manage-products', [
       'products' => $products,
       'categories' => $categories,
-      'brands' => $brands
+      'brands' => $brands,
+      'user' => $user
     ])->layout('components.layouts.app-dashboard');
   }
 }

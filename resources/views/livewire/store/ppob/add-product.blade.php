@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative container mx-auto">
     <div class="bg-white overflow-hidden border sm:rounded-lg p-6">
         <h2 class="text-xl font-semibold mb-4">Add PPOB Products</h2>
 
@@ -23,14 +23,14 @@
         <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label for="search" class="block text-sm font-medium text-gray-700">Search</label>
-                <input type="text" wire:model.debounce.300ms="search" id="search"
+                <input type="text" wire:model.live.debounce.300ms="search" id="search"
                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     placeholder="Search by name, code...">
             </div>
 
             <div>
                 <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-                <select id="category" wire:model="category"
+                <select id="category" wire:model.live="category"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="">All Categories</option>
                     @foreach($categories as $cat)
@@ -41,7 +41,7 @@
 
             <div>
                 <label for="brand" class="block text-sm font-medium text-gray-700">Brand</label>
-                <select id="brand" wire:model="brand"
+                <select id="brand" wire:model.live="brand"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="">All Brands</option>
                     @foreach($brands as $b)
@@ -122,8 +122,14 @@
                                 <button type="button" wire:click="cancelSelection" class="mr-2 bg-gray-200 py-2 px-4 border border-gray-300 border rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Cancel
                                 </button>
-                                <button type="button" wire:click="initPayment" class="bg-indigo-600 py-2 px-4 border border-transparent border rounded-lg text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Pay & Add to Store
+                                <button type="button" wire:click="initPayment" wire:loading.attr="disabled" wire:target="initPayment" class="bg-indigo-600 py-2 px-4 border border-transparent border rounded-lg text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative">
+                                    <span wire:loading.remove wire:target="initPayment">Pay & Add to Store</span>
+                                    <span wire:loading wire:target="initPayment" class="inline-flex items-center">
+                                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -157,10 +163,13 @@
                                             Brand
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('price')">
-                                            Price
+                                            Harga Dasar
                                             @if($sortField === 'price')
                                                 @if($sortDirection === 'asc') &uarr; @else &darr; @endif
                                             @endif
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Harga Jual
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Actions
@@ -189,10 +198,29 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 Rp {{ number_format($product->price) }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <button wire:click="selectProduct({{ $product->id }})" class="text-indigo-600 hover:text-indigo-900">
-                                                    Select
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                @php
+                                                $exists = Auth::user()->store->storeProductInstants()->where('product_instant_id', $product->id)->exists();
+                                                @endphp
+                                                @if(!$exists)
+                                                <input wire:model.defer="productPrices.{{ $product->id }}" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5" placeholder="Harga Jual" value="{{ $product->price }}" min="{{ $product->price }}">
+                                                @else
+                                                <span class="text-green-600 text-xs font-medium">Produk sudah tersedia</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                @if(!$exists)
+                                                <button wire:click="addToStore({{ $product->id }})" class="text-indigo-600 hover:text-indigo-900 relative" wire:loading.attr="disabled" wire:target="addToStore({{ $product->id }})">
+                                                    <span wire:loading.remove wire:target="addToStore({{ $product->id }})">Tambah ke Toko</span>
+                                                    <span wire:loading wire:target="addToStore({{ $product->id }})" class="inline-flex items-center">
+                                                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                        </svg>
+                                                        Memproses...
+                                                    </span>
                                                 </button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty

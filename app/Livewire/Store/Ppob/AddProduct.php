@@ -35,6 +35,9 @@ class AddProduct extends Component
   public $paymentInstructions = null;
   public $paymentExpiry = null;
 
+  // Add properties to store product prices
+  public $productPrices = [];
+
   public function updatingSearch()
   {
     $this->resetPage();
@@ -64,7 +67,18 @@ class AddProduct extends Component
   {
     $this->selectedProduct = ProductInstant::find($id);
     $this->sellingPrice = $this->selectedProduct->price;
-    $this->loadPaymentMethods();
+
+    // Check if product already exists for this store
+    $store = Auth::user()->store;
+    $existingProduct = StoreProductInstant::where('store_id', $store->id)
+      ->where('product_instant_id', $this->selectedProduct->id)
+      ->first();
+
+    if ($existingProduct) {
+      $this->dispatch('alert-error', message: 'Produk ini sudah tersedia di toko Anda.');
+      $this->selectedProduct = null;
+      return;
+    }
   }
 
   public function loadPaymentMethods()
@@ -96,8 +110,17 @@ class AddProduct extends Component
     $user = Auth::user();
     $totalAmount = $this->getSubtotalProperty(); // Use the calculated subtotal
 
-    // Create unique reference
-    $merchantRef = 'PPOB-STOCK-' . Str::random(8);
+    // First create a payment record in the database
+    $payment = Payment::create([
+      'status' => 'pending',
+      'amount' => $totalAmount,
+      'user_id' => $user->id,
+      'transaction_type' => 'seller_ppob',
+      'expired_at' => now()->addHours(24)
+    ]);
+
+    // Create unique reference using the payment ID
+    $merchantRef = $payment->id;
 
     // Create order item for Tripay
     $orderItems = [
@@ -135,15 +158,10 @@ class AddProduct extends Component
         'merchant_ref' => $merchantRef,
       ];
 
-      // Store payment information in database
-      $payment = Payment::create([
-        'status' => 'pending',
+      // Update the payment record with transaction details
+      $payment->update([
         'token' => $transaction['data']['data']['reference'],
-        'amount' => $totalAmount,
-        'user_id' => $user->id,
         'data' => json_encode($paymentData),
-        'transaction_type' => 'instant',
-        'expired_at' => now()->addHours(24)
       ]);
 
       $this->paymentId = $payment->id;
@@ -204,67 +222,17 @@ class AddProduct extends Component
   public function saveProduct($payment = null)
   {
     if (!$payment) {
+      session()->flash('payment-error', 'Payment not found.');
       return;
     }
-
-    // Payment data contains all the information about the product
-    $paymentData = json_decode($payment->data, true);
-
-    if (!isset($paymentData['product_id']) || !isset($paymentData['quantity']) || !isset($paymentData['selling_price'])) {
-      session()->flash('error', 'Invalid payment data');
-      return;
-    }
-
-    $store = Auth::user()->store;
-    $productId = $paymentData['product_id'];
-    $quantity = $paymentData['quantity'];
-    $sellingPrice = $paymentData['selling_price'];
-
-    $selectedProduct = ProductInstant::find($productId);
-    if (!$selectedProduct) {
-      session()->flash('error', 'Product not found');
-      return;
-    }
-
-    // Check if product already exists for this store
-    $existingProduct = StoreProductInstant::where('store_id', $store->id)
-      ->where('product_instant_id', $selectedProduct->id)
-      ->first();
+    $payment = Payment::find($payment->id);
 
     try {
-      if ($existingProduct) {
-        // Update existing product
-        $existingProduct->update([
-          'selling_price' => $sellingPrice,
-          'stock' => $existingProduct->stock + $quantity,
-        ]);
-
-        // The success message will be shown after the payment modal is closed
-        session()->flash('message', 'Payment successful! Product stock has been updated.');
+      if ($payment->status == 'settlement') {
+        session()->flash('message', 'Pembayaran berhasil!');
       } else {
-        // Create new product
-        StoreProductInstant::create([
-          'store_id' => $store->id,
-          'product_instant_id' => $selectedProduct->id,
-          'code' => $selectedProduct->code,
-          'provider' => $selectedProduct->provider,
-          'brand' => $selectedProduct->brand,
-          'category' => $selectedProduct->category,
-          'title' => $selectedProduct->title,
-          'highlight' => $selectedProduct->highlight,
-          'description' => $selectedProduct->description,
-          'price' => $selectedProduct->price,
-          'selling_price' => $sellingPrice,
-          'slug' => $selectedProduct->slug,
-          'stock' => $quantity,
-          'provider_stock' => $selectedProduct->provider_stock,
-          'status' => 'active',
-          'provider_status' => $selectedProduct->provider_status,
-          'image' => $selectedProduct->image,
-          'type' => $selectedProduct->type,
-        ]);
-
-        session()->flash('message', 'Payment successful! New product added to your store.');
+        session()->flash('payment-error', 'Pembayaran tidak berhasil silahkan hubungi admin.');
+        return;
       }
 
       // Close the payment modal after successful saving
@@ -312,6 +280,59 @@ class AddProduct extends Component
   public function getSubtotalProperty()
   {
     return $this->selectedProduct ? $this->selectedProduct->price * $this->quantity : 0;
+  }
+
+  // Method to add product directly to store without payment
+  public function addToStore($productId)
+  {
+    $productInstant = ProductInstant::find($productId);
+    if (!$productInstant) {
+      $this->dispatch('alert-error', message: 'Produk tidak ditemukan.');
+      return;
+    }
+
+    $store = Auth::user()->store;
+
+    // Check if selling price is set
+    $sellingPrice = $this->productPrices[$productId] ?? null;
+    if (!$sellingPrice || $sellingPrice < $productInstant->price) {
+      $this->dispatch('alert-error', message: 'Harga jual harus diisi dan minimal sama dengan harga dasar.');
+      return;
+    }
+
+    // Check if product already exists in store
+    $existingProduct = StoreProductInstant::where('store_id', $store->id)
+      ->where('product_instant_id', $productInstant->id)
+      ->first();
+
+    if ($existingProduct) {
+      $this->dispatch('alert-error', message: 'Produk ini sudah tersedia di toko Anda.');
+      return;
+    }
+
+    try {
+      // Create new product in store
+      StoreProductInstant::create([
+        'store_id' => $store->id,
+        'product_instant_id' => $productInstant->id,
+        'code' => $productInstant->code,
+        'provider' => $productInstant->provider,
+        'brand' => $productInstant->brand,
+        'category' => $productInstant->category,
+        'title' => $productInstant->title,
+        'highlight' => $productInstant->highlight,
+        'description' => $productInstant->description,
+        'price' => $productInstant->price,
+        'selling_price' => $sellingPrice,
+        'slug' => $productInstant->slug,
+        'image' => $productInstant->image,
+        'type' => $productInstant->type
+      ]);
+
+      $this->dispatch('alert-success', message: 'Produk berhasil ditambahkan ke toko Anda.');
+    } catch (\Exception $e) {
+      $this->dispatch('alert-error', message: 'Gagal menambahkan produk: ' . $e->getMessage());
+    }
   }
 
   public function render()

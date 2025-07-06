@@ -21,7 +21,7 @@ class Payment extends Model
     'fee_total',
     'proof_text',
     'proof_file',
-    // comment('basic | instant')
+    // comment('basic | instant | deposit')
     'transaction_type',
     'expired_at'
   ];

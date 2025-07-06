@@ -26,9 +26,7 @@ return new class extends Migration
       $table->decimal('selling_price', 12, 2)->default(0);
       $table->string('slug')->nullable();
       $table->integer('stock')->default(0);
-      $table->integer('provider_stock')->nullable();
       $table->enum('status', ['active', 'inactive'])->default('active');
-      $table->enum('provider_status', ['unset', 'active', 'inactive'])->default('unset');
       $table->string('image')->nullable();
       $table->string('type')->nullable();
       $table->softDeletes();

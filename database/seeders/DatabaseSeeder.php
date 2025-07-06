@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
   {
     // ADMIN
     \App\Models\User::query()->delete();
+    \App\Models\StoreProductInstant::query()->delete();
     \App\Models\Store::query()->delete();
     $user = \App\Models\User::create([
       'name' => 'admin',
@@ -49,7 +50,6 @@ class DatabaseSeeder extends Seeder
       'phone' => '0000000000002',
       'password' => \Hash::make('12345678')
     ]);
-
     $user2 = $createUser2['user'];
     $store2 = $createUser2['store'];
 
@@ -128,6 +128,7 @@ class DatabaseSeeder extends Seeder
 
     \App\Models\ProductInstant::query()->delete();
     \App\Models\ProductInstant::reloadCrypto();
+    // $this->call(MasterWhatsappBotCommandSeeder::class);
   }
   public function createUser($userParams)
   {

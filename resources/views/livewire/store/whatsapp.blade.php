@@ -51,10 +51,10 @@
 
     @if($status == 'connected')
       <div class="flex space-x-2">
-        <a href="{{ url('store/whatsapp/bot/commands') }}" class="inline-block text-white bg-primary hover:bg-primary/90 focus:ring-4 focus:ring-violet-300 font-medium rounded-lg text-sm px-5 py-2.5">
-          Bot Commands
+        <a href="{{ url('store/whatsapp/bot/settings') }}" wire:navigate class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+          Bot Settings
         </a>
-        <a href="{{ url('store/whatsapp/bot/documentation') }}" class="inline-block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">
+        <a href="{{ url('store/whatsapp/bot/documentation') }}" wire:navigate class="inline-block text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">
           Bot Documentation
         </a>
       </div>
@@ -86,7 +86,7 @@
         @endif
       </div>
 
-      @if ($status !== 'connected' && !$qrCode)
+      @if ($status !== 'connected')
       <div>
         @if($status !== 'connected')
           <button wire:click="connectWhatsapp" type="button" class="text-white bg-primary hover:bg-primary/90 focus:ring-4 focus:ring-violet-300 font-semibold rounded-lg text-sm px-5 py-2.5 me-2" wire:loading.attr="disabled">
@@ -171,56 +171,8 @@
     @endif
   </div>
 
-  <div class="p-6 mb-6 space-y-4 bg-white rounded border">
-    {{-- Commands List --}}
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">Command</th>
-                        <th scope="col" class="px-6 py-3">Description</th>
-                        <th scope="col" class="px-6 py-3">Parameters</th>
-                        <th scope="col" class="px-6 py-3 text-center">Order</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($commands as $cmd)
-                        <tr class="border-b">
-                            <td class="px-6 py-4">
-                                <span class="font-medium">/{{ $cmd->command }}</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $cmd->description }}
-                            </td>
-                            <td class="px-6 py-4">
-                                @if (is_array($cmd->parameters) && count($cmd->parameters) > 0)
-                                    <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">
-                                        {{ implode(', ', $cmd->parameters) }}
-                                    </span>
-                                @else
-                                    <span class="text-gray-400">-</span>
-                                @endif
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                {{ $cmd->display_order }}
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                                No commands found.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <div class="px-6 py-3">
-            {{ $commands->links() }}
-        </div>
-    </div>
+  <div class="p-6 space-y-4 bg-white rounded border">
+    <livewire:store.whatsapp.commands-table :key="'commands-table'" />
   </div>
 
   <!-- JQuery and QR Code libraries from CDN -->
@@ -502,4 +454,5 @@
       });
     });
   </script>
+
 </section>

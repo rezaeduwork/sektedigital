@@ -10,7 +10,7 @@ class UserBalance extends Model
   use HasFactory;
   protected $fillable = [
     'uid',
-    // fund | store_fund | coin | withdraw
+    // fund | store_fund | coin | withdraw | deposit
     'type',
     'amount',
     'description',
@@ -33,7 +33,8 @@ class UserBalance extends Model
       'fund',
       'store_fund',
       'coin',
-      'withdraw'
+      'withdraw',
+      'deposit'
     ];
   }
 }

@@ -37,7 +37,8 @@ Route::middleware('user.auth')->group(function () {
   Route::prefix('user')->group(function () {
     Route::get('/profile', \App\Livewire\User\Profile::class);
     Route::get('/store', \App\Livewire\Components\AccountStore::class);
-    Route::get('/wallet', \App\Livewire\User\Wallet::class);
+    Route::get('/wallet', \App\Livewire\User\Wallet::class)->name('wallet');
+    Route::get('/payment/{reference}', \App\Livewire\User\Payment::class)->name('payment.detail');
     // Route::get('/wallet/bank', \App\Livewire\User\WalletBank::class);
     Route::prefix('transaction')->group(function () {
       Route::get('/', \App\Livewire\User\Transaction::class);
@@ -65,8 +66,10 @@ Route::middleware('user.auth')->group(function () {
       Route::get('/create-transaction/{productId}', \App\Livewire\Store\Ppob\CreateTransaction::class)->name('store.ppob.create-transaction');
     });
     Route::get('whatsapp', \App\Livewire\Store\Whatsapp::class);
-    Route::get('whatsapp/bot/commands', \App\Livewire\Store\WhatsappBotCommands::class);
+    Route::get('whatsapp/bot/commands/import', \App\Livewire\Store\ImportWhatsappBotCommands::class)->name('store.whatsapp-bot-commands.import');
+    Route::get('whatsapp/bot/categories', \App\Livewire\Store\WhatsappBotCommandCategories::class)->name('store.whatsapp-bot-command-categories');
     Route::get('whatsapp/bot/documentation', \App\Livewire\Store\WhatsappBotDoc::class);
+    Route::get('whatsapp/bot/settings', \App\Livewire\Store\Whatsapp\BotSettings::class);
   });
 });
 

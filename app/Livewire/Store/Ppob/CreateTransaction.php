@@ -100,8 +100,16 @@ class CreateTransaction extends Component
 
     $store = Auth::user()->store;
 
-    // Check stock
-    if ($this->product->stock !== -1 && $this->product->stock <= 0) {
+    // Check master product stock in the ProductInstant model
+    $masterProduct = $this->product->productInstant;
+    if (!$masterProduct) {
+      session()->flash('error', 'Master product not found.');
+      $this->loading = false;
+      return;
+    }
+
+    // Check if the master product stock is available (if not unlimited)
+    if ($masterProduct->stock !== -1 && $masterProduct->stock <= 0) {
       session()->flash('error', 'Product is out of stock.');
       $this->loading = false;
       return;
@@ -145,9 +153,9 @@ class CreateTransaction extends Component
         $transaction->status = 'success';
         $transaction->completed_at = now();
 
-        // Update stock
-        if ($this->product->stock !== -1) {
-          $this->product->decrement('stock');
+        // Update master stock if not unlimited
+        if ($masterProduct->stock !== -1) {
+          $masterProduct->decrement('stock');
         }
 
         session()->flash('message', 'Transaction processed successfully.');
