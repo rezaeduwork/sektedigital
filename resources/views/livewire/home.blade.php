@@ -16,12 +16,18 @@
         </div>
         @else
         <div class="mt-[32px] flex max-sm:justify-center max-sm:w-full space-x-2">
-          <a href="#ppob-section" class="bg-white text-primary rounded text-[16px] px-4 py-2 max-sm:text-xs sm:px-5 sm:py-3 font-bold flex items-center justify-center space-x-2 inline">
+          {{-- <a href="#ppob-section" class="bg-white text-primary rounded text-[16px] px-4 py-2 max-sm:text-xs sm:px-5 sm:py-3 font-bold flex items-center justify-center space-x-2 inline">
             <div>Top Up Instan</div>
-          </a>
+          </a> --}}
+          {{-- <a href="#ppob-section" class="bg-white text-primary rounded text-[16px] px-4 py-2 max-sm:text-xs sm:px-5 sm:py-3 font-bold flex items-center justify-center space-x-2 inline">
+            <div>Top Up Instan</div>
+          </a> --}}
           <a href="#recommendation-section" class="text-white border-2 border-white rounded text-[16px] px-4 py-2 max-sm:text-xs sm:px-5 sm:py-3 font-bold flex items-center justify-center space-x-2 inline">
             <div>Explore Produk</div>
           </a>
+          {{-- <a href="#recommendation-section" class="bg-white text-primary rounded text-[16px] px-4 py-2 max-sm:text-xs sm:px-5 sm:py-3 font-bold flex items-center justify-center space-x-2 inline">
+            <div>Explore Produk</div>
+          </a> --}}
         </div>
         @endif
       </div>

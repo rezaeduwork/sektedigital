@@ -78,10 +78,10 @@
                   <span class="text-sm text-gray-600">Produk:</span>
                   <span class="text-sm font-medium">Rp{{ number_format($currentMonthRevenue, 0, ',', '.') }}</span>
                 </div>
-                <div class="d-flex justify-content-between">
+                {{-- <div class="d-flex justify-content-between">
                   <span class="text-sm text-gray-600">PPOB:</span>
                   <span class="text-sm font-medium">Rp{{ number_format($currentMonthPPOBRevenue, 0, ',', '.') }}</span>
-                </div>
+                </div> --}}
               </div>
             </div>
           </div>
@@ -109,10 +109,10 @@
                   <span class="text-sm text-gray-600">Produk:</span>
                   <span class="text-sm font-medium">{{ number_format($regularSalesCount) }}</span>
                 </div>
-                <div class="d-flex justify-content-between">
+                {{-- <div class="d-flex justify-content-between">
                   <span class="text-sm text-gray-600">PPOB:</span>
                   <span class="text-sm font-medium">{{ number_format($ppobSalesCount) }}</span>
-                </div>
+                </div> --}}
               </div>
             </div>
           </div>

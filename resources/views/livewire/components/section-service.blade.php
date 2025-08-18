@@ -23,7 +23,7 @@
   </style>
   <div class="">
     <div class="space-y-6 sm:space-y-10">
-      <div class="space-y-3 sm:space-y-6">
+      {{-- <div class="space-y-3 sm:space-y-6">
         <div class="w-full flex items-center justify-between" id="ppob-section">
           <h2 class="text-md lg:text-lg flex items-center">
             <img src="{{url('assets/images/instant.png')}}" alt="" srcset="" class="size-[20px] sm:size-[24px]" />
@@ -52,7 +52,7 @@
             </div>
           </template>
         </div>
-      </div>
+      </div> --}}
       <div class="space-y-6">
         <div class="flex" id="category-section">
           <div class="w-full flex items-center justify-between">

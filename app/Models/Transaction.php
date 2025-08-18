@@ -57,7 +57,13 @@ class Transaction extends Model
 
   public function scopeStoreTransactionQuery($query, $status)
   {
-    return $query->whereStore_id(auth()->user()->store->id)->whereStatus($status);
+    $list = $query->whereStore_id(auth()->user()->store->id);
+    if (is_array($status)) {
+      $list = $list->whereIn('status', $status);
+    } else {
+      $list = $list->whereStatus($status);
+    }
+    return $list;
   }
   public function getStatusColor()
   {

@@ -96,14 +96,18 @@
                       @endif
                     </div>
                   </td>
-                  <td class="w-full font-bold text-sm" style="white-space: normal;">{{$row->title}}</td>
+                  <td class="w-full font-bold text-sm text-blue-500 cursor-pointer" style="white-space: normal;">
+                    <a href="{{url($row->slug)}}" target="_blank">{{$row->title}}</a>
+                  </td>
                   <td>
+                    @if ($row->category)
                     <div class="flex items-center space-x-1">
                       <img src="{{url('storage/'.$row->category->icon)}}" alt="" srcset="" class="size-5">
                       <div>
                         {{$row->category->name}}
                       </div>
                     </div>
+                    @endif
                   </td>
                   <td>
                     <div class="truncate max-w-[150px]">
@@ -111,12 +115,14 @@
                     </div>
                   </td>
                   <td>
+                    @if ($row->store)
                     <div class="flex items-center space-x-1">
                       <img src="{{storeProfile($row->store)}}" alt="" srcset="" class="size-5">
                       <div>
                         {{$row->store->name}}
                       </div>
                     </div>
+                    @endif
                   </td>
                   <td>
                     <div class="flex items-center justify-center">
@@ -139,7 +145,7 @@
                           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                         </svg>
                       </button>
-                      <ul class="absolute top-[100%] right-0 bg-white border " display="none" x-show="open" @click.away="open = false">
+                      <ul class="absolute top-[100%] right-0 bg-white border z-[9]" display="none" x-show="open" @click.away="open = false">
                         @foreach (\App\Models\Product::getStatusses() as $rowStatus)
                         <li class="dropdown-item cursor-pointer" @click="$wire.updateStatus({{$row->id}},'{{$rowStatus}}');open = false;">{{$rowStatus}}</li>
                         @endforeach

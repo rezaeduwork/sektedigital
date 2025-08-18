@@ -38,16 +38,22 @@
         <div class="flex items-center gap-2 w-full">
           <div class="flex items-center max-sm:justify-center gap-2 shrink-0">
             <span class="text-white">Produk:</span>
-            <span class="text-red-500 font-semibold">108</span>
+            <span class="text-red-500 font-semibold">{{\App\Models\Product::where('store_id', $store->id)->count()}}</span>
           </div>
-          <div class="flex items-center max-sm:justify-center gap-2 shrink-0">
+          {{-- <div class="flex items-center max-sm:justify-center gap-2 shrink-0">
             <span class="text-white">Pengikut:</span>
             <span class="text-red-500 font-semibold">477</span>
-          </div>
+          </div> --}}
+          @php
+          $store_rating_query = \App\Models\Rating::where('user_id', $store->user->id);
+          $store_rating_total = $store_rating_query->count();
+          $store_rating_sum = $store_rating_query->sum('rating');
+          $store_rating = $store_rating_total > 0 ? round($store_rating_sum / $store_rating_total, 1) : 0;
+          @endphp
           <div class="flex items-center max-sm:justify-center gap-2 shrink-0 max-sm:hidden">
             <span class="text-white">Penilaian:</span>
-            <span class="text-red-500 font-semibold">4.7</span>
-            <span class="text-white">(414 Penilaian)</span>
+            <span class="text-red-500 font-semibold">{{$store_rating}}</span>
+            <span class="text-white">({{$store_rating_total}} Penilaian)</span>
           </div>
         </div>
       </div>

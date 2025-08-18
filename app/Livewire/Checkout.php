@@ -76,9 +76,6 @@ class Checkout extends Component
           return $cart->product->price * $cart->quantity;
         });
 
-        $delivered_duration = $row->product->delivered_duration;
-        $delivered_duration_type = $row->product->delivered_duration_type;
-
         // CREATE STORE TX
         $tx = \App\Models\Transaction::create([
           'status' => 'unprocessed',
@@ -93,6 +90,8 @@ class Checkout extends Component
         $tx->save();
 
         foreach ($storeCarts as $row) {
+          $delivered_duration = $row->product->delivered_duration;
+          $delivered_duration_type = $row->product->delivered_duration_type;
           $tx->details()->create([
             'product_id' => $row->product_id,
             'price' => $row->product->price,
@@ -180,6 +179,9 @@ class Checkout extends Component
       $this->redirect(url('payment/' . $payment->id), navigate: true);
     } catch (\Throwable $th) {
       \DB::rollBack();
+      if (config('app.env') === 'local') {
+        dd($th);
+      }
       $this->dispatch('alert-error', message: 'Transaksi gagal.');
     }
   }

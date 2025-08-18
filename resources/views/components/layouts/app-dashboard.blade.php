@@ -70,65 +70,26 @@
                     <span class="visually-hidden">Notification</span>
                   </span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0 border-0">
-                  <div class="border-bottom p-5 d-flex justify-content-between align-items-center">
-                    <div>
-                      <h5 class="mb-1">Notifications</h5>
-                      <p class="mb-0 small">You have 2 unread messages</p>
-                    </div>
-                    <a href="#!" class="text-muted">
-                      <a href="#" class="btn btn-ghost-secondary btn-icon rounded-circle" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" data-bs-title="Mark all as read">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-                          class="bi bi-check2-all text-success" viewBox="0 0 16 16">
-                          <path
-                            d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z" />
-                          <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z" />
-                        </svg>
-                      </a>
-                    </a>
-                  </div>
-                  <div data-simplebar style="height: 250px">
-                    <!-- List group -->
-                    <ul class="list-group list-group-flush notification-list-scroll fs-6">
-                      <!-- List group item -->
-                      <li class="list-group-item px-5 py-4 list-group-item-action active">
-                        <a href="#!" class="text-muted">
-                          <div class="d-flex">
-                            <img src="{{ url('/asset-dashboard') }}/images/avatar/avatar-1.jpg" alt=""
-                              class="avatar avatar-md rounded-circle" />
-                            <div class="ms-4">
-                              <p class="mb-1">
-                                <span class="text-dark">Your order is placed</span>
-                                waiting for shipping
-                              </p>
-                              <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                  fill="currentColor" class="bi bi-clock text-muted" viewBox="0 0 16 16">
-                                  <path
-                                    d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                                </svg>
-                                <small class="ms-2">1 minute ago</small>
-                              </span>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="border-top px-5 py-4 text-center">
-                    <a href="#!">View All</a>
+                <div class="dropdown-menu dropdown-menu-lg !p-0 text-left !left-[unset] !right-0" wire:ignore>
+                  <div>
+                    <livewire:components.navbar-notification />
                   </div>
                 </div>
               </li>
               <li class="dropdown">
+                @php
+                $chatCount = \App\Models\ChatSession::where(function($query) {
+                  $query->where('user_id', auth()->id())->orWhere('user_store_id', auth()->id());
+                })->whereHas('chats', function($query) {
+                  $query->whereNull('read_at')->where('receiver_id', auth()->id());
+                })->count();
+                @endphp
                 <a class="position-relative btn-icon btn-ghost-secondary btn rounded-circle bg-gray-100 !w-[32px] !h-[32px] sm:!w-[40px] sm:!h-[40px]"
-                  href="{{ url('/') }}" target="_blank" role="button" aria-expanded="false">
+                  href="{{ url('/chat') }}" target="_blank" role="button" aria-expanded="false">
                   <i class="bi bi-chat"></i>
                   <span
                     class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
-                    2
+                    {{$chatCount}}
                     <span class="visually-hidden">unread messages</span>
                   </span>
                 </a>

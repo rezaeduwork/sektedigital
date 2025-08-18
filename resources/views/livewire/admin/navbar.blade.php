@@ -4,16 +4,16 @@
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block">
-      <a href="index3.html" class="nav-link">Home</a>
+      <a href="{{url('admin')}}" class="nav-link">Home</a>
     </li>
-    <li class="nav-item d-none d-sm-inline-block">
+    {{-- <li class="nav-item d-none d-sm-inline-block">
       <a href="#" class="nav-link">Contact</a>
-    </li>
+    </li> --}}
   </ul>
 
   <ul class="navbar-nav ml-auto">
     <!-- Navbar Search -->
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link" data-widget="navbar-search" href="#" role="button">
         <i class="fas fa-search"></i>
       </a>
@@ -32,9 +32,9 @@
           </div>
         </form>
       </div>
-    </li>
+    </li> --}}
 
-    <!-- Messages Dropdown Menu -->
+    {{-- <!-- Messages Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="far fa-comments"></i>
@@ -121,7 +121,7 @@
         <div class="dropdown-divider"></div>
         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
       </div>
-    </li>
+    </li> --}}
     <li class="nav-item">
       <a class="nav-link" data-widget="fullscreen" href="#" role="button">
         <i class="fas fa-expand-arrows-alt"></i>

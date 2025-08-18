@@ -42,17 +42,25 @@
       </a>
       <div id="navCategoriesOrders" class="show !visible" data-bs-parent="#sideNavbar{{$uniqKey}}">
         <ul class="nav flex-column">
-          <li class="nav-item">
+          <li class="nav-item flex items-center justify-between">
             <a class="nav-link" href="{{url('/store/transaction/history')}}" wire:navigate>Daftar Pesanan</a>
+            @php
+            $totalUnprocessTx = \App\Models\Transaction::query()->storeTransactionQuery(['unprocessed','confirmed'])->count();
+            @endphp
+            <div class="text-white bg-red-600 rounded-lg p-1 text-xs min-w-[20px] flex items-center justify-center">{{$totalUnprocessTx}}</div>
           </li>
+          @php
+          $totalreview = \App\Models\Rating::whereUser_id(auth()->id())->count();
+          @endphp
           <!-- Nav item -->
-          <li class="nav-item">
+          <li class="nav-item flex items-center justify-between">
             <a class="nav-link " href="{{url('/store/transaction/rating')}}" wire:navigate>Ulasan Pembeli</a>
+            <div class="text-white bg-red-600 rounded-lg p-1 text-xs min-w-[20px] flex items-center justify-center">{{$totalreview}}</div>
           </li>
           <!-- PPOB Transactions -->
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a class="nav-link " href="{{url('/store/transaction/ppob')}}" wire:navigate>Daftar Pesanan PPOB</a>
-          </li>
+          </li> --}}
         </ul>
       </div>
     </li>
@@ -79,7 +87,7 @@
     </li>
 
     <!-- PPOB Menu -->
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link" href="#" data-bs-toggle="collapse"
         data-bs-target="#navPPOB" aria-expanded="true" aria-controls="navPPOB">
         <div class="d-flex align-items-center">
@@ -114,7 +122,7 @@
           </li>
         </ul>
       </div>
-    </li>
+    </li> --}}
   </ul>
 
 </div>

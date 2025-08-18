@@ -4,7 +4,7 @@
 
   <ul class="divide-y h-[300px] overflow-y-auto">
     @forelse ($unreadNotifications as $row)
-    <li class="p-4 @if(!$row->read_at) bg-gray-200 @endif hover:bg-gray-200 cursor-pointer" @click="$wire.read('{{$row->id}}');Livewire.navigate('{{$row->data['url'] ?? '#'}}')" :key="'notification-'.{{$row->id}}">
+    <li class="p-4 @if(!$row->read_at) bg-gray-200 @endif hover:bg-gray-200 cursor-pointer max-md:space-y-2" @click="$wire.read('{{$row->id}}');Livewire.navigate('{{$row->data['url'] ?? '#'}}')" :key="'notification-'.{{$row->id}}">
       <p class="text-xs text-gray-500">{{\Carbon\Carbon::parse($row->created_at)->diffForHumans()}}</p>
       <p class="font-semibold text-black">{{$row->data['title']}}</p>
       <p class="text-xs text-gray-900">{{$row->data['description']}}</p>

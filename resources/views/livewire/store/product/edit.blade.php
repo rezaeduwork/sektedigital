@@ -188,7 +188,8 @@
       <label for="delivered_duration"
       class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Durasi Penyelesaian</label>
       <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-        Sesuaikan durasi penyelesaian dengan benar, <b class="font-bold">Batal otomatis jika tidak ada penyelesaian dari penjual dalam waktu yang ditentukan.</b>
+        Sesuaikan estimasi penyelesaian dengan benar
+        {{-- <b class="font-bold">Batal otomatis jika tidak ada penyelesaian dari penjual dalam waktu yang ditentukan.</b> --}}
       </div>
       <div class="flex items-center space-x-2">
         <input id="delivered_duration" wire:model.live.debounce.250ms="delivered_duration"

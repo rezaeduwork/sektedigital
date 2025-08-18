@@ -61,20 +61,24 @@
               </td>
               <td class="w-full font-bold text-sm" style="white-space: normal;">{{$row->title}}</td>
               <td>
+                @if ($row->category)
                 <div class="flex items-center space-x-1">
                   <img src="{{url('storage/'.$row->category->icon)}}" alt="" srcset="" class="size-5">
                   <div>
                     {{$row->category->name}}
                   </div>
                 </div>
+                @endif
               </td>
               <td>
+                @if ($row->store)
                 <div class="flex items-center space-x-1">
                   <img src="{{storeProfile($row->store)}}" alt="" srcset="" class="size-5">
                   <div>
                     {{$row->store->name}}
                   </div>
                 </div>
+                @endif
               </td>
               <td>
                 <livewire:admin.product.restore :id="$row->id" :key="'restore-'.$row->id" />

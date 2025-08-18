@@ -22,7 +22,7 @@ class Dashboard extends Component
     $currentMonthRevenue = Transaction::where('store_id', $store->id)
       ->whereMonth('created_at', Carbon::now()->month)
       ->whereYear('created_at', Carbon::now()->year)
-      ->where('status', 'completed')
+      ->where('status', 'finished')
       ->sum('amount');
 
     // Calculate PPOB revenue
@@ -37,7 +37,7 @@ class Dashboard extends Component
 
     // Calculate total sales count
     $regularSalesCount = Transaction::where('store_id', $store->id)
-      ->where('status', 'completed')
+      ->where('status', 'finished')
       ->count();
 
     $ppobSalesCount = StoreTransactionInstant::where('store_id', $store->id)
