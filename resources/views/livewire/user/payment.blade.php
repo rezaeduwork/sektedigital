@@ -41,7 +41,7 @@
                                 if (pollingEnabled) {
                                     @this.checkPaymentStatus();
                                 }
-                            }, 5000);
+                            }, 15000);
                         }
                     ">
                         <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4">
@@ -83,6 +83,12 @@
                             <p class="text-sm text-gray-600">Metode Pembayaran</p>
                             <p class="font-medium">{{ $paymentMethod ?? '-' }}</p>
                         </div>
+                        @if($paymentGateway)
+                            <div>
+                                <p class="text-sm text-gray-600">Gateway</p>
+                                <p class="font-medium">{{ ucfirst($paymentGateway) }}</p>
+                            </div>
+                        @endif
                         @if($paymentExpiry && $paymentStatus === 'pending')
                             <div>
                                 <p class="text-sm text-gray-600">Batas Waktu Pembayaran</p>
@@ -99,6 +105,83 @@
 
             <!-- Payment Action -->
             @if($paymentStatus === 'pending')
+                @php
+                    // Fetch live payment detail from gateway
+                    $paymentDetail = $paymentData;
+                @endphp
+
+                <!-- QR Code Section -->
+                @if($paymentDetail && isset($paymentDetail['transaction_data']))
+                    @php
+                        $data = $paymentDetail['transaction_data'];
+                        $qrUrl = null;
+                        $payCode = null;
+                        $payUrl = null;
+
+                        // Extract QR, payment code, and pay URL based on gateway
+                        switch($paymentGateway) {
+                            case 'tripay':
+                                if (in_array($paymentMethod, ['QRIS', 'QRIS2'])) {
+                                    $qrUrl = $data['data']['qr_url'] ?? null;
+                                }
+                                $payCode = $data['data']['pay_code'] ?? null;
+                                $payUrl = $data['data']['checkout_url'] ?? null;
+                                break;
+                            case 'xendit':
+                                $qrUrl = $data['qr_string'] ?? null;
+                                $payCode = $data['account_number'] ?? $data['payment_code'] ?? null;
+                                $payUrl = $data['invoice_url'] ?? $data['ewallet_url'] ?? null;
+                                break;
+                            case 'paymenku':
+                                $qrUrl = $data['data']['qr_url'] ?? null;
+                                $payCode = $data['data']['payment_code'] ?? $data['data']['account_number'] ?? null;
+                                $payUrl = $data['data']['pay_url'] ?? null;
+                                break;
+                            case 'sakurupiah':
+                                // SakuRupiah response: qr (QRIS string), payment_no (VA number), checkout_url
+                                $qrUrl = $data['qr'] ?? null;
+                                $qrUrl = 'https://sakurupiah.id/assets/img/sakurupiah-sanbox-sampleQR.png';
+                                $payCode = $data['payment_no'] ?? null;
+                                $payUrl = $data['checkout_url'] ?? null;
+                                break;
+                        }
+                    @endphp
+
+                    @if($qrUrl)
+                        <div class="text-center mb-6">
+                            <h3 class="text-lg font-medium mb-2">Scan QR Code</h3>
+                            <div class="mx-auto max-w-xs">
+                                <img src="{{ $qrUrl }}" alt="QR Code" class="mx-auto w-full">
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($payCode)
+                        <div class="mb-6">
+                            <div class="bg-gray-50 rounded-lg p-4 text-center">
+                                <h3 class="text-lg font-medium mb-2">Kode Pembayaran</h3>
+                                <div class="bg-white border rounded-md p-3 text-xl font-bold">
+                                    {{ $payCode }}
+                                </div>
+                                <button
+                                    onclick="navigator.clipboard.writeText('{{ $payCode }}'); alert('Kode pembayaran berhasil disalin!');"
+                                    class="mt-2 text-primary text-sm hover:underline"
+                                >
+                                    📋 Salin Kode
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($payUrl && !$qrUrl && !$payCode)
+                        <div class="text-center mb-6">
+                            <a href="{{ $payUrl }}" target="_blank" class="inline-block bg-primary text-white px-6 py-3 rounded-md hover:bg-primary/90 transition">
+                                Bayar Sekarang
+                            </a>
+                            <p class="text-sm text-gray-500 mt-2">Anda akan diarahkan ke halaman pembayaran</p>
+                        </div>
+                    @endif
+                @endif
                 <div class="mb-6">
                     <div class="text-center">
                         <button wire:click="checkPaymentStatus" type="button" class="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 transition">
@@ -111,36 +194,6 @@
                             </span>
                         </button>
                     </div>
-
-                    @php
-                        $paymentDetail = null;
-                        if ($payment) {
-                            $tripay = new \App\Services\Tripay();
-                            $paymentDetail = $tripay->checkTransactionDetail($payment->token);
-                        }
-                    @endphp
-
-                    <!-- QR Code Section -->
-                    @if(in_array($paymentMethod, ['QRIS', 'QRIS2']) && isset($paymentDetail['data']['data']['qr_url']))
-                        <div class="text-center mt-6">
-                            <h3 class="text-lg font-medium mb-2">Scan QR Code</h3>
-                            <div class="mx-auto max-w-xs">
-                                <img src="{{ $paymentDetail['data']['data']['qr_url'] }}" alt="QRIS QR Code" class="mx-auto w-full">
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Payment Code Section -->
-                    @if(isset($paymentDetail['data']['data']['pay_code']) && $paymentDetail['data']['data']['pay_code'])
-                        <div class="mt-6">
-                            <div class="bg-gray-50 rounded-lg p-4 text-center">
-                                <h3 class="text-lg font-medium mb-2">Kode Pembayaran</h3>
-                                <div class="bg-white border rounded-md p-3 text-xl font-bold">
-                                    {{ $paymentDetail['data']['data']['pay_code'] }}
-                                </div>
-                            </div>
-                        </div>
-                    @endif
                 </div>
 
                 <!-- Payment Instructions -->

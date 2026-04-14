@@ -17,6 +17,7 @@ Route::prefix('errors')->group(function () {
   Route::get('/unauthenticated', \App\Livewire\Errors\Unauthenticated::class);
 });
 Route::post('/webhook/tripay', [\App\Http\Controllers\WebhookController::class, 'tripayNotification']);
+Route::post('/webhook/sakurupiah', [\App\Http\Controllers\WebhookController::class, 'sakurupiahNotification']);
 Route::post('/webhook/digiflazz', [\App\Http\Controllers\WebhookController::class, 'digiflazzNotification']);
 Route::get('/', \App\Livewire\Home::class);
 Route::get('/shop', \App\Livewire\Shop::class);
@@ -83,6 +84,7 @@ Route::middleware('user.admin')->prefix('admin')->group(function () {
   Route::get('/transaction', \App\Livewire\Admin\Transaction::class);
   Route::get('/transaction_instant', \App\Livewire\Admin\TransactionInstant::class);
   Route::get('/withdrawal', \App\Livewire\Admin\Withdrawal::class);
+  Route::get('/payment-gateway', \App\Livewire\Admin\PaymentGateway::class);
 });
 
 Route::get('s/{id}', \App\Livewire\StoreDetail::class);

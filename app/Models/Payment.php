@@ -23,8 +23,29 @@ class Payment extends Model
     'proof_file',
     // comment('basic | instant | deposit')
     'transaction_type',
-    'expired_at'
+    'expired_at',
+    'payment_gateway'
   ];
+
+  protected $casts = [
+    'data' => 'array',
+  ];
+
+  public function getDataAttribute($value)
+  {
+    try {
+      if (is_string($value) && $value) {
+        $value = stripslashes($value); // hapus backslash
+        return json_decode($value, true);
+      } else if (is_array($value)) {
+        return $value;
+      }
+    } catch (\Throwable $th) {
+      //throw $th;
+    }
+    return null;
+  }
+
   public function user()
   {
     return $this->belongsTo('App\Models\User', 'user_id');
@@ -82,11 +103,12 @@ class Payment extends Model
 
     return $statusText;
   }
-  public function getDataAttribute($value)
+
+  /**
+   * Get payment gateway relationship
+   */
+  public function gateway()
   {
-    if ($value) {
-      return json_decode($value, true);
-    }
-    return null;
+    return $this->belongsTo('App\Models\PaymentGateway', 'payment_gateway', 'name');
   }
 }

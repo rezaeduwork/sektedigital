@@ -40,17 +40,25 @@
                 <p>Product</p>
               </a>
             </li>
-            {{-- <li class="nav-item">
+            <li class="nav-item">
               <a href="{{url('admin/product_instant')}}" class="nav-link" wire:navigate>
                 <i class="far fa-circle nav-icon invisible"></i>
                 <p>Product Instant</p>
               </a>
-            </li> --}}
+            </li>
             <li class="nav-item">
               <a href="{{url('admin/account')}}" class="nav-link" wire:navigate>
                 <i class="nav-icon far fa-circle invisible"></i>
                 <p>
                   Account
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{url('admin/payment-gateway')}}" class="nav-link" wire:navigate>
+                <i class="nav-icon far fa-circle invisible"></i>
+                <p>
+                  Payment Gateway
                 </p>
               </a>
             </li>

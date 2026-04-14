@@ -8,6 +8,7 @@ use App\Models\ProductInstant;
 use App\Models\StoreProductInstant;
 use App\Models\Store;
 use Illuminate\Support\Facades\Log;
+use App\Services\Gateways\GatewayFactory;
 
 class WebhookController extends Controller
 {
@@ -80,6 +81,104 @@ class WebhookController extends Controller
     }
 
     return response()->json(['success' => false, 'message' => 'Not a closed payment']);
+  }
+
+  public function sakurupiahNotification(Request $request)
+  {
+    // Get JSON data
+    $json = $request->getContent();
+
+    // Get callback signature from header
+    $callbackSignature = $request->server('HTTP_X_CALLBACK_SIGNATURE') ?? '';
+
+    // Get gateway instance using GatewayFactory
+    $gateway = GatewayFactory::findByGatewayName('sakurupiah');
+
+    if (!$gateway) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Gateway not found or not active',
+      ]);
+    }
+
+    // Get API key from gateway config
+    $apiKey = $gateway->getConfig('api_key');
+
+    // Generate signature to verify with X-Callback-Signature
+    $signature = hash_hmac('sha256', $json, $apiKey);
+
+    // Validate signature
+    if ($callbackSignature !== $signature) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Invalid signature',
+      ]);
+    }
+
+    // Decode JSON data
+    $data = json_decode($json);
+
+    if (JSON_ERROR_NONE !== json_last_error()) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Invalid data send by payment gateway',
+      ]);
+    }
+
+    // Verify callback event is payment_status
+    if ('payment_status' !== $request->server('HTTP_X_CALLBACK_EVENT')) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Unrecognized callback event: ' . $request->server('HTTP_X_CALLBACK_EVENT'),
+      ]);
+    }
+
+    // Extract callback data
+    $paymentTrxID = $data->trx_id ?? null;
+    $paymentMerchantRef = $data->merchant_ref ?? null;
+    $paymentStatus = $data->status ?? null;
+    $paymentStatusKode = $data->status_kode ?? null;
+
+    // Extract invoice ID from merchant_ref
+    $invoiceId = str_replace('DEPOSIT-', '', $paymentMerchantRef);
+
+    // Find the payment/invoice
+    $invoice = Payment::whereId($invoiceId)->first();
+
+    if (!$invoice) {
+      return response()->json([
+        'success' => false,
+        'message' => 'No invoice found or already paid: ' . $invoiceId,
+      ]);
+    }
+
+    // Handle payment status
+    if ($paymentStatus === 'berhasil' && $paymentStatusKode == 1) {
+      // Process successful payment
+      $result = $this->processSuccessfulPayment($invoice);
+      return response()->json([
+        'success' => true,
+        'message' => 'Payment status berhasil',
+      ]);
+    } elseif ($paymentStatus === 'expired' && $paymentStatusKode == 2) {
+      // Process expired payment
+      $this->processExpiredPayment($invoice);
+      return response()->json([
+        'success' => true,
+        'message' => 'Payment status expired',
+      ]);
+    } elseif ($paymentStatus === 'pending' && $paymentStatusKode == 0) {
+      // Handle pending status (if needed)
+      return response()->json([
+        'success' => true,
+        'message' => 'Payment status pending',
+      ]);
+    } else {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error Data Status Callback',
+      ]);
+    }
   }
 
   /**

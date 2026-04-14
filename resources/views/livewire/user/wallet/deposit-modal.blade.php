@@ -28,12 +28,22 @@
 
           <div class="mb-6">
             <div for="" class="mb-2">Metode Pembayaran</div>
-            <select wire:model.live.debounce.250ms="paymentMethod" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required>
+            <select wire:model.live="paymentMethod" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required>
               <option value="">-- Pilih Metode Pembayaran --</option>
               @foreach ($paymentMethods as $method)
-              <option value="{{ $method['code'] }}">{{ $method['name'] }}</option>
+              <option value="{{ $method['code'] }}">
+                {{ $method['name'] }}
+                @if($method['gateway_display_name'])
+                  ({{ $method['gateway_display_name'] }})
+                @endif
+              </option>
               @endforeach
             </select>
+            @if(count($paymentMethods) === 0)
+              <div class="text-xs text-gray-500 mt-2">
+                Tidak ada metode pembayaran yang tersedia. Pastikan ada gateway yang aktif.
+              </div>
+            @endif
           </div>
 
           @error('depositAmount')

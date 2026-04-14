@@ -4,7 +4,7 @@ namespace App\Livewire\User;
 
 use Livewire\Component;
 use App\Models\Payment as PaymentModel;
-use App\Services\Tripay;
+use App\Services\Gateways\GatewayFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -18,7 +18,8 @@ class Payment extends Component
   public $paymentMethod;
   public $paymentExpiry;
   public $paymentInstructions;
-  public $polling = true;
+  public $paymentGateway;
+  public $polling = false;
 
   public function mount($reference = null)
   {
@@ -39,7 +40,6 @@ class Payment extends Component
   {
     // Find payment by token/reference
     $this->payment = PaymentModel::where('token', $this->reference)->first();
-
     if (!$this->payment) {
       session()->flash('error', 'Pembayaran tidak ditemukan.');
       return redirect()->route('wallet');
@@ -54,55 +54,179 @@ class Payment extends Component
     // Set payment status
     $this->paymentStatus = $this->payment->status;
     $this->paymentAmount = $this->payment->amount;
+    $this->paymentGateway = $this->payment->payment_gateway ?? 'tripay';
 
-    // Parse payment data
+    // Parse payment data based on gateway
     if ($this->payment->data) {
       $data = $this->payment->data;
       $this->paymentData = $data;
 
-      if (isset($data['transaction_data']['data'])) {
-        $transactionData = $data['transaction_data']['data'];
-        $this->paymentMethod = $transactionData['payment_method'];
+      // Handle different gateway response structures
+      $this->extractPaymentDetails($data);
+    }
+  }
+
+  /**
+   * Extract payment details based on gateway type
+   */
+  protected function extractPaymentDetails($data)
+  {
+    // Log the data structure for debugging
+    Log::info('Extracting payment details for gateway: ' . $this->paymentGateway);
+    Log::info('Payment data structure: ' . json_encode($data));
+
+    switch ($this->paymentGateway) {
+      case 'tripay':
+        if (isset($data['transaction_data']['data'])) {
+          $transactionData = $data['transaction_data']['data'];
+          $this->paymentMethod = $transactionData['payment_method'] ?? '-';
+          $this->paymentExpiry = $transactionData['expired_time'] ?? null;
+          $this->paymentInstructions = $transactionData['instructions'] ?? [];
+        }
+        break;
+
+      case 'xendit':
+        $transactionData = $data['transaction_data'] ?? [];
+        $this->paymentMethod = $transactionData['payment_method'] ?? $transactionData['channel_code'] ?? '-';
+        $this->paymentExpiry = isset($transactionData['expiration_date']) ? strtotime($transactionData['expiration_date']) : null;
+        $this->paymentInstructions = [];
+        break;
+
+      case 'paymenku':
+        if (isset($data['transaction_data']['data'])) {
+          $transactionData = $data['transaction_data']['data'];
+          $this->paymentMethod = $transactionData['payment_channel']['name'] ?? $transactionData['payment_channel']['code'] ?? '-';
+          $this->paymentExpiry = isset($transactionData['created_at']) ? strtotime($transactionData['created_at']) + (24 * 3600) : null;
+          $this->paymentInstructions = [];
+        }
+        break;
+
+      case 'sakurupiah':
+        // SakuRupiah stores the response directly in transaction_data
+        $transactionData = $data['transaction_data'] ?? [];
+
+        // Extract method from via or payment_kode
+        $this->paymentMethod = $transactionData['via'] ?? $transactionData['payment_kode'] ?? '-';
+
+        // Parse expiry datetime
+        $this->paymentExpiry = $this->payment->created_at ? strtotime($this->payment->created_at) : null;
+
+        $this->paymentInstructions = [];
+
+        break;
+
+      default:
+        // Generic fallback
+        $transactionData = $data['transaction_data'] ?? [];
+        $this->paymentMethod = $transactionData['payment_method'] ?? $transactionData['method'] ?? '-';
         $this->paymentExpiry = $transactionData['expired_time'] ?? null;
         $this->paymentInstructions = $transactionData['instructions'] ?? [];
-      }
+        break;
     }
+
+    Log::info('Extracted - Method: ' . $this->paymentMethod . ', Expiry: ' . $this->paymentExpiry);
   }
 
   public function checkPaymentStatus()
   {
-    if (!$this->reference || !$this->payment) {
+    if (!$this->reference || !$this->payment || !$this->paymentGateway) {
       return;
     }
 
-    $tripay = new Tripay();
-    $response = $tripay->checkTransactionDetail($this->reference);
+    try {
+      // Get the appropriate gateway instance
+      $gateway = GatewayFactory::findByGatewayName($this->paymentGateway);
 
-    if ($response['status']) {
-      $status = $response['data']['data']['status'];
-
-      // Update payment status if it has changed
-      if ($status === 'PAID' && $this->payment->status !== 'settlement') {
-        $this->payment->update([
-          'status' => 'settlement',
-          'settlement_at' => now(),
-        ]);
-
-        $this->paymentStatus = 'settlement';
-        $this->processDepositSuccess();
-        $this->polling = false;
-
-        session()->flash('success', 'Pembayaran berhasil! Saldo telah ditambahkan ke akun Anda.');
-      } else if (in_array($status, ['EXPIRED', 'FAILED', 'CANCELLED']) && $this->payment->status === 'pending') {
-        $this->payment->update([
-          'status' => strtolower($status),
-        ]);
-
-        $this->paymentStatus = strtolower($status);
-        $this->polling = false;
-
-        session()->flash('error', 'Pembayaran ' . strtolower($status) . '.');
+      if (!$gateway) {
+        Log::warning('Gateway not found or inactive: ' . $this->paymentGateway);
+        return;
       }
+
+      // Check transaction detail
+      $response = $gateway->checkTransactionDetail($this->reference);
+
+      if ($response['status']) {
+        // Extract status based on gateway
+        $status = $this->normalizePaymentStatus($response['data'], $this->paymentGateway);
+
+        // Update payment status if it has changed
+        if (in_array($status, ['paid', 'settlement', 'success']) && $this->payment->status !== 'settlement') {
+          $this->payment->update([
+            'status' => 'settlement',
+            'settlement_at' => now(),
+          ]);
+
+          $this->paymentStatus = 'settlement';
+          $this->processDepositSuccess();
+          $this->polling = false;
+
+          session()->flash('success', 'Pembayaran berhasil! Saldo telah ditambahkan ke akun Anda.');
+        } else if (in_array($status, ['expired', 'failed', 'cancelled']) && $this->payment->status === 'pending') {
+          $this->payment->update([
+            'status' => strtolower($status),
+          ]);
+
+          $this->paymentStatus = strtolower($status);
+          $this->polling = false;
+
+          session()->flash('error', 'Pembayaran ' . strtolower($status) . '.');
+        }
+      }
+    } catch (\Exception $e) {
+      Log::error('Check payment status error: ' . $e->getMessage());
+    }
+  }
+
+  /**
+   * Normalize payment status from different gateways
+   */
+  protected function normalizePaymentStatus($data, $gateway)
+  {
+    switch ($gateway) {
+      case 'tripay':
+        return strtolower($data['data']['status'] ?? 'pending');
+
+      case 'xendit':
+        $status = strtolower($data['status'] ?? 'pending');
+        // Xendit uses PAID, EXPIRED, etc.
+        return $status === 'paid' ? 'settlement' : $status;
+
+      case 'paymenku':
+        $status = strtolower($data['data']['status'] ?? 'pending');
+        return $status === 'paid' ? 'settlement' : $status;
+
+      case 'sakurupiah':
+        // SakuRupiah uses payment_status field
+        $status = strtolower($data['payment_status'] ?? 'pending');
+        return $status === 'paid' || $status === 'success' ? 'settlement' : $status;
+
+      default:
+        return strtolower($data['status'] ?? 'pending');
+    }
+  }
+
+  /**
+   * Get live payment detail from gateway
+   */
+  public function getPaymentDetail()
+  {
+    if (!$this->payment || !$this->paymentGateway || !$this->reference) {
+      return null;
+    }
+
+    try {
+      $gateway = GatewayFactory::findByGatewayName($this->paymentGateway);
+
+      if (!$gateway) {
+        return null;
+      }
+
+      $result = $gateway->checkTransactionDetail($this->reference);
+
+      return $result['status'] ? $result : null;
+    } catch (\Exception $e) {
+      Log::error('Error fetching payment detail: ' . $e->getMessage());
+      return null;
     }
   }
 
